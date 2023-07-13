@@ -712,7 +712,7 @@
         @media (prefers-color-scheme: dark) {
             .dark\:bg-gray-900 {
                 --tw-bg-opacity: 1;
-                background-color: rgb(17 24 39 / var(--tw-bg-opacity))
+                /* background-color: rgb(17 24 39 / var(--tw-bg-opacity)) */
             }
 
             .dark\:bg-gray-800\/50 {
@@ -839,28 +839,18 @@
     <div
         class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white row justify-content-center">
         <div class="col-lg-4">
-            <div class="card">
+            <div class="login-form">
 
-                <div class="card-header bg-info">
-                    <div class="row">
-                        <div class="col-sm-12 row">
-                            <h1 class="card-title text-white">
-                                <div class="d-flex align-items-center">
-                                    <i class='bx bxs-user-rectangle h1'></i>
-                                    <span class="h3"> Login</span>
-                                    <span class="text-secondary mx-auto"> <b>version 1.0.0</b></span>
-                                    <div class="ms-auto">
-                                        <a href="{{ route('home') }}">
-                                            <i class='bx bxs-x-circle text-white h1'></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </h1>
-                        </div>
-                        
+                <div class="login-form-header">
+                    <div class="form-info">
+                        <i class='bx bxs-user'></i>
+                        <span class="h3"> Login</span>
                     </div>
+                    <a class="close-btn" href="{{ route('home') }}">
+                        <i class='bx bxs-x-circle h1'></i>
+                    </a>
                 </div>
-                <div class="card-body p-5">
+                <div class="login-form-body p-5">
                     {{-- Error Message --}}
                     @if (Session::has('error'))
                         <div class="alert alert-danger" role="alert">
@@ -884,10 +874,10 @@
                             @endif
                         @endif
                     
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
                         </div>
                         <div class="mb-3 text-center text-primary">
@@ -895,10 +885,8 @@
                                 <a href="#">Forgot Password?</a>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <div class="d-grid">
-                                <button class="btn btn-primary"><b>Login</b></button>
-                            </div>
+                        <div class="mb-3 d-flex justify-content-center">
+                            <button class="btn btn-success login-btn"><b>Sign in</b></button>
                         </div>
                         {{-- <div class="mb-3">
                             <div class="d-grid">
