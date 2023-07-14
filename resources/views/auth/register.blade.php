@@ -9,31 +9,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css" integrity="sha512-cn16Qw8mzTBKpu08X0fwhTSv02kK/FojjNLz0bwp2xJ4H+yalwzXKFw/5cLzuBZCxGWIA+95X4skzvo8STNtSg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="{{asset('css/register_v2.css')}}">
 </head>
 <body>
-<div class="row justify-content-center mt-5">
+<div class="row justify-content-center p-5">
         <div class="col-lg-4">
-            <div class="card">
-                <div class="card-header bg-info">
-                    <div class="row">
-                        <div class="col-sm-12 row">
-                            <h1 class="card-title text-white">
-                                <div class="d-flex align-items-center">
-                                    <i class='bx bxs-user-rectangle h1'></i>
-                                    <span class="h3"> Create Account</span>
-                                    
-                                    <div class="ms-auto">
-                                        <a href="{{ route('home') }}">
-                                            <i class='bx bxs-x-circle text-white h1'></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </h1>
-                        </div>
-                        
+            <div class="register-form">
+                <div class="register-form-header">
+                    <div class="form-info">
+                        <i class='bx bxs-user-rectangle h1'></i>
+                        <span class="h3"> Create Account</span>
                     </div>
+                    
+                    <a class="close-btn" href="{{ route('home') }}">
+                        <i class='bx bxs-x-circle h1'></i>
+                    </a>
                 </div>
-                <div class="card-body">
+                <div class="register-form-body">
                     @if(Session::has('success'))
                         <div class="alert alert-success" role="alert">
                             {{ Session::get('success') }}
@@ -42,87 +35,69 @@
                     <form action="{{ route('register') }}" method="POST" class="row g-3">
                         @csrf
                         {{-- first name --}}
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <input type="text" name="firstname" class="form-control" id="firstname" placeholder="First Name" required>
-                            </div>
-                        </div>
-                        {{-- last name --}}
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <input type="text" name="lastname" class="form-control" id="lastname" placeholder="Last Name" required>
-                            </div>
+                        <div>
+                            <input type="text" name="firstname" class="form-control" id="firstname" placeholder="First Name" required>
                         </div>
                         {{-- middle name --}}
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <input type="text" name="middlename" class="form-control" id="middlename" placeholder="Middle Name" required>
-                            </div>
+                        <div>
+                            <input type="text" name="middlename" class="form-control" id="middlename" placeholder="Middle Name" required>
+                        </div>
+                        {{-- last name --}}
+                        <div>
+                            <input type="text" name="lastname" class="form-control" id="lastname" placeholder="Last Name" required>
                         </div>
                         {{-- Contact --}}
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <input type="tel" name="contact" class="form-control" id="contact"
-                                    placeholder="Contact: +63" required pattern="[0-9]{10}"
-                                    title="Please enter a valid 10-digit mobile number">
-                                <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
-                            </div>
+                        <div class="col-md-5">
+                            <input type="tel" name="contact" class="form-control" id="contact"
+                                placeholder="Contact: +63" required pattern="[0-9]{10}"
+                                title="Please enter a valid 10-digit mobile number">
+                            <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
                         </div>
                         {{-- email --}}
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
-                            </div>
+                        <div class="col-md-7">
+                            <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
                         </div>
                         {{-- birthdate --}}
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <input type="date" name="birthdate" class="form-control" id="birthdate" placeholder="Birthdate" required>
-                            </div>
+                            <input type="date" name="birthdate" class="form-control" id="birthdate" placeholder="Birthdate" required>
                         </div>
                         {{-- Municipal --}}
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <input type="text" name="municipal" class="form-control" id="municipal" placeholder="Municipal" required>
-                            </div>
+                            <input type="text" name="municipal" class="form-control" id="municipal" placeholder="Municipal" required>
                         </div>
                         {{-- Zip Code --}}
                         <div class="col-md-4">
-                            <div class="mb-3">
-                                <input type="number" name="zipcode" class="form-control" id="zipcode" placeholder="Zip Code" required>
-                            </div>
+                            <input type="number" name="zipcode" class="form-control" id="zipcode" placeholder="Zip Code" required>
                         </div>
                         {{-- Barangay --}}
                         <div class="col-md-4">
-                            <div class="mb-3">
-                                <input type="text" name="barangay" class="form-control" id="barangay" placeholder="Barangay" required>
-                            </div>
+                            <input type="text" name="barangay" class="form-control" id="barangay" placeholder="Barangay" required>
                         </div>
                         {{-- Street --}}
                         <div class="col-md-4">
-                            <div class="mb-3">
-                                <input type="text" name="street" class="form-control" id="street" placeholder="Street" required>
-                            </div>
+                            <input type="text" name="street" class="form-control" id="street" placeholder="Street" required>
                         </div>
                         {{-- password --}}
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <input type="password" name="password" class="form-control" id="password"
-                                    placeholder="Password" required>
-                            </div>
+                        <div>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
                         </div>
 
                         {{-- confirm password --}}
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <input type="password" name="password_confirmation" class="form-control"
-                                    id="password_confirmation" placeholder="Confirm Password" required>
-                            </div>
+                        <div>
+                            <input type="password" name="password_confirmation" class="form-control"
+                                id="password_confirmation" placeholder="Confirm Password" required>
+                        </div>
+
+                        <!-- terms and condition -->
+
+                        <div class="d-flex justify-content-center align-items-center gap-2">
+                            <input type="checkbox" name="terms" id="terms">
+                            <span>Agree to <a href="#">terms and conditions.</a></span>
                         </div>
                         
                         <div class="mb-3">
-                            <div class="d-grid">
-                                <button class="btn btn-primary"><b>Create account</b></button>
+                            <div class="d-grid justify-content-center">
+                                <button class="register-btn"><b>Submit Form</b></button>
                             </div>
                         </div>
                         <div class="mb-3 text-center d-flex justify-content-center">
