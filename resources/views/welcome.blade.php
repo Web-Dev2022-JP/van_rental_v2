@@ -23,7 +23,8 @@
         {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" /> --}}
    
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-        {{-- <link rel="stylesheet" href="{{ asset('css/home/home.css') }}"> --}}
+        <link rel="stylesheet" href="{{ asset('css/home/home.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/home/burgermenu_v2.css') }}">
    
         {{-- <link rel="stylesheet" href="{{ asset('css/calendar.css') }}"> --}}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css" integrity="sha512-cn16Qw8mzTBKpu08X0fwhTSv02kK/FojjNLz0bwp2xJ4H+yalwzXKFw/5cLzuBZCxGWIA+95X4skzvo8STNtSg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -33,7 +34,7 @@
         <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
             
             @if (Route::has('login'))
-                <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
+                <div class="header sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
                     @auth
                         @if (auth()->user()->role == 1)
                             <a href="{{ url('/client-dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">{{ 'Client' }}</a>
@@ -44,11 +45,21 @@
                         @endif
                         
                     @else
-                        <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500" style="text-decoration: none"><b>Log in</b></a>
-
-                        @if (Route::has('register'))
-                            <a id="registration-id" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500" style="text-decoration: none; cursor: pointer"><b>Register</b></a>
-                        @endif
+                        <div class="hamburger-container">
+                            <div class="hamburger-menu">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div class="dropdown-items not-visible">
+                                <a href="{{ route('login') }}" class="text-black" style="text-decoration: none"><b>Login</b></a>
+                                <p class="text-black">|</p>
+        
+                                @if (Route::has('register'))
+                                    <a id="registration-id" class="text-black" style="text-decoration: none; cursor: pointer"><b>Register</b></a>
+                                @endif
+                            </div>
+                        </div>
                     @endauth
                 </div>
             @endif
@@ -225,6 +236,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
+        <script src="{{ asset('assets/js/burgermenu/burgermenu.js') }}"></script>
         
 
          {{-- custom js --}}

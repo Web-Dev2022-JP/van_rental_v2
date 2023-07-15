@@ -6,6 +6,7 @@
 
     --secondary-size:.8rem;
     --secondary-weight:500;
+    --theme: rgb(96, 150, 186);
 }
 
 *{
@@ -13,10 +14,17 @@
     font-family: var(--primary-font);
     
 }
+
 body, .card{
     background-color: rgb(228, 233, 240);
 }
 
-
+.header {
+    display: flex;
+    background-color: var(--theme);
+    align-items: center;
+    width: 100vw;
+    height: 8vh;
+}
 
 
