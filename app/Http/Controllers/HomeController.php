@@ -133,4 +133,8 @@ class HomeController extends Controller
     public function inquiry(){
         return view('dashboard.client.inquire');
     }
+
+    public function messageDriver() {
+        return view('dashboard.client.message-driver');
+    }
 }

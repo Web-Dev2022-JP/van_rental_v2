@@ -68,4 +68,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/accounts/approval/{id}', [RequestController::class,'approve'])->name('accounts.approval');
     Route::get('/accounts/view/{id}', [RequestController::class,'getById'])->name('accounts.view');
 
+    // message driver
+    Route::get('/client-dashboard/message', [HomeController::class, 'messageDriver'])->name('message.driver');
+
 });
