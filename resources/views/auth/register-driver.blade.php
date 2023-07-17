@@ -12,12 +12,26 @@
         rel="stylesheet" />
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css" integrity="sha512-cn16Qw8mzTBKpu08X0fwhTSv02kK/FojjNLz0bwp2xJ4H+yalwzXKFw/5cLzuBZCxGWIA+95X4skzvo8STNtSg==" crossorigin="anonymous" referrerpolicy="no-referrer" />    
+    <style>
 
+        .register-driver-container {
+            height: 100vh;
+        }
 
+        .header-info-container {
+            position: relative;
+        }
+
+        .header-info {
+            position: absolute;
+            bottom: 2px;
+            left: -10px;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="row justify-content-center mt-5">
+    <div class="row justify-content-center align-items-center p-5 register-driver-container">
         <div class="col-lg-8">
             <div class="card">
                 {{-- <div class="card-header">
@@ -26,15 +40,15 @@
                         Application Form
                     </h1>
                 </div> --}}
-                <div class="card-header bg-info">
+                <div class="register-header">
                     <div class="row">
                         <div class="col-sm-12 row">
-                            <h1 class="card-title text-white">
-                                <div class="d-flex align-items-center">
+                            <h1 class="card-title text-white header-info-container">
+                                <div class="d-flex align-items-center header-info">
                                     <a href="{{ route('home') }}" class="text-white">
-                                        <i class='bx bx-left-arrow-alt'></i>
+                                        <i class='bx bx-left-arrow-alt text-black'></i>
                                     </a>
-                                    <span class="h3"> Application Form</span>
+                                    <span class="h3 text-black"> Application Form</span>
                                     
                                     {{-- <div class="ms-auto">
                                         <a href="{{ route('home') }}">
@@ -241,7 +255,7 @@
 
                         </div>
                         {{-- driver licensed and Profile--}}
-                        <div class="col-md-4">
+                        <div class="col-md-4 d-flex align-items-center">
                             <div class="col-md-12 mx-auto">
                                 <div class="mb-3">
                                     <label for="image" class="form-label text-success text-center h6">Upload your
