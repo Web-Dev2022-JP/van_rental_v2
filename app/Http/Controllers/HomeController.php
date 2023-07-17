@@ -137,4 +137,8 @@ class HomeController extends Controller
     public function messageDriver() {
         return view('dashboard.client.message-driver');
     }
+
+    public function complainDriver() {
+        return view('dashboard.client.complain-driver');
+    }
 }

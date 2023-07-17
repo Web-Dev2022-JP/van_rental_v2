@@ -71,4 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
     // message driver
     Route::get('/client-dashboard/message', [HomeController::class, 'messageDriver'])->name('message.driver');
 
+    // complain driver
+    Route::get('/complain', [HomeController::class, 'complainDriver'])->name('complain.driver');
+
 });
