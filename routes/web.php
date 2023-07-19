@@ -77,4 +77,7 @@ Route::group(['middleware' => 'auth'], function () {
     // complain driver
     Route::get('/complain', [HomeController::class, 'complainDriver'])->name('complain.driver');
 
+    // customer info page
+    Route::get('/customers-info', [HomeController::class, 'customersInfo'])->name('customers.info');
+
 });

@@ -145,4 +145,8 @@ class HomeController extends Controller
     public function complainDriver() {
         return view('dashboard.client.complain-driver');
     }
+
+    public function customersInfo() {
+        return view('dashboard.driver.customers-info');
+    }
 }
