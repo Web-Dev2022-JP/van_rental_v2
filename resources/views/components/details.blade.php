@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="col-sm-12 mt-4 ">
                                     <a href="{{ route('message.driver') }}" class="btn btn-info mb-2">CHAT WITH DRIVER</a>
-                                    <a href="#" class="btn btn-info mb-2" data-bs-toggle="modal" data-bs-target="#about-driver-modal">ABOUT DRIVER</a>
+                                    <a href="{{ route('about.driver')}}" class="btn btn-info mb-2">ABOUT DRIVER</a>
                                     <a href="#" class="btn btn-info mb-2">LOCATE DRIVER</a>
                                 </div>
                                 <div class="col-sm-12 mt-3">

@@ -125,9 +125,13 @@ class HomeController extends Controller
         }
     }
 
-    // about driver
+    // about page
     public function about(){
         return view('dashboard.client.about');
+    }
+    // about driver
+    public function aboutDriver(){
+        return view('dashboard.client.about-driver');
     }
     // inquiry
     public function inquiry(){
