@@ -80,4 +80,7 @@ Route::group(['middleware' => 'auth'], function () {
     // customer info page
     Route::get('/customers-info', [HomeController::class, 'customersInfo'])->name('customers.info');
 
+    // drivers account
+    Route::get('/drivers-account', [HomeController::class, 'driversAccount'])->name('drivers.account');
+
 });

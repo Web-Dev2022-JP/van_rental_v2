@@ -137,16 +137,20 @@ class HomeController extends Controller
     public function inquiry(){
         return view('dashboard.client.inquire');
     }
-
+    // message driver
     public function messageDriver() {
         return view('dashboard.client.message-driver');
     }
-
+    // complain on driver
     public function complainDriver() {
         return view('dashboard.client.complain-driver');
     }
-
+    // customer's info
     public function customersInfo() {
         return view('dashboard.driver.customers-info');
+    }
+    // drivers account
+    public function driversAccount() {
+        return view('dashboard.driver.drivers-account');
     }
 }
