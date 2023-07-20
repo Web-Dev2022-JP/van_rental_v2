@@ -83,4 +83,7 @@ Route::group(['middleware' => 'auth'], function () {
     // drivers account
     Route::get('/drivers-account', [HomeController::class, 'driversAccount'])->name('drivers.account');
 
+    // message customer
+    Route::get('/message-customer', [HomeController::class, 'messageCustomer'])->name('message.customer');
+
 });

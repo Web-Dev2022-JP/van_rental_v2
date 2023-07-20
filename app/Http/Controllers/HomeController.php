@@ -153,4 +153,8 @@ class HomeController extends Controller
     public function driversAccount() {
         return view('dashboard.driver.drivers-account');
     }
+    // message customer
+    public function messageCustomer() {
+        return view('dashboard.driver.message-customer');
+    }
 }
