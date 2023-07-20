@@ -9,6 +9,10 @@
     --dark-text: rgb(39, 76, 119);
     }
 
+    .container {
+      width: 100vw;
+    }
+
     .container > :first-child {
       color: var(--dark-text);
       text-decoration: underline;
@@ -18,10 +22,18 @@
       padding: 20px;
     }
 
-    tr > th, tr> td {
+    tr > th, tr > td {
       padding: 10px;
       text-align: center;
       border: 2px solid var(--theme);
+    }
+
+    .actions {
+      width: 7rem;
+    }
+
+    .view-customer-btn {
+      font-size: 1rem;
     }
   </style>
 @endsection
@@ -40,7 +52,7 @@
         <th>Complete Address/Pickup Location</th>
         <th>Landmark</th>
         <th>Date Of Trip</th>
-        <th>Actions</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -52,56 +64,8 @@
         <td>Brgy. Sta. Lucia Samal Bataan</td>
         <td>Near at Ernies ice cream</td>
         <td>April 12 2023</td>
-        <td>
-          <button class="btn btn-success">Chat With Customer</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Kyneth Esconde</td>
-        <td>09321923021</td>
-        <td>test@gmail.com</td>
-        <td>Cainta, Rizal</td>
-        <td>Brgy. Sta. Lucia Samal Bataan</td>
-        <td>Near at Ernies ice cream</td>
-        <td>April 12 2023</td>
-        <td>
-          <button class="btn btn-success">Chat With Customer</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Kyneth Esconde</td>
-        <td>09321923021</td>
-        <td>test@gmail.com</td>
-        <td>Cainta, Rizal</td>
-        <td>Brgy. Sta. Lucia Samal Bataan</td>
-        <td>Near at Ernies ice cream</td>
-        <td>April 12 2023</td>
-        <td>
-          <button class="btn btn-success">Chat With Customer</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Kyneth Esconde</td>
-        <td>09321923021</td>
-        <td>test@gmail.com</td>
-        <td>Cainta, Rizal</td>
-        <td>Brgy. Sta. Lucia Samal Bataan</td>
-        <td>Near at Ernies ice cream</td>
-        <td>April 12 2023</td>
-        <td>
-          <button class="btn btn-success">Chat With Customer</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Kyneth Esconde</td>
-        <td>09321923021</td>
-        <td>test@gmail.com</td>
-        <td>Cainta, Rizal</td>
-        <td>Brgy. Sta. Lucia Samal Bataan</td>
-        <td>Near at Ernies ice cream</td>
-        <td>April 12 2023</td>
-        <td>
-          <button class="btn btn-success">Chat With Customer</button>
+        <td class="actions">
+          <a class="view-customer-btn" href="{{ route('customer.info') }}">View More</a>
         </td>
       </tr>
     </tbody>

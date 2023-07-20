@@ -89,4 +89,7 @@ Route::group(['middleware' => 'auth'], function () {
     // add services
     Route::get('/add-services', [HomeController::class, 'addServices'])->name('add.services');
 
+    // view more info about specific customer
+    Route::get('/customer-info', [HomeController::class, 'customerInfo'])->name('customer.info');
+
 });

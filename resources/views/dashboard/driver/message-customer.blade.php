@@ -56,7 +56,7 @@
   <form class="message-card" action="" method="POST">
     <div class="customer-details d-flex align-items-center p-2 gap-2">
       <i class='bx bxs-user'></i>
-      <div class="customer-name">KULAPO LAGING NALILIGO</div>
+      <div class="customer-name">KYNETH ESCONDE</div>
     </div>
     <input type="text" name="message" id="message" placeholder="INPUT MESSAGE" autocomplete="off">
     <button class="send-message bx bx-up-arrow-alt"></button>

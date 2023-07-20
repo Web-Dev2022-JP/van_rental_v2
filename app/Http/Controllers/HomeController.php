@@ -161,4 +161,8 @@ class HomeController extends Controller
     public function addServices() {
         return view('dashboard.driver.add-services');
     }
+    // add customer complete info page
+    public function customerInfo() {
+        return view('dashboard.driver.customer-info');
+    }
 }
