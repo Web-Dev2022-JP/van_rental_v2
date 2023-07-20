@@ -86,4 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
     // message customer
     Route::get('/message-customer', [HomeController::class, 'messageCustomer'])->name('message.customer');
 
+    // add services
+    Route::get('/add-services', [HomeController::class, 'addServices'])->name('add.services');
+
 });
