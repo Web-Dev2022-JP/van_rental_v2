@@ -32,7 +32,7 @@
 
 .card-container {
   display: grid;
-  grid-template-columns: repeat(3, 500px);
+  grid-template-columns: repeat(auto-fill, 350px);
   gap: 20px;
   justify-content: center;
   align-items: center;
