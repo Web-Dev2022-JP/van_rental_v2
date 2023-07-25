@@ -8,13 +8,16 @@ use App\Models\Document;
 use App\Models\Verifytoken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class RequestController extends Controller
 {
     public function fetchAccountApproval(){
         // this is for driver only
         $accounts = User::where('is_activated', 1)->where('role', 2)->orderBy('created_at', 'desc')->get();
-
+        if($accounts){
+            $accounts = User::where('is_activated', 0)->where('role', 2)->orderBy('created_at', 'desc')->get();
+        }
         return response()->json($accounts);
     }
 
@@ -44,7 +47,8 @@ class RequestController extends Controller
 
     public function getById(Request $request, $id){
         $documents = User::find($id)->documents()->with('user')->orderBy('name')->get();
-        
-       return response()->json($documents);
+            
+           return response()->json($documents);
+
     }
 }

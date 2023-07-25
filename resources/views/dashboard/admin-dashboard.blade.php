@@ -23,6 +23,8 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('assets/css/style-v2.css') }}">
+
     {{-- toastr --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!--[if lt IE 9]>
@@ -159,7 +161,7 @@
                             <span class="user-img"><img class="rounded-circle" src="assets/img/user-06.jpg"
                                     width="30" alt="Admin">
                                 <span class="status online"></span></span>
-                            <span>Admin</span>
+                            <span>{{ auth()->user()->firstname }}</span>
                         </a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="profile.html">My Profile</a>
@@ -1195,22 +1197,23 @@
         
          <div class='modal fade' id='viewModal' tabindex='-1' aria-labelledby='exampleModalLabel'
          aria-hidden='true'>
-         <div class='modal-dialog'>
+         <div class='modal-dialog modal-lg'>
              <div class='modal-content'>
                  <div class='modal-header'>
-                     <h5 class='modal-title' id='exampleModalLabel'>View Modal</h5>
+                     <h5 class='modal-title text-secondary' id='exampleModalLabel'><b>Van Rental View Section</b></h5>
                      <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
                          <span aria-hidden='true'>&times;</span>
                      </button>
                  </div>
                  <div class='modal-body'>
-                    <p>{{ url('storage/') }}</p>
+                    {{-- <p>{{ url('storage/') }}</p> --}}
                     {{-- <img src="{{ storage_path('/app/public/profile/profile648d6abf9ab263.53359234/Qrcode_wikipedia_fr_v2clean.png') }}" alt="no image"> --}}
                    
                     <form action="#" method="POST" enctype="multipart/form-data"
                     class="row g-3">
                     @csrf
-                    <div class="col-md-8 row" id="view-con">
+                    <div class="col-md-12 row" id="view-con">
+                    {{-- <img src="{{ asset('storage/profile/tmp/profile64bf2341e7d979.79852656/vanrental.jpg') }}"> --}}
                         {{-- role --}}
                         
                         
