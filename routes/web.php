@@ -59,6 +59,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/register-vehicle',[HomeController::class,'registerVehicle'])->name("register.vehicle");
     Route::post('/register-vehicle',[HomeController::class,'registerVehiclePost'])->name("register.vehicle");
 
+    // edit vehicle registration
+    Route::post('/register-edit',[RequestController::class, 'editRegistration'])->name('register.edit');
+
     // temp uploads
     Route::post('/tmp-UploadVehicle',[HomeController::class, 'tmpUploadVehicle']);
     Route::delete('/tmp-deleteVehicle',[HomeController::class, 'tmpDeleteVehicle']);

@@ -51,4 +51,46 @@ class RequestController extends Controller
            return response()->json($documents);
 
     }
+
+    public function editRegistration(Request $request){
+        // dd($request);
+        // Validate the input data from the request (you can customize the validation rules)
+        // $validatedData = $request->validate([
+        //     'email' => 'required|email|unique:users',
+        //     // Add other fields you want to validate and update here
+        // ]);
+
+        // Find the user with the given ID
+        $user = User::find($request->id);
+        // dd($user);
+        // Check if the user exists
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        $user->firstname = $request->firstName;
+        $user->lastname = $request->lastName;
+        $user->middlename = $request->middleName;
+        $user->gender = $request->gender;
+        $user->age = $request->age;
+        $user->birthplace = $request->birthplace;
+        $user->nationality = $request->nationality;
+        $user->contact = $request->contact;
+        $user->email = $request->email;
+        $user->birthdate = $request->birthdate;
+        $user->municipality = $request->municipality;
+        $user->zipcode = $request->zipcode;
+        $user->barangay = $request->barangay;
+        $user->street = $request->street;
+        $user->idno = $request->idNumber;
+        $user->orcr = $request->orcr;
+        $user->platenumber = $request->plateNumber;
+        $user->save();
+        // Update the user data with the validated input
+        // $user->update($validatedData);
+
+        
+        // Optionally, you can return the updated user data in the response
+        return response()->json(['message' => 'User updated successfully', 'user' => $user], 200);
+
+    }
 }
