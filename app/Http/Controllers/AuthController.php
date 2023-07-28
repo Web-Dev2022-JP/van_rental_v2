@@ -271,6 +271,7 @@ class AuthController extends Controller
     // uploads tmp
     public function tmpUpload(Request $request)
     {
+        // dd($request);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $file_name = $image->getClientOriginalName();
@@ -280,6 +281,7 @@ class AuthController extends Controller
             // Store the image in the specified folder
             $image->storeAs('profile/tmp/' . $folder, $file_name);
             Temporaryfile::create([
+                // 'user_id' => Auth::user();
                 'folder' => $folder,
                 "file" => $file_name,
             ]);
@@ -308,9 +310,6 @@ class AuthController extends Controller
 
     public function loginPost(Request $request)
     {
-    
-
-
         $credentials = [
             'email' => $request->email,
             'password' => $request->password,

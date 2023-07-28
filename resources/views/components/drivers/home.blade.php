@@ -23,8 +23,8 @@
                 <span class="float-left"><img src="{{ asset('assets/img/dash/dash-1.png') }}" alt=""
                         width="80"></span>
                 <div class="dash-widget-info text-right">
-                    <span><b>Vehicle Registration</b></span>
-                    <span id="status"><b class="text-warning">Pending Registration</b></span><br>
+                    <span><b>Vehicle Registration</b></span><br>
+                    <span id="status"></span><br>
                     <a class="" href="{{ route('register.vehicle') }}">Registration</a> |
                     <a class="" id="vehicle-status" href="#">Status</a>
                 </div>

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Van;
 use App\Models\User;
 use App\Mail\OTPMail;
 use App\Models\Document;
 use App\Models\Verifytoken;
 use Illuminate\Http\Request;
+use App\Models\Temporaryfile;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,7 +17,7 @@ class RequestController extends Controller
     public function fetchAccountApproval(){
         // this is for driver only
         $accounts = User::where('is_activated', 1)->where('role', 2)->orderBy('created_at', 'desc')->get();
-        if($accounts){
+        if($accounts->isEmpty()){
             $accounts = User::where('is_activated', 0)->where('role', 2)->orderBy('created_at', 'desc')->get();
         }
         return response()->json($accounts);
@@ -46,8 +48,9 @@ class RequestController extends Controller
     }
 
     public function getById(Request $request, $id){
-        $documents = User::find($id)->documents()->with('user')->orderBy('name')->get();
-            
+        // $documents = User::find($id)->documents()->with('user')->orderBy('name')->get();
+            // Find the user with the specified ID and eager load both documents and vans along with the user details
+            $documents = User::with(['documents', 'vans'])->find($id);
            return response()->json($documents);
 
     }
@@ -62,6 +65,9 @@ class RequestController extends Controller
 
         // Find the user with the given ID
         $user = User::find($request->id);
+        // Alternatively, you can directly use the user relationship to get the Van record
+        // If you want to find the Van record using the user_id foreign key
+        $van = Van::where('user_id', $user->id)->first();   
         // dd($user);
         // Check if the user exists
         if (!$user) {
@@ -84,7 +90,20 @@ class RequestController extends Controller
         $user->idno = $request->idNumber;
         $user->orcr = $request->orcr;
         $user->platenumber = $request->plateNumber;
+       
+
+        $van->idnumber = $request->idNumber;
+        $van->orcr = $request->orcr;
+        $van->platenumber = $request->plateNumber;
+        $van->companyname = $request->companyName;
+        $van->ac = $request->ac;
+        $van->model = $request->model;
+        $van->bag = $request->bags;
+        $van->seat = $request->seats;
+        $van->fuel = $request->fuel;
+
         $user->save();
+        $van->save();
         // Update the user data with the validated input
         // $user->update($validatedData);
 
@@ -92,5 +111,36 @@ class RequestController extends Controller
         // Optionally, you can return the updated user data in the response
         return response()->json(['message' => 'User updated successfully', 'user' => $user], 200);
 
+    }
+
+    // upload vehicle images
+    // uploads tmp
+    public function tmpUploadVehicleProfile(Request $request)
+    {
+        
+        if ($request->hasFile('imageVehicleProfile')) {
+            $image = $request->file('imageVehicleProfile');
+            $file_name = $image->getClientOriginalName();
+            // Generate a unique folder name for storing the image
+            $folder = uniqid('vehicle', true);
+
+            // Store the image in the specified folder
+            $image->storeAs('vehicle/tmp/' . $folder, $file_name);
+            Temporaryfile::create([
+                'folder' => $folder,
+                "file" => $file_name,
+            ]);
+            return $folder;
+        }
+    }
+    public function tmpDeleteVehicleProfile()
+    {
+        $tmp_file = Temporaryfile::where('folder', request()->getContent())->first();
+        if ($tmp_file) {
+            // delete the folder
+            Storage::deleteDirectory('vehicle/tmp/' . $tmp_file->folder);
+            $tmp_file->delete();
+            return response('');
+        }
     }
 }

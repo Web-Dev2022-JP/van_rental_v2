@@ -20,3 +20,11 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   
 }
+.card-body {
+  max-height: 250px; /* Adjust the height as needed */
+}
+
+.card-body img {
+  object-fit: contain; /* or 'contain' depending on your preference */
+  max-height: 100%; /* Make the image take the full height of the card body */
+}

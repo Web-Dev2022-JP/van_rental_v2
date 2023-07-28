@@ -259,10 +259,10 @@
                             <div class="col-md-12 mx-auto">
                                 <div class="mb-3">
                                     <label for="image" class="form-label text-success text-center h6">Upload your
-                                        Profile and Driver's Licensed</label>
+                                        Profile</label>
                                     <input type="file" name="image" class="form-control" id="image"
-                                      multiple credits="false" required>
-                                      <label for="image" class="form-label text-secondary text-center"><b>Note: Guidelines to upload a documents,</b><br/><span class="text-danger"> <b>Profile First then License to avoid rejected documents</b></span></label>
+                                       credits="false" required>
+                                      {{-- <label for="image" class="form-label text-secondary text-center"><b>Note: Guidelines to upload a documents,</b><br/><span class="text-danger"> <b>Profile First then License to avoid rejected documents</b></span></label> --}}
                                 </div>
                             </div>
                         </div>

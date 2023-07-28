@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('temporaryfiles', function (Blueprint $table) {
             $table->id();
+            // $table->foreignId('user_id')->constrained();
             $table->string('folder');
             $table->string('file');
 

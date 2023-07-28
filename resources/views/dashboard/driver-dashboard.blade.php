@@ -160,6 +160,7 @@
   <script src="assets/js/html5shiv.min.js"></script>
   <script src="assets/js/respond.min.js"></script>
  <![endif]-->
+
 </head>
 
 <body>
@@ -266,8 +267,9 @@
                     </li>
                     <li class="nav-item dropdown has-arrow">
                         <a href="#" class=" nav-link user-link" data-toggle="dropdown">
-                            <span class="user-img"><img class="rounded-circle driver-profile"
-                                    src="assets/img/user-06.jpg" width="30" alt="Admin">
+                            <span class="user-img">
+                                <img class="rounded-circle driver-profile"
+                                    src="assets/img/user-06.jpg" width="30" alt="Driver">
                                 <span class="status online"></span></span>
                             <span>{{ auth()->user()->firstname }}</span>
                         </a>
@@ -414,43 +416,17 @@
         <div class="page-wrapper">
             
             @include('components.drivers.home')
+            {{-- @include('components.drivers.viewModal') --}}
             @include('components.drivers.vehicle-registration')
            
 
             @yield('driver-home')
+            {{-- @yield('view.modal') --}}
             @yield('vehicle-registration')
         </div>
 
 
-        {{-- view modal --}}
-        <div class='modal fade' id='viewModal' tabindex='-1' aria-labelledby='exampleModalLabel'
-            aria-hidden='true'>
-            <div class='modal-dialog modal-xl'>
-                <div class='modal-content'>
-                    <div class='modal-header'>
-                        <h5 class='modal-title' id='exampleModalLabel'>View Modal</h5>
-                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span>
-                        </button>
-                    </div>
-                    <div class='modal-body'>
-                        {{-- <p>{{ url('storage/') }}</p> --}}
-                        {{-- <img src="{{ storage_path('/app/public/profile/profile648d6abf9ab263.53359234/Qrcode_wikipedia_fr_v2clean.png') }}" alt="no image"> --}}
-
-                        <form action="#" method="POST" enctype="multipart/form-data" class="row g-3">
-                            @csrf
-                            <div class="col-md-12 row mx-auto" id="view-con">   
-                            </div>
-                        </form>
-                        
-                    </div>
-                    <div class='modal-footer'>
-                        <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
-                        <button type='button' class='btn btn-primary' id='update'>Update</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
     </div>
 

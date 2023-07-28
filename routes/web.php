@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-    Route::get('/driver-dashboard', [HomeController::class, 'driver']);
+    Route::get('/driver-dashboard', [HomeController::class, 'driver'])->name('driver.home');
     Route::get('/admin-dashboard', [HomeController::class, 'admin']);
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -63,8 +63,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/register-edit',[RequestController::class, 'editRegistration'])->name('register.edit');
 
     // temp uploads
-    Route::post('/tmp-UploadVehicle',[HomeController::class, 'tmpUploadVehicle']);
-    Route::delete('/tmp-deleteVehicle',[HomeController::class, 'tmpDeleteVehicle']);
+    Route::post('/tmp-UploadLicensed',[HomeController::class, 'tmpUploadLicensed']);
+    Route::delete('/tmp-deleteLicensed',[HomeController::class, 'tmpDeleteLicensed']);
+
+    Route::post('/tmp-UploadVehicleProfile',[RequestController::class, 'tmpUploadVehicleProfile']);
+    Route::delete('/tmp-deleteVehicleProfile',[RequestController::class, 'tmpDeleteVehicleProfile']);
 
     // admin request
     Route::get('/accounts/approval',[RequestController::class,'fetchAccountApproval']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Van;
 use App\Models\User;
 use App\Mail\OTPMail;
 use App\Models\Document;
@@ -41,6 +42,14 @@ class HomeController extends Controller
             'idNumber' => ['required', 'integer'],
             'orcr' => ['required', 'integer'],
             'plateNumber' => ['required', 'string'],
+            'fullname' => ['required', 'string'],
+            'companyName' => ['required', 'string'],
+            'address' => ['required', 'string'],
+            'model' => ['required', 'string'],
+            'bags' => ['required', 'string'],
+            'seats' => ['required', 'string'],
+            'ac' => ['required', 'string'],
+            'fuel' => ['required', 'string'],
         ]);
 
         // call temporaryfile model
@@ -49,6 +58,7 @@ class HomeController extends Controller
             foreach ($temporaryfiles as $tempfile) {
                 // delete the folder
                 Storage::deleteDirectory('vehicle/tmp/' . $tempfile->folder);
+                Storage::deleteDirectory('liscensed/tmp/' . $tempfile->folder);
                 $tempfile->delete();
             }
             return redirect()->back()->withErrors($validator)->withInput();
@@ -64,11 +74,27 @@ class HomeController extends Controller
 
             ]);
 
+            Van::create([
+                'user_id' => $user->id,
+                'idnumber' => $request->idNumber,
+                'orcr' => $request->orcr,
+                'platenumber' => $request->plateNumber,
+                'fullname'=>$request->fullname,
+                'companyname'=>$request->companyName,
+                'address'=>$request->address,
+                'model'=>$request->model,
+                'bag'=>$request->bags,
+                'seat'=>$request->seats,
+                'ac'=>$request->ac,
+                'fuel'=>$request->fuel,
+            ]);
+
             // call temporaryfile model
         $temporaryfiles = Temporaryfile::all();
         foreach ($temporaryfiles as $tempfile) {
             // copy the tmp                                             sstore to  new folder
             Storage::copy('vehicle/tmp/' . $tempfile->folder . '/' . $tempfile->file, 'vehicle/' . $tempfile->folder . '/' . $tempfile->file);
+            Storage::copy('liscensed/tmp/' . $tempfile->folder . '/' . $tempfile->file, 'liscensed/' . $tempfile->folder . '/' . $tempfile->file);
             Document::create([
                 'user_id' => $user->id,
                 'name' => $tempfile->file,
@@ -76,6 +102,7 @@ class HomeController extends Controller
             ]);
             // delete the folder
             Storage::deleteDirectory('vehicle/tmp/' . $tempfile->folder);
+            Storage::deleteDirectory('liscensed/tmp/' . $tempfile->folder);
             $tempfile->delete();
         }
 
@@ -96,16 +123,17 @@ class HomeController extends Controller
     }
 
      // uploads tmp
-     public function tmpUploadVehicle(Request $request)
+     public function tmpUploadLicensed(Request $request)
      {
-         if ($request->hasFile('image')) {
-             $image = $request->file('image');
+        // dd($request);
+         if ($request->hasFile('imageLicensed')) {
+             $image = $request->file('imageLicensed');
              $file_name = $image->getClientOriginalName();
              // Generate a unique folder name for storing the image
-             $folder = uniqid('vehicle', true);
+             $folder = uniqid('liscensed', true);
  
              // Store the image in the specified folder
-             $image->storeAs('vehicle/tmp/' . $folder, $file_name);
+             $image->storeAs('liscensed/tmp/' . $folder, $file_name);
              Temporaryfile::create([
                  'folder' => $folder,
                  "file" => $file_name,
@@ -114,12 +142,12 @@ class HomeController extends Controller
          }
      }
      // delete
-    public function tmpDeleteVehicle()
+    public function tmpDeleteLicensed()
     {
         $tmp_file = Temporaryfile::where('folder', request()->getContent())->first();
         if ($tmp_file) {
             // delete the folder
-            Storage::deleteDirectory('vehicle/tmp/' . $tmp_file->folder);
+            Storage::deleteDirectory('liscensed/tmp/' . $tmp_file->folder);
             $tmp_file->delete();
             return response('');
         }

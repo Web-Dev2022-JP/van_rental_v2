@@ -67,4 +67,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Document::class);
     }
+
+    // has many vans relationship
+    public function vans()
+    {
+        return $this->hasMany(Van::class);
+    }
 }

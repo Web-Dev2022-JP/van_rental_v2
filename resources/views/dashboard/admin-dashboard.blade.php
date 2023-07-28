@@ -25,6 +25,19 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/style-v2.css') }}">
 
+    <style>
+        .card-body {
+            max-height: 250px;
+            /* Adjust the height as needed */
+        }
+
+        .card-body img {
+            object-fit: contain;
+            /* or 'contain' depending on your preference */
+            max-height: 100%;
+            /* Make the image take the full height of the card body */
+        }
+    </style>
     {{-- toastr --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!--[if lt IE 9]>
@@ -59,15 +72,18 @@
                     </li>
                     <li>
                         <a href="index.html" class="mobile-logo d-md-block d-lg-none d-block"><img
-                                src="{{ asset('assets/img/logo1.png') }}" alt="" width="30" height="30"></a>
+                                src="{{ asset('assets/img/logo1.png') }}" alt="" width="30"
+                                height="30"></a>
                     </li>
                 </ul>
 
                 <ul class="nav user-menu float-right">
                     <li class="nav-item dropdown d-none d-sm-block">
                         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                            <img src="{{ asset('assets/img/sidebar/icon-22.png') }}" alt=""> 
-                            <span class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger" id="notif-counts">
+                            <img src="{{ asset('assets/img/sidebar/icon-22.png') }}" alt="">
+                            <span
+                                class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger"
+                                id="notif-counts">
                                 9
                             </span>
                         </a>
@@ -167,7 +183,7 @@
                             <a class="dropdown-item" href="profile.html">My Profile</a>
                             <a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
                             <a class="dropdown-item" href="settings.html">Settings</a>
-                            <a class="dropdown-item" >
+                            <a class="dropdown-item">
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
@@ -201,7 +217,8 @@
                 <div id="sidebar-menu" class="sidebar-menu">
                     <div class="header-left">
                         <a href="index.html" class="logo">
-                            <img src="{{ asset('assets/img/logo1.png') }}" width="40" height="40" alt="">
+                            <img src="{{ asset('assets/img/logo1.png') }}" width="40" height="40"
+                                alt="">
                             <span class="text-uppercase">Van Rental</span>
                         </a>
                     </div>
@@ -212,7 +229,8 @@
                                     alt="icon"><span>Dashboard</span></a>
                         </li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-2.png') }}" alt="icon"> <span>
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-2.png') }}"
+                                    alt="icon"> <span>
                                     Drivers</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="all-teachers.html"><span>All Drivers</span></a></li>
@@ -222,7 +240,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-3.png') }}" alt="icon"> <span>
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-3.png') }}"
+                                    alt="icon"> <span>
                                     Clients</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="all-students.html"><span>All Clients</span></a></li>
@@ -242,7 +261,8 @@
                             </ul>
                         </li> --}}
                         <li class="submenu">
-                            <a href="javascript:void(0);"><img src="{{ asset('assets/img/sidebar/icon-5.png') }}" alt="icon">
+                            <a href="javascript:void(0);"><img src="{{ asset('assets/img/sidebar/icon-5.png') }}"
+                                    alt="icon">
                                 <span>Apps</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li class="submenu">
@@ -274,7 +294,8 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="calendar.html"><img src="{{ asset('assets/img/sidebar/icon-6.png') }}" alt="icon">
+                            <a href="calendar.html"><img src="{{ asset('assets/img/sidebar/icon-6.png') }}"
+                                    alt="icon">
                                 <span>Calendar</span></a>
                         </li>
                         {{-- <li>
@@ -282,15 +303,18 @@
                                 <span>Exam list</span></a>
                         </li> --}}
                         <li>
-                            <a href="holidays.html"><img src="{{ asset('assets/img/sidebar/icon-8.png') }}" alt="icon">
+                            <a href="holidays.html"><img src="{{ asset('assets/img/sidebar/icon-8.png') }}"
+                                    alt="icon">
                                 <span>Holidays</span></a>
                         </li>
                         <li>
-                            <a href="calendar.html"><img src="{{ asset('assets/img/sidebar/icon-9.png') }}" alt="icon"><span>
+                            <a href="calendar.html"><img src="{{ asset('assets/img/sidebar/icon-9.png') }}"
+                                    alt="icon"><span>
                                     Events</span></a>
                         </li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-10.png') }}" alt="icon"><span>
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-10.png') }}"
+                                    alt="icon"><span>
                                     Accounts </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="invoices.html"><span>Invoices</span></a></li>
@@ -301,7 +325,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-11.png') }}" alt="icon"><span> Payroll
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-11.png') }}"
+                                    alt="icon"><span> Payroll
                                 </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="salary.html"><span> Employee Salary </span></a></li>
@@ -309,7 +334,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-12.png') }}" alt="icon"> <span>
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-12.png') }}"
+                                    alt="icon"> <span>
                                     Blog</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="blog.html"><span>Blog</span></a></li>
@@ -319,8 +345,9 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="javascript:void(0);" class="noti-dot"><img src="{{ asset('assets/img/sidebar/icon-13.png') }}"
-                                    alt="icon"> <span>Management </span> <span class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);" class="noti-dot"><img
+                                    src="{{ asset('assets/img/sidebar/icon-13.png') }}" alt="icon">
+                                <span>Management </span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li class="submenu">
                                     <a href="#"><span> Employees</span> <span class="menu-arrow"></span></a>
@@ -350,12 +377,14 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="settings.html"><img src="{{ asset('assets/img/sidebar/icon-14.png') }}" alt="icon">
+                            <a href="settings.html"><img src="{{ asset('assets/img/sidebar/icon-14.png') }}"
+                                    alt="icon">
                                 <span>Settings</span></a>
                         </li>
                         <li class="menu-title">UI Elements</li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-15.png') }}" alt="icon"> <span>
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-15.png') }}"
+                                    alt="icon"> <span>
                                     Components</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="uikit.html"><span>UI Kit</span></a></li>
@@ -364,7 +393,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-26.png') }}" alt="icon"> <span>
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-26.png') }}"
+                                    alt="icon"> <span>
                                     Elements</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="sweetalerts.html">Sweet Alerts</a></li>
@@ -389,7 +419,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-27.png') }}" alt="icon"> <span>
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-27.png') }}"
+                                    alt="icon"> <span>
                                     Chart</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="chart-apex.html">Apex Charts</a></li>
@@ -401,7 +432,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-28.png') }}" alt="icon">
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-28.png') }}"
+                                    alt="icon">
                                 <span>Icons</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="icon-fontawesome.html">Fontawesome Icons</a></li>
@@ -417,7 +449,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-17.png') }}" alt="icon"> <span>
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-17.png') }}"
+                                    alt="icon"> <span>
                                     Forms</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="basic-inputs.html"><span>Basic Input</span></a></li>
@@ -431,7 +464,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-18.png') }}" alt="icon"> <span>
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-18.png') }}"
+                                    alt="icon"> <span>
                                     Tables</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="tables-basic.html"><span>Basic Tables</span></a></li>
@@ -440,7 +474,8 @@
                         </li>
                         <li class="menu-title"><span>Extras</span></li>
                         <li class="submenu">
-                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-19.png') }}" alt="icon">
+                            <a href="#"><img src="{{ asset('assets/img/sidebar/icon-19.png') }}"
+                                    alt="icon">
                                 <span>Pages</span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 <li><a href="login.html"> <span>Login </span></a></li>
@@ -456,7 +491,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="javascript:void(0);"><img src="{{ asset('assets/img/sidebar/icon-20.png') }}" alt="icon">
+                            <a href="javascript:void(0);"><img src="{{ asset('assets/img/sidebar/icon-20.png') }}"
+                                    alt="icon">
                                 <span>Multi Level</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li class="submenu">
@@ -519,9 +555,9 @@
                                             <button class="btn btn-outline-primary mr-2"><img
                                                     src="{{ asset('assets/img/excel.png') }}" alt=""><span
                                                     class="ml-2">Excel</span></button>
-                                            <button class="btn btn-outline-danger mr-2"><img src="{{ asset('assets/img/pdf.png') }}"
-                                                    alt="" height="18"><span
-                                                    class="ml-2">PDF</span></button>
+                                            <button class="btn btn-outline-danger mr-2"><img
+                                                    src="{{ asset('assets/img/pdf.png') }}" alt=""
+                                                    height="18"><span class="ml-2">PDF</span></button>
                                             <button class="btn btn-light" type="button" data-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false"><i
                                                     class="fas fa-ellipsis-h"></i></button>
@@ -547,14 +583,14 @@
                                                 <th>Contact</th>
                                                 <th>Address</th>
                                                 <th>Status</th>
-                                                
-                                                
-                                                
+
+
+
                                                 <th class="text-right">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id="driver-table">
-                                            
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -566,8 +602,8 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                         <div class="dash-widget dash-widget5">
-                            <span class="float-left"><img src="{{ asset('assets/img/dash/dash-1.png') }}" alt=""
-                                    width="80"></span>
+                            <span class="float-left"><img src="{{ asset('assets/img/dash/dash-1.png') }}"
+                                    alt="" width="80"></span>
                             <div class="dash-widget-info text-right">
                                 <span>Drivers</span>
                                 <h3>60,000</h3>
@@ -580,14 +616,14 @@
                                 <span>Clients</span>
                                 <h3>12,000</h3>
                             </div>
-                            <span class="float-right"><img src="{{ asset('assets/img/dash/dash-2.png') }}" width="80"
-                                    alt=""></span>
+                            <span class="float-right"><img src="{{ asset('assets/img/dash/dash-2.png') }}"
+                                    width="80" alt=""></span>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                         <div class="dash-widget dash-widget5">
-                            <span class="float-left"><img src="{{ asset('assets/img/dash/dash-3.png') }}" alt=""
-                                    width="80"></span>
+                            <span class="float-left"><img src="{{ asset('assets/img/dash/dash-3.png') }}"
+                                    alt="" width="80"></span>
                             <div class="dash-widget-info text-right">
                                 <span>Reports</span>
                                 <h3>20,000</h3>
@@ -600,8 +636,8 @@
                                 <span>Requests</span>
                                 <h3 id="request-content">20,000</h3>
                             </div>
-                            <span class="float-right"><img src="{{ asset('assets/img/dash/dash-4.png') }}" alt=""
-                                    width="80"></span>
+                            <span class="float-right"><img src="{{ asset('assets/img/dash/dash-4.png') }}"
+                                    alt="" width="80"></span>
                         </div>
                     </div>
                 </div>
@@ -732,7 +768,7 @@
                     </div>
                 </div> --}}
 
-               
+
                 {{-- reports --}}
                 {{-- <div class="row">
                     <div class="col-12">
@@ -1190,56 +1226,14 @@
                     </div>
                 </div>
             </div>
+
+            @include('components.admin.admin-view')
+
+            @yield('view-modal')
         </div>
 
 
-        {{-- view modal --}}
-        
-         <div class='modal fade' id='viewModal' tabindex='-1' aria-labelledby='exampleModalLabel'
-         aria-hidden='true'>
-         <div class='modal-dialog modal-lg'>
-             <div class='modal-content'>
-                 <div class='modal-header'>
-                     <h5 class='modal-title text-secondary' id='exampleModalLabel'><b>Van Rental View Section</b></h5>
-                     <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                         <span aria-hidden='true'>&times;</span>
-                     </button>
-                 </div>
-                 <div class='modal-body'>
-                    {{-- <p>{{ url('storage/') }}</p> --}}
-                    {{-- <img src="{{ storage_path('/app/public/profile/profile648d6abf9ab263.53359234/Qrcode_wikipedia_fr_v2clean.png') }}" alt="no image"> --}}
-                   
-                    <form action="#" method="POST" enctype="multipart/form-data"
-                    class="row g-3">
-                    @csrf
-                    <div class="col-md-12 row" id="view-con">
-                    {{-- <img src="{{ asset('storage/profile/tmp/profile64bf2341e7d979.79852656/vanrental.jpg') }}"> --}}
-                        {{-- role --}}
-                        
-                        
-                        {{-- <div class="mb-3">
-                            <div class="d-flex justify-content-center">
-                                <div class="d-grid w-50">
-                                    <button class="btn btn-primary">Register Driver</button>
-                                </div>
-                            </div>
-                        </div> --}}
-                   
-                    
-                    {{-- <div class="mb-3 text-center d-flex justify-content-center">
-                        <div class="d-grid">
-                            <span class="text-secondary">Are you looking for a driver ? <a href="{{ route('register') }}" class="text-primary "><b>Register here</b></a> </span>
-                        </div>
-                    </div> --}}
-                </form>
-                 </div>
-                 <div class='modal-footer'>
-                     <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
-                     <button type='button' class='btn btn-primary' id='update'>Update</button>
-                 </div>
-             </div>
-         </div>
-     </div>
+
 
     </div>
 
