@@ -13,9 +13,9 @@ const driverCredentials = async () => {
             console.log(res);
             registrationVehicle(res);
             if(res.is_activated != 0){
-                $('#status').html('<b class="text-success">Deployed Vehicle</b>')
+                $('#status').html('<b class="bg-success p-1">Deployed Vehicle</b>')
             }else{
-                $('#status').html('<b class="text-warning">Pending Registration</b>')
+                $('#status').html('<b class="bg-warning p-1">Pending Registration</b>')
             }
             profile.attr('src',`${baseUrl}/storage/profile/tmp/${res.documents[0].path}`)
         },

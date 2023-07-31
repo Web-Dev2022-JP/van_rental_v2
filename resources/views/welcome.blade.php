@@ -88,9 +88,11 @@
                         <span>Best Available Rates</span>
                     </div>
                 </div>
+
                 {{-- section van  --}}
                 <div class="container-fluid van-container p-0 mt-5" style="width: 98%;border-radius:10px">
                     <div class="row van-row">
+
                         <div class="col-sm-3 van-col">
                             <div class="card van-card">
                                 <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
@@ -128,6 +130,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-sm-3 van-col">
                             <div class="card van-card">
                                 <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
@@ -165,6 +168,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-sm-3 van-col">
                             <div class="card van-card">
                                 <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
@@ -204,9 +208,9 @@
                         </div>
             
             
-                        <div class="col-sm-4 van-col d-flex justify-content-center" style="margin-top: -5em">
+                        {{-- <div class="col-sm-4 van-col d-flex justify-content-center" style="margin-top: -5em">
                             <button class="btn btn-info text-white"><b>VIEW MORE</b></button>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                   @endsection

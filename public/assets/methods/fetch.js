@@ -188,9 +188,13 @@ $(document).ready(function () {
                             <div class="mb-3"> 
                                 <label for="firstName" class='text-secondary'><b>First Name</b></label>     
                                 <input type="text" name="firstName" class="form-control border-info text-info" id="firstName"
-                                    placeholder="First Name" value="${response.firstname}" required>
+                                    placeholder="First Name" value="${
+                                        response.firstname
+                                    }" required>
                                 <input type="text" name="id" class="form-control border-info text-info"
-                                    placeholder="ID" value="${response.id}" hidden>
+                                    placeholder="ID" value="${
+                                        response.id
+                                    }" hidden>
                             </div>
                         </div>
                 
@@ -198,7 +202,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                                 <label for="lastName" class='text-secondary'><b>Last Name</b></label>
                                 <input type="text" name="lastName" class="form-control border-info text-info" id="lastName"
-                                    placeholder="Last Name" value="${response.lastname}" required>
+                                    placeholder="Last Name" value="${
+                                        response.lastname
+                                    }" required>
                             </div>
                         </div>
                 
@@ -206,7 +212,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Middle Name</b></label>
                                 <input type="text" name="middleName" class="form-control border-info text-info" id="middleName"
-                                    placeholder="Middle Name" value="${response.middlename}">
+                                    placeholder="Middle Name" value="${
+                                        response.middlename
+                                    }">
                             </div>
                         </div>
 
@@ -215,7 +223,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                                 <label for="lastName" class='text-secondary'><b>Gender</b></label>
                                 <input type="text" name="gender" class="form-control border-info text-info" id="gender"
-                                    placeholder="Gender" value="${response.gender}" required>
+                                    placeholder="Gender" value="${
+                                        response.gender
+                                    }" required>
                             </div>
                         </div>
 
@@ -224,7 +234,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Age</b></label>
                                 <input type="number" name="age" class="form-control border-info text-info" id="age"
-                                    placeholder="Age" value="${response.age}" required>
+                                    placeholder="Age" value="${
+                                        response.age
+                                    }" required>
                             </div>
                         </div>
 
@@ -233,7 +245,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Birthdate</b></label>
                                 <input type="text" name="birthplace" class="form-control border-info text-info" id="birthplace"
-                                    placeholder="Birthplace" value="${response.birthdate}" required>
+                                    placeholder="Birthplace" value="${
+                                        response.birthdate
+                                    }" required>
                             </div>
                         </div>
 
@@ -242,7 +256,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Nationality</b></label>
                                 <input type="text" name="nationality" class="form-control border-info text-info" id="nationality"
-                                    placeholder="Nationality" value="${response.nationality}" required>
+                                    placeholder="Nationality" value="${
+                                        response.nationality
+                                    }" required>
                             </div>
                         </div>
 
@@ -252,7 +268,9 @@ $(document).ready(function () {
                             <label for="lastName" class='text-secondary'><b>Contact</b></label>
                                 <input type="tel" name="contact" class="form-control border-info text-info" id="contact"
                                     placeholder="Contact: +63" required pattern="[0-9]{10}"
-                                    title="Please enter a valid 10-digit mobile number" value="${response.contact}">
+                                    title="Please enter a valid 10-digit mobile number" value="${
+                                        response.contact
+                                    }">
                                 <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
                             </div>
                         </div>
@@ -262,7 +280,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Email</b></label>
                                 <input type="email" name="email" class="form-control border-info text-info" id="email"
-                                    placeholder="Email" value="${response.email}" required>
+                                    placeholder="Email" value="${
+                                        response.email
+                                    }" required>
                             </div>
                         </div>
 
@@ -271,7 +291,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Birthdate</b></label>
                                 <input type="date" name="birthdate" class="form-control border-info text-info" id="birthdate"
-                                    placeholder="Birthdate" value="${response.birthdate}" required>
+                                    placeholder="Birthdate" value="${
+                                        response.birthdate
+                                    }" required>
                             </div>
                         </div>
 
@@ -280,7 +302,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Municipality</b></label>
                                 <input type="text" name="municipality" class="form-control border-info text-info" id="municipality"
-                                    placeholder="Municipality" value="${response.municipality}" required>
+                                    placeholder="Municipality" value="${
+                                        response.municipality
+                                    }" required>
                             </div>
                         </div>
 
@@ -289,7 +313,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Zip Code</b></label>
                                 <input type="number" name="zipcode" class="form-control border-info text-info" id="zipcode"
-                                    placeholder="Zip Code" value="${response.zipcode}" required>
+                                    placeholder="Zip Code" value="${
+                                        response.zipcode
+                                    }" required>
                             </div>
                         </div>
 
@@ -298,7 +324,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Barangay</b></label>
                                 <input type="text" name="barangay" class="form-control border-info text-info" id="barangay"
-                                    placeholder="Barangay" value="${response.barangay}" required>
+                                    placeholder="Barangay" value="${
+                                        response.barangay
+                                    }" required>
                             </div>
                         </div>
 
@@ -307,7 +335,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Street</b></label>
                                 <input type="text" name="street" class="form-control border-info text-info" id="street"
-                                    placeholder="Street" value="${response.street}" required>
+                                    placeholder="Street" value="${
+                                        response.street
+                                    }" required>
                             </div> 
                         </div>
                     </div>
@@ -323,7 +353,11 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="companyName" class='text-secondary'><b>Company Name</b></label>
                                 <input type="string" name="companyName" class="form-control border-info text-info" id="companyName"
-                                    placeholder="ID NO." value="${response.vans[0].companyname}" required>
+                                    placeholder="ID NO." value="${
+                                        response.vans[0]
+                                            ? response.vans[0].companyname
+                                            : "not available"
+                                    }" required>
                             </div>
                         </div>
 
@@ -331,7 +365,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Id No.</b></label>
                                 <input type="number" name="idNumber" class="form-control border-info text-info" id="idNumber"
-                                    placeholder="ID NO." value="${response.idno}" required>
+                                    placeholder="ID NO." value="${
+                                        response.idno ? response.idno : 0
+                                    }" required>
                             </div>
                         </div>
 
@@ -340,7 +376,9 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>ORCR</b></label>
                                 <input type="number" name="orcr" class="form-control border-info text-info" id="orcr"
-                                    placeholder="ORCR" value="${response.orcr}" required>
+                                    placeholder="ORCR" value="${
+                                        response.orcr ? response.orcr : 0
+                                    }" required>
                             </div>
                         </div>
  
@@ -348,7 +386,11 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="lastName" class='text-secondary'><b>Plate Number</b></label>
                                 <input type="text" name="plateNumber" class="form-control border-info text-info" id="plateNumber"
-                                    placeholder="Vehicle Plate Number" value="${response.platenumber}" required>
+                                    placeholder="Vehicle Plate Number" value="${
+                                        response.platenumber
+                                            ? response.platenumber
+                                            : "not available"
+                                    }" required>
                             </div>
                         </div>
 
@@ -356,7 +398,11 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="Ac" class='text-secondary'><b>Aircon Type</b></label>
                                 <input type="text" name="ac" class="form-control border-info text-info" id="ac"
-                                    placeholder="Aircon Type" value="${response.vans[0].ac}" required>
+                                    placeholder="Aircon Type" value="${
+                                        response.vans[0]
+                                            ? response.vans[0].ac
+                                            : "not available"
+                                    }" required>
                             </div>
                         </div>
 
@@ -364,7 +410,11 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="bags" class='text-secondary'><b>Bags</b></label>
                                 <input type="number" name="bags" class="form-control border-info text-info" id="bags"
-                                    placeholder="Bags" value="${response.vans[0].bag}" required>
+                                    placeholder="Bags" value="${
+                                        response.vans[0]
+                                            ? response.vans[0].bag
+                                            : 0
+                                    }" required>
                             </div>
                         </div>
 
@@ -372,7 +422,11 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="seats" class='text-secondary'><b>Seats</b></label>
                                 <input type="number" name="seats" class="form-control border-info text-info" id="seats"
-                                    placeholder="Seats" value="${response.vans[0].seat}" required>
+                                    placeholder="Seats" value="${
+                                        response.vans[0]
+                                            ? response.vans[0].seat
+                                            : 0
+                                    }" required>
                             </div>
                         </div>
 
@@ -380,7 +434,11 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="model" class='text-secondary'><b>Model</b></label>
                                 <input type="text" name="model" class="form-control border-info text-info" id="model"
-                                    placeholder="Model" value="${response.vans[0].model}" required>
+                                    placeholder="Model" value="${
+                                        response.vans[0]
+                                            ? response.vans[0].model
+                                            : "not available"
+                                    }" required>
                             </div>
                         </div>
 
@@ -388,7 +446,11 @@ $(document).ready(function () {
                             <div class="mb-3">
                             <label for="fuel" class='text-secondary'><b>Fuel</b></label>
                                 <input type="text" name="fuel" class="form-control border-info text-info" id="fuel"
-                                    placeholder="Seats" value="${response.vans[0].fuel}" required>
+                                    placeholder="Seats" value="${
+                                        response.vans[0]
+                                            ? response.vans[0].fuel
+                                            : "not available"
+                                    }" required>
                             </div>
                         </div>
                     </div>
@@ -442,7 +504,7 @@ $(document).ready(function () {
                             </div>
                             </div>
                         </div>
-                        `
+                        `;
                     // }
                 });
                 $("#documents").append(docs);

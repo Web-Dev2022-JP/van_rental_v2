@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\RequestController;
 
 /*
@@ -97,5 +98,15 @@ Route::group(['middleware' => 'auth'], function () {
 
     // view more info about specific customer
     Route::get('/customer-info', [HomeController::class, 'customerInfo'])->name('customer.info');
+
+
+    // driver allbooked
+    Route::get('/all-booked',[HomeController::class,'getAllBooked'])->name('allBooked.home');
+    // driver home
+    Route::get('/driver-dashboard',[HomeController::class,'driverHome'])->name('driver.home');
+    // driver all Client
+    Route::get('/all-client',[HomeController::class,'getAllClientHome'])->name('allClient.home');
+    // stored user location
+    Route::post('/stored-location',[LocationController::class,'postUserLocation'])->name('driver.location');
 
 });

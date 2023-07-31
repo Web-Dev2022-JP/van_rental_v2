@@ -18,12 +18,12 @@ class HomeController extends Controller
     // client controller
     public function client()
     {
-        return view('dashboard.client-dashboard');
+        return view('dashboard.layouts.client-dashboard');
     }
     // driver controller
     public function driver()
     {
-        return view('dashboard.driver-dashboard');
+        return view('dashboard.layouts.driver-dashboard');
     }
     // admin controller
     public function admin()
@@ -31,10 +31,6 @@ class HomeController extends Controller
         return view('dashboard.admin-dashboard');
     }
 
-    // register vehicle
-    public function registerVehicle(){
-        return view('dashboard.driver.register-vehicle');
-    }
     // register vehicle post
     public function registerVehiclePost(Request $request){
         $validator = Validator::make($request->all(), [
@@ -192,5 +188,21 @@ class HomeController extends Controller
     // add customer complete info page
     public function customerInfo() {
         return view('dashboard.driver.customer-info');
+    }
+    // get all booked
+    public function getAllBooked(){
+        return view('components.drivers.all-booked');
+    }
+    // load the home page
+    public function driverHome(){
+        return view('components.drivers.home');
+    }
+    // load the all client page
+    public function getAllClientHome(){
+        return view('components.drivers.all-client');
+    }
+    // register vehicle
+    public function registerVehicle(){
+        return view('components.drivers.registration-vehicle');
     }
 }

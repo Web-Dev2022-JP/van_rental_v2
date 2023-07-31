@@ -1,8 +1,8 @@
+@extends('dashboard.layouts.driver-dashboard')
+@section('contents')
+{{-- <div class="content container-fluid"> --}}
 
-@section('driver-home')
-<div class="content container-fluid">
-
-    <div class="page-header">
+    {{-- <div class="page-header">
         <div class="row">
             <div class="col-md-6">
                 <h3 class="page-title mb-0">Dashboard <span class="text-secondary">| Welcome {{ auth()->user()->firstname }} {{ auth()->user()->lastname }}.</span></h3>
@@ -15,9 +15,9 @@
                 </ul>
             </div>
         </div>
-    </div>
-    {{-- vehicle status --}}
-    <div class="row">
+    </div> --}}
+   
+    {{-- <div class="row">
         <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
             <div class="dash-widget dash-widget5">
                 <span class="float-left"><img src="{{ asset('assets/img/dash/dash-1.png') }}" alt=""
@@ -35,7 +35,7 @@
                 <div class="dash-widget-info text-left d-inline-block">
                     <span><b>Maintenance</b></span><br>
                     <span id="status"><b class="text-warning">Maintenance Status</b></span><br>
-                    {{-- <a class="" href="">Registration</a> | --}}
+                    
                     <a class="" id="vehicle-status" href="#">Status</a>
                 </div>
                 <span class="float-right"><img src="{{ asset('assets/img/dash/dash-2.png') }}" width="80"
@@ -62,9 +62,9 @@
                         width="80"></span>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- all drivers --}}
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
@@ -118,9 +118,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- driver statistic --}}
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
             <div class="dash-widget dash-widget5">
                 <span class="float-left"><img src="{{ asset('assets/img/dash/dash-1.png') }}" alt=""
@@ -161,7 +161,7 @@
                         width="80"></span>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- client statistic --}}
     {{-- <div class="row">
         <div class="col-lg-6 d-flex">
@@ -524,7 +524,7 @@
         </div>
     </div> --}}
     {{-- notification box --}}
-    <div class="notification-box">
+    {{-- <div class="notification-box">
         <div class="msg-sidebar notifications msg-noti">
             <div class="topnav-dropdown-header">
                 <span>Messages</span>
@@ -745,6 +745,189 @@
                 <a href="chat.html">See all messages</a>
             </div>
         </div>
+    </div> --}}
+{{-- </div> --}}
+
+    <!-- main contents -->
+    <div class="head navbar bg-body-tertiary mx-3 mt-3 pngtree-img-file-document-icon-png-image_913759 container-fluid border rounded" style="width: 97.8%;">
+        <h5 class="mx-4 mt-2"><span class="text-success mx-2"><b>|</b></span>Dashboard | <span class="text-secondary h6">Welcome {{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</span> </h5>
+        <div class="d-flex mx-3  mt-2">
+            <span class="h5 me-4">
+                <i class='bx bxs-home'></i>
+            </span>
+            <span class="h6 me-2">
+                <span>Home</span>
+            </span>
+            <span class="h5 me-2">
+                <i class='bx bx-chevrons-right' ></i>
+            </span>
+            <span class="h6">
+                <a href="#">Dashboard</a>
+            </span>
+        </div>
     </div>
-</div>
+    <!-- boxes -->
+    <div class="mx-3 mt-3" style="overflow-x: hidden">
+        <div class="row">
+            
+            <div class="col-sm-3 mb-3 mb-sm-0" id="box">
+                <div class="card p-4" style="max-width: 540px;">
+                  <div class="row g-0">
+                    <div class="col-sm-4 col-4">
+                      <span class="d-flex align-items-center">
+                        <img src="{{ asset('assets/img/dash/dash-1.png') }}" alt="dash-1" width="80">
+                      </span>
+                    </div>
+                    <div class="col-sm-8 col-8">
+                      <div class="d-flex flex-column justify-content-center h-100">
+                        <span class="mx-auto mb-2"><b>Vehicle Registration</b></span>
+                        <span class="mx-auto text-white mb-2" id="status"></span>
+                        <div class="d-flex mx-auto">
+                          <a class="mr-1 me-1" href="{{ route('register.vehicle') }}">Registration</a>
+                          <span class="text-success">|</span>
+                          <a class="ml-1 mx-1" id="vehicle-status" href="#">Status</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3 mb-3 mb-sm-0" id="box">
+                <div class="card p-4" style="max-width: 540px;">
+                  <div class="row g-0">
+                    <div class="col-sm-4 col-4">
+                      <span class="d-flex align-items-center">
+                        <img src="{{ asset('assets/img/dash/dash-2.png') }}" alt="dash-1" width="80">
+                      </span>
+                    </div>
+                    <div class="col-sm-8 col-8">
+                      <div class="d-flex flex-column justify-content-center h-100">
+                        <span class="mx-auto"><b>Vehicle Maintenance</b></span>
+                        <span class="mx-auto text-danger">Not Available</span>
+                        <div class="d-flex mx-auto">
+                          <a class="mr-1 me-1" href="#">Set Status</a>
+                          {{-- <span class="text-success">|</span> --}}
+                          {{-- <a class="ml-1 mx-1" id="vehicle-status" href="#">Status</a> --}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3 mb-3 mb-sm-0" id="box">
+                <div class="card p-4" style="max-width: 540px;">
+                  <div class="row g-0">
+                    <div class="col-sm-4 col-4">
+                      <span class="d-flex align-items-center">
+                        <img src="{{ asset('assets/img/dash/dash-3.png') }}" alt="dash-1" width="80">
+                      </span>
+                    </div>
+                    <div class="col-sm-8 col-8">
+                      <div class="d-flex flex-column justify-content-center h-100">
+                        <span class="mx-auto text-danger"><b>Not Available</b></span>
+                        <span class="mx-auto text-secondary">version 2.0</span>
+                        {{-- <div class="d-flex mx-auto">
+                          <a class="mr-1 me-1" href="{{ route('register.vehicle') }}">Registration</a>
+                          <span class="text-success">|</span>
+                          <a class="ml-1 mx-1" id="vehicle-status" href="#">Status</a>
+                        </div> --}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3 mb-3 mb-sm-0" id="box">
+                <div class="card p-4" style="max-width: 540px;">
+                  <div class="row g-0">
+                    <div class="col-sm-4 col-4">
+                      <span class="d-flex align-items-center">
+                        <img src="{{ asset('assets/img/dash/dash-3.png') }}" alt="dash-1" width="80">
+                      </span>
+                    </div>
+                    <div class="col-sm-8 col-8">
+                      <div class="d-flex flex-column justify-content-center h-100">
+                        <span class="mx-auto text-danger"><b>Not Available</b></span>
+                        <span class="mx-auto text-secondary">version 2.0</span>
+                        {{-- <span class="mx-auto" id="status"></span>
+                        <div class="d-flex mx-auto">
+                          <a class="mr-1 me-1" href="{{ route('register.vehicle') }}">Registration</a>
+                          <span class="text-success">|</span>
+                          <a class="ml-1 mx-1" id="vehicle-status" href="#">Status</a>
+                        </div> --}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+              
+          </div>
+    </div>
+    <!-- table -->
+    <div class='row p-3 mx-auto'>
+        <div class='col-md-12 bg-light p-3 border rounded'>
+            <span class="mx-2">Customer Information Table</span>
+            <div class='table-responsive'>
+                <table class='table table-hover' id='records'>
+                    <thead>
+                        <tr>
+                                <th>ID</th>
+                                <th>Contact No.</th>
+                                <th>Email</th>
+                                <th>Destination</th>
+                                <th>Pick Up</th>
+                                <th>Land Mark</th>
+                                <th>Date of Trip</th>
+                                <th>Action</th>
+                        </tr>
+                    </thead>
+                   
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- boxes -->
+    {{-- <div class="card mx-3 mt-3 p-4" style="overflow-x: hidden">
+        <div class="row">
+            <div class="col-sm-3 mb-3 mb-sm-0">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Special title treatment</h5>
+                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Special title treatment</h5>
+                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Special title treatment</h5>
+                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Special title treatment</h5>
+                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div> --}}
+
 @endsection

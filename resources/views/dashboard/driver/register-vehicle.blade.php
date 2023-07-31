@@ -126,8 +126,8 @@
                                             <label for="image" class="form-label text-center h6">Upload
                                                 your
                                                 Driver's Licensed</label>
-                                            <input type="file" name="imageLicensed" class="form-control" id="vehicle-licensed"
-                                                 credits="false" required>
+                                            <input type="file" name="imageLicensed" class="form-control"
+                                                id="vehicle-licensed" credits="false" required>
                                         </div>
                                     </div>
                                 </div>
@@ -216,9 +216,9 @@
                                             <label for="image" class="form-label text-center h6">Upload
                                                 your
                                                 Vehicle Picture</label>
-                                            <input type="file" name="imageVehicleProfile" class="form-control" id="vehicle-image"
-                                                 credits="false" required>
-                                            
+                                            <input type="file" name="imageVehicleProfile" class="form-control"
+                                                id="vehicle-image" credits="false" required>
+
                                         </div>
                                     </div>
                                 </div>
@@ -235,18 +235,19 @@
                                     <div class="col-md-6 mx-auto text-center">
                                         <div class="mb-3">
                                             <input type="number" name="bags" class="form-control" id="bags"
-                                                 placeholder="No. of Bags" required>
+                                                placeholder="No. of Bags" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mx-auto text-center">
                                         <div class="mb-3">
                                             <input type="number" name="seats" class="form-control" id="seats"
-                                                 placeholder="No. of Seats" required>
+                                                placeholder="No. of Seats" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mx-auto text-center">
                                         <div class="mb-3">
-                                            <select name="ac" class="form-control text-secondary" id="ac" required>
+                                            <select name="ac" class="form-control text-secondary" id="ac"
+                                                required>
                                                 <option value="">Aircon Type</option>
                                                 <option value="Dual">Dual Aircon</option>
                                                 <option value="Single">Single Aircon</option>
@@ -257,7 +258,8 @@
                                     </div>
                                     <div class="col-md-6 mx-auto text-center">
                                         <div class="mb-3">
-                                            <select name="fuel" class="form-control text-secondary" id="fuel" required>
+                                            <select name="fuel" class="form-control text-secondary" id="fuel"
+                                                required>
                                                 <option value="">Fuel Type</option>
                                                 <option value="Gasoline">Gasoline</option>
                                                 <option value="Diesel">Diesel</option>
@@ -271,7 +273,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="col-sm-12">
                     <div class="mb-3">
@@ -307,27 +309,26 @@
         const vehicleImage = document.querySelector('#vehicle-image');
 
         // Create a FilePond instance for Licensed
-const pond1 = FilePond.create(vehicleLicensed, {
-    server: {
-        process: '/tmp-UploadLicensed',
-        revert: '/tmp-deleteLicensed',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        }
-    }
-});
+        const pond1 = FilePond.create(vehicleLicensed, {
+            server: {
+                process: '/tmp-UploadLicensed',
+                revert: '/tmp-deleteLicensed',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }
+        });
 
-// Create a FilePond instance for Vehicle image
-const pond2 = FilePond.create(vehicleImage, {
-    server: {
-        process: '/tmp-UploadVehicleProfile',
-        revert: '/tmp-deleteVehicleProfile',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        }
-    }
-});
-
+        // Create a FilePond instance for Vehicle image
+        const pond2 = FilePond.create(vehicleImage, {
+            server: {
+                process: '/tmp-UploadVehicleProfile',
+                revert: '/tmp-deleteVehicleProfile',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }
+        });
     </script>
 </body>
 
