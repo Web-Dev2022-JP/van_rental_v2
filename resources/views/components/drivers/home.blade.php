@@ -988,13 +988,15 @@
                             data: "dateoftrip"
                         },
                         {
-                            data: "status"
+                            data: "status", render(data,type,row,meta){
+                                return `<p><span class="badge ${row.status === 'pending' ? 'text-bg-warning' : status === 'accepted' ? 'text-bg-success' : 'text-bg-danger'}">${row.status}</span></p>`
+                            }
                         },
                         {
                             data: "user_id",
                             render(data, type, row, meta) {
                                 var a = `
-                            <a href="#" value="${row.id}" id="view" class="">view more ${row.id}</a>
+                            <a href="#" value="${row.id}" id="view" class="">view more</a>
                         `;
                                 return a;
                             }
