@@ -108,7 +108,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-location/{id}',[LocationController::class,'getUserLocation'])->name('driver.location');
     // get user location
     Route::get('/get-Driver-Credentials/{id}',[DriverController::class,'getUserCredentials'])->name('driver.credentials');
-
+    Route::get('/chatroom-driver',[DriverController::class,'chatRoomDriver'])->name('client-dash-chatroom-driver');
     
 
     // client home

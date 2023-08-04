@@ -112,12 +112,12 @@
                             <div class="row">
                                 <div class="col-sm-6" id="success-container">
                                     <div class="mb-3">
-                                        <input type="button" id="success" class="btn btn-success form-control" value="Successful">
+                                        <a href="#" type="button" id="success" class="btn btn-success form-control" >Successful</a>
                                     </div>
                                 </div>
                                 <div class="col-sm-6" id="chat-container">
                                     <div class="mb-3">
-                                        <input type="button" id="chat" class="btn btn-success form-control" value="Chat">
+                                        <a href="{{ route('client-dash-chatroom-driver') }}" type="button" id="chat" class="btn btn-success form-control">Chat</a>
                                     </div>
                                 </div>
                             </div>
