@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.driver-dashboard')
 @section('contents')
-{{-- <div class="content container-fluid"> --}}
+    {{-- <div class="content container-fluid"> --}}
 
     {{-- <div class="page-header">
         <div class="row">
@@ -16,7 +16,7 @@
             </div>
         </div>
     </div> --}}
-   
+
     {{-- <div class="row">
         <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
             <div class="dash-widget dash-widget5">
@@ -289,7 +289,7 @@
         </div>
     </div> --}}
 
-   
+
     {{-- reports --}}
     {{-- <div class="row">
         <div class="col-12">
@@ -746,11 +746,13 @@
             </div>
         </div>
     </div> --}}
-{{-- </div> --}}
+    {{-- </div> --}}
 
     <!-- main contents -->
-    <div class="head navbar bg-body-tertiary mx-3 mt-3 pngtree-img-file-document-icon-png-image_913759 container-fluid border rounded" style="width: 97.8%;">
-        <h5 class="mx-4 mt-2"><span class="text-success mx-2"><b>|</b></span>Dashboard | <span class="text-secondary h6">Welcome {{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</span> </h5>
+    <div class="head navbar bg-body-tertiary mx-3 mt-3 pngtree-img-file-document-icon-png-image_913759 container-fluid border rounded"
+        style="width: 97.8%;">
+        <h5 class="mx-4 mt-2"><span class="text-success mx-2"><b>|</b></span>Dashboard | <span
+                class="text-secondary h6">Welcome {{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</span> </h5>
         <div class="d-flex mx-3  mt-2">
             <span class="h5 me-4">
                 <i class='bx bxs-home'></i>
@@ -759,7 +761,7 @@
                 <span>Home</span>
             </span>
             <span class="h5 me-2">
-                <i class='bx bx-chevrons-right' ></i>
+                <i class='bx bx-chevrons-right'></i>
             </span>
             <span class="h6">
                 <a href="#">Dashboard</a>
@@ -769,126 +771,129 @@
     <!-- boxes -->
     <div class="mx-3 mt-3" style="overflow-x: hidden">
         <div class="row">
-            
+
             <div class="col-sm-3 mb-3 mb-sm-0" id="box">
                 <div class="card p-4" style="max-width: 540px;">
-                  <div class="row g-0">
-                    <div class="col-sm-4 col-4">
-                      <span class="d-flex align-items-center">
-                        <img src="{{ asset('assets/img/dash/dash-1.png') }}" alt="dash-1" width="80">
-                      </span>
-                    </div>
-                    <div class="col-sm-8 col-8">
-                      <div class="d-flex flex-column justify-content-center h-100">
-                        <span class="mx-auto mb-2"><b>Vehicle Registration</b></span>
-                        <span class="mx-auto text-white mb-2" id="status"></span>
-                        <div class="d-flex mx-auto">
-                          <a class="mr-1 me-1" href="{{ route('register.vehicle') }}">Registration</a>
-                          <span class="text-success">|</span>
-                          <a class="ml-1 mx-1" id="vehicle-status" href="#">Status</a>
+                    <div class="row g-0">
+                        <div class="col-sm-4 col-4">
+                            <span class="d-flex align-items-center">
+                                <img src="{{ asset('assets/img/dash/dash-1.png') }}" alt="dash-1" width="80">
+                            </span>
                         </div>
-                      </div>
+                        <div class="col-sm-8 col-8">
+                            <div class="d-flex flex-column justify-content-center h-100">
+                                <span class="mx-auto mb-2"><b>Vehicle Registration</b></span>
+                                <span class="mx-auto text-white mb-2" id="status"></span>
+                                <div class="d-flex mx-auto">
+                                    <a class="mr-1 me-1" href="{{ route('register.vehicle') }}">Registration</a>
+                                    <span class="text-success">|</span>
+                                    <a class="ml-1 mx-1" id="vehicle-status" href="#">Status</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
 
             <div class="col-sm-3 mb-3 mb-sm-0" id="box">
                 <div class="card p-4" style="max-width: 540px;">
-                  <div class="row g-0">
-                    <div class="col-sm-4 col-4">
-                      <span class="d-flex align-items-center">
-                        <img src="{{ asset('assets/img/dash/dash-2.png') }}" alt="dash-1" width="80">
-                      </span>
-                    </div>
-                    <div class="col-sm-8 col-8">
-                      <div class="d-flex flex-column justify-content-center h-100">
-                        <span class="mx-auto"><b>Vehicle Maintenance</b></span>
-                        <span class="mx-auto text-danger">Not Available</span>
-                        <div class="d-flex mx-auto">
-                          <a class="mr-1 me-1" href="#">Set Status</a>
-                          {{-- <span class="text-success">|</span> --}}
-                          {{-- <a class="ml-1 mx-1" id="vehicle-status" href="#">Status</a> --}}
+                    <div class="row g-0">
+                        <div class="col-sm-4 col-4">
+                            <span class="d-flex align-items-center">
+                                <img src="{{ asset('assets/img/dash/dash-2.png') }}" alt="dash-1" width="80">
+                            </span>
                         </div>
-                      </div>
+                        <div class="col-sm-8 col-8">
+                            <div class="d-flex flex-column justify-content-center h-100">
+                                <span class="mx-auto"><b>Vehicle Maintenance</b></span>
+                                <span class="mx-auto text-danger">Not Available</span>
+                                <div class="d-flex mx-auto">
+                                    <a class="mr-1 me-1" href="#">Set Status</a>
+                                    {{-- <span class="text-success">|</span> --}}
+                                    {{-- <a class="ml-1 mx-1" id="vehicle-status" href="#">Status</a> --}}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
 
             <div class="col-sm-3 mb-3 mb-sm-0" id="box">
                 <div class="card p-4" style="max-width: 540px;">
-                  <div class="row g-0">
-                    <div class="col-sm-4 col-4">
-                      <span class="d-flex align-items-center">
-                        <img src="{{ asset('assets/img/dash/dash-3.png') }}" alt="dash-1" width="80">
-                      </span>
-                    </div>
-                    <div class="col-sm-8 col-8">
-                      <div class="d-flex flex-column justify-content-center h-100">
-                        <span class="mx-auto text-danger"><b>Not Available</b></span>
-                        <span class="mx-auto text-secondary">version 2.0</span>
-                        {{-- <div class="d-flex mx-auto">
+                    <div class="row g-0">
+                        <div class="col-sm-4 col-4">
+                            <span class="d-flex align-items-center">
+                                <img src="{{ asset('assets/img/dash/dash-3.png') }}" alt="dash-1" width="80">
+                            </span>
+                        </div>
+                        <div class="col-sm-8 col-8">
+                            <div class="d-flex flex-column justify-content-center h-100">
+                                <span class="mx-auto text-danger"><b>Not Available</b></span>
+                                <span class="mx-auto text-secondary">version 2.0</span>
+                                {{-- <div class="d-flex mx-auto">
                           <a class="mr-1 me-1" href="{{ route('register.vehicle') }}">Registration</a>
                           <span class="text-success">|</span>
                           <a class="ml-1 mx-1" id="vehicle-status" href="#">Status</a>
                         </div> --}}
-                      </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
 
             <div class="col-sm-3 mb-3 mb-sm-0" id="box">
                 <div class="card p-4" style="max-width: 540px;">
-                  <div class="row g-0">
-                    <div class="col-sm-4 col-4">
-                      <span class="d-flex align-items-center">
-                        <img src="{{ asset('assets/img/dash/dash-3.png') }}" alt="dash-1" width="80">
-                      </span>
-                    </div>
-                    <div class="col-sm-8 col-8">
-                      <div class="d-flex flex-column justify-content-center h-100">
-                        <span class="mx-auto text-danger"><b>Not Available</b></span>
-                        <span class="mx-auto text-secondary">version 2.0</span>
-                        {{-- <span class="mx-auto" id="status"></span>
+                    <div class="row g-0">
+                        <div class="col-sm-4 col-4">
+                            <span class="d-flex align-items-center">
+                                <img src="{{ asset('assets/img/dash/dash-3.png') }}" alt="dash-1" width="80">
+                            </span>
+                        </div>
+                        <div class="col-sm-8 col-8">
+                            <div class="d-flex flex-column justify-content-center h-100">
+                                <span class="mx-auto text-danger"><b>Not Available</b></span>
+                                <span class="mx-auto text-secondary">version 2.0</span>
+                                {{-- <span class="mx-auto" id="status"></span>
                         <div class="d-flex mx-auto">
                           <a class="mr-1 me-1" href="{{ route('register.vehicle') }}">Registration</a>
                           <span class="text-success">|</span>
                           <a class="ml-1 mx-1" id="vehicle-status" href="#">Status</a>
                         </div> --}}
-                      </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
-              
-          </div>
+
+        </div>
     </div>
     <!-- table -->
     <div class='row p-3 mx-auto'>
         <div class='col-md-12 bg-light p-3 border rounded'>
             <span class="mx-2">Customer Information Table</span>
+            <input type="number" id="driver-id" value="{{ Auth::user()->id }}" hidden>
             <div class='table-responsive'>
-                <table class='table table-hover' id='records'>
+                <table class='table table-hover' id='booked'>
                     <thead>
                         <tr>
-                                <th>ID</th>
-                                <th>Contact No.</th>
-                                <th>Email</th>
-                                <th>Destination</th>
-                                <th>Pick Up</th>
-                                <th>Land Mark</th>
-                                <th>Date of Trip</th>
-                                <th>Action</th>
+                            <th>ID</th>
+                            <th>Contact No.</th>
+                            <th>Email</th>
+                            <th>Destination</th>
+                            <th>Pick Up</th>
+                            <th>Land Mark</th>
+                            <th>Date of Trip</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
-                   
+
                 </table>
             </div>
         </div>
     </div>
-
+    @include('components.drivers.customer-info')
+    @yield('customer.info')
     <!-- boxes -->
     {{-- <div class="card mx-3 mt-3 p-4" style="overflow-x: hidden">
         <div class="row">
@@ -929,5 +934,135 @@
             </div>
           </div>
     </div> --}}
+@endsection
 
+@section('script')
+    <script>
+        let dataTable = null;
+
+        const getAllBooked = async (response) => {
+            if (!dataTable) {
+                dataTable = $('#booked').DataTable({
+                    "data": response,
+                    "responsive": true,
+                    dom: "<'row'<'col-sm-12 col-md-4'l><'col-sm-12 col-md-4'B><'col-sm-12 col-md-4'f>>" +
+                        "<'row'<'col-sm-12'rt>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        // 'copy', 'spacer', 'csv', 'spacer', 'excel', 'spacer', 'pdf',
+                        // 'spacer', 
+                        {
+                            extend: 'print',
+                            text: 'Print',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4, 5,
+                                6], // Specify the columns to include in the print view
+                            }
+                        },
+                    ],
+                    "columns": [{
+                            data: "id",
+                            render(data, type, row, meta) {
+                                return `<p>BKD-${row.id}</p>`
+                            }
+                        },
+                        {
+                            data: "contact",
+                            render(data, type, row, meta) {
+                                return `<p>+63${row.contact}</p>`
+                            }
+                        },
+                        {
+                            data: "email"
+                        },
+                        {
+                            data: "destination"
+                        },
+                        {
+                            data: "pickup"
+                        },
+                        {
+                            data: "landmark"
+                        },
+                        {
+                            data: "dateoftrip"
+                        },
+                        {
+                            data: "status"
+                        },
+                        {
+                            data: "user_id",
+                            render(data, type, row, meta) {
+                                var a = `
+                            <a href="#" value="${row.id}" id="view" class="">view more ${row.id}</a>
+                        `;
+                                return a;
+                            }
+                        },
+                    ]
+                });
+            } else {
+                dataTable.clear().rows.add(response).draw(); // Update the data and redraw the table
+            }
+        }
+
+        const sendRequest = async () => {
+            const id = $('#driver-id').val();
+            $.ajax({
+                url: `/getAllBooked/${id}`,
+                type: "GET",
+                dataType: "json",
+                success: function(res) {
+                    getAllBooked(res);
+                    clickHandler(res)
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            sendRequest();
+            setInterval(sendRequest, 10000); // Refresh the data every 3 seconds
+        });
+
+        const clickHandler = async (data) => {
+            // console.log(data)
+            $(document).on('click', '#view', function(e) {
+                var view_id = parseInt($(this).attr("value"), 10);
+                // Use the find() method to find the object with the specified ID
+                const foundObject = data.find(obj => obj.id === view_id);
+                // console.log(foundObject)
+                $('#customerInfo').offcanvas('show')
+                $('#firstname').val(foundObject.firstname)
+                $('#middlename').val(foundObject.middlename)
+                $('#lastname').val(foundObject.lastname)
+                $('#contact').val(foundObject.contact)
+                $('#email').val(foundObject.email)
+                $('#destination').val(foundObject.destination)
+                $('#pickup').val(foundObject.pickup)
+                $('#landmark').val(foundObject.landmark)
+                $('#dateoftrip').val(foundObject.dateoftrip)
+                $('#pax').val(foundObject.pax + ' Person')
+                $('#daysandhours').val(foundObject.daysandhours + ' Hour/s')
+                $('#time').val(convertTo12HourFormat(foundObject.pickuptime))
+            })
+        }
+
+        // convert time to AM/PM
+        const convertTo12HourFormat = (time) => {
+            // Parse the time into hours and minutes
+            const [hours, minutes] = time.split(":").map(Number);
+
+            // Determine if it's AM or PM
+            const period = hours >= 12 ? "PM" : "AM";
+
+            // Convert hours to 12-hour format
+            const hours12Format = hours % 12 || 12;
+
+            // Return the time in AM/PM format
+            return `${hours12Format}:${minutes.toString().padStart(2, "0")} ${period}`;
+        }
+    </script>
 @endsection

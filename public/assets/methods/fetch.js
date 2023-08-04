@@ -493,7 +493,7 @@ $(document).ready(function () {
                         extPath = matches[0];
                     }
                     if (extPath === "profile") {
-                        extPath = "profile/tmp"; // Set the correct path for "profile"
+                        extPath = "profile"; // Set the correct path for "profile"
                     }
                     docs += `
                         <div class="col-sm-4 d-flex flex-column">

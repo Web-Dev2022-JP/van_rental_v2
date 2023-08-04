@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Mail\OTPMail;
 use App\Models\Document;
 use App\Models\Verifytoken;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Temporaryfile;
 use Illuminate\Support\Facades\Mail;
@@ -123,10 +124,12 @@ class RequestController extends Controller
             $file_name = $image->getClientOriginalName();
             // Generate a unique folder name for storing the image
             $folder = uniqid('vehicle', true);
-
+             // Generate a unique ID for the image (optional but useful for identification)
+            $uploadedId = Str::uuid();
             // Store the image in the specified folder
             $image->storeAs('vehicle/tmp/' . $folder, $file_name);
             Temporaryfile::create([
+                'uuid' => $uploadedId,
                 'folder' => $folder,
                 "file" => $file_name,
             ]);

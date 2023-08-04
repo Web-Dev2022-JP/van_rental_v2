@@ -8,9 +8,10 @@ use App\Mail\OTPMail;
 
 use App\Models\Document;
 use App\Models\Verifytoken;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\Temporaryfile;
 
+use App\Models\Temporaryfile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -93,13 +94,14 @@ class AuthController extends Controller
         ]);
 
         // call temporaryfile model
-        $temporaryfiles = Temporaryfile::all();
+        $temporaryfiles = Temporaryfile::where('uuid',$request->uuid)->first();
+        // dd($request);
         if ($validator->fails()) {
-            foreach ($temporaryfiles as $tempfile) {
+            // foreach ($temporaryfiles as $tempfile) {
                 // delete the folder
-                Storage::deleteDirectory('documents/tmp/' . $tempfile->folder);
-                $tempfile->delete();
-            }
+                Storage::deleteDirectory('profile/tmp/' . $temporaryfiles->folder);
+                $temporaryfiles->delete();
+            // }
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -215,19 +217,20 @@ class AuthController extends Controller
         ]);
 
         // call temporaryfile model
-        $temporaryfiles = Temporaryfile::all();
-        foreach ($temporaryfiles as $tempfile) {
+        $temporaryfiles = Temporaryfile::where('uuid',$request->uuid)->first();
+        // dd($temporaryfiles->uuid);
+        // foreach ($temporaryfiles as $tempfile) {
             // copy the tmp                                             sstore to  new folder
-            Storage::copy('documents/tmp/' . $tempfile->folder . '/' . $tempfile->file, 'documents/' . $tempfile->folder . '/' . $tempfile->file);
+            Storage::copy('profile/tmp/' . $temporaryfiles->folder . '/' . $temporaryfiles->file, 'profile/' . $temporaryfiles->folder . '/' . $temporaryfiles->file);
             Document::create([
                 'user_id' => $user->id,
-                'name' => $tempfile->file,
-                'path' => $tempfile->folder . '/' . $tempfile->file,
+                'name' => $temporaryfiles->file,
+                'path' => $temporaryfiles->folder . '/' . $temporaryfiles->file,
             ]);
             // delete the folder
-            Storage::deleteDirectory('documents/tmp/' . $tempfile->folder);
-            $tempfile->delete();
-        }
+            Storage::deleteDirectory('profile/tmp/' . $temporaryfiles->folder);
+            $temporaryfiles->delete();
+        // }
 
         // Redirect to the login page with success and approval messages
         return redirect()->route('register.driver')->with([
@@ -277,15 +280,20 @@ class AuthController extends Controller
             $file_name = $image->getClientOriginalName();
             // Generate a unique folder name for storing the image
             $folder = uniqid('profile', true);
-
+              // Generate a unique number as the ID for the image
+            $uploadedId = Temporaryfile::max('uuid') + 1;
             // Store the image in the specified folder
             $image->storeAs('profile/tmp/' . $folder, $file_name);
             Temporaryfile::create([
                 // 'user_id' => Auth::user();
+                'uuid' => $uploadedId,
                 'folder' => $folder,
                 "file" => $file_name,
             ]);
-            return $folder;
+            // $request->session()->put('uploaded_id', $uploadedId);
+            // $request->session()->save(); // Save the session immediately after updating
+            // return $folder;
+            return response()->json(['folder'=>$folder,'uploaded_id' => $uploadedId]);
         }
     }
 
@@ -295,7 +303,7 @@ class AuthController extends Controller
         $tmp_file = Temporaryfile::where('folder', request()->getContent())->first();
         if ($tmp_file) {
             // delete the folder
-            Storage::deleteDirectory('documents/tmp/' . $tmp_file->folder);
+            Storage::deleteDirectory('profile/tmp/' . $tmp_file->folder);
             $tmp_file->delete();
             return response('');
         }

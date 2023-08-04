@@ -11,8 +11,8 @@ class LocationController extends Controller
 {
 
     // get user location
-    public function getUserLocation(Request $request){
-        $location = Location::where('user_id',$request->user_id)->get();
+    public function getUserLocation(Request $request, $id){
+        $location = Location::where('user_id',$id)->get();
 
         if($location->isEmpty()){
             return response()->json(['data'=>'The User Location is not available for now.']);

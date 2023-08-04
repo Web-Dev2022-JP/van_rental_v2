@@ -69,37 +69,43 @@
 
       <div class="offcanvas offcanvas-end" tabindex="-1" id="settings" aria-labelledby="offcanvasNavbarLabel" style="max-width: 40%;background: #274C77;">
         <div class="offcanvas-header border-bottom">
-          <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Settings</h5>
+          <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Navigation</h5>
           <a class="text-white bx bx-x" data-bs-dismiss="offcanvas" aria-label="Close" style="text-decoration: none"></a>
         </div>
         <div class="offcanvas-body">
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active text-white" aria-current="page" href="#">
+                    <a class="nav-link active text-white" aria-current="page" href="{{ route('client-dash') }}">
                         <span class="bx bxs-home"></span>
                         <span class="mx-2">HOME</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">
+                    <a class="nav-link text-white" href="{{ route('client-dash-services') }}">
                         <span class="bx bxs-wrench"></span>
                         <span class="mx-2">SERVICES</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">
+                {{-- <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ route('client-dash-services') }}">
+                        <span class="bx bxs-wrench"></span>
+                        <span class="mx-2">Chatroom</span>
+                    </a>
+                </li> --}}
+                {{-- <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ route('client-dash-location') }}">
                         <span class="bx bxs-map"></span>
                         <span class="mx-2">LOCATION</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('about') }}">
+                </li> --}}
+                {{-- <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ route('client-dash-about') }}">
                         <span class="bx bxs-info-circle"></span>
                         <span class="mx-2">ABOUT</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('about') }}">
+                    <a class="nav-link text-white" href="{{ route('client-dash-profile') }}">
                         <span class="bx bxs-user"></span>
                         <span class="mx-2">PROFILE</span>
                     </a>

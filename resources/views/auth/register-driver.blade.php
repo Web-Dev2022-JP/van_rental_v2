@@ -62,9 +62,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    {{-- @if (Session::has('success'))
+                    {{-- @if (Session::has('uploaded_id'))
                         <div class="alert alert-success" role="alert">
-                            {{ Session::get('success') }}
+                            {{ Session::get('uploaded_id') }}
                         </div>
                     @endif --}}
                     @if (Session::has('approved'))
@@ -86,18 +86,18 @@
                             {{ session('status') }}
                         </div>
                     @endif
+
                     <form action="{{ route('register.driver') }}" method="POST" enctype="multipart/form-data"
-                        class="row g-3">
+                        class="row g-3" id="profileUploadForm">
                         @csrf
+                        {{-- uuid upload --}}
+                        <input type="number" name="uuid" class="form-control" id="uuid"
+                        value="0" hidden>
+                        {{-- role --}}
+                        <input type="number" name="role" class="form-control" id="role"
+                        value="2" hidden required>
                         <div class="col-md-8 row">
-                            {{-- role --}}
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    {{-- <label for="firstName" class="form-label">First Name</label> --}}
-                                    <input type="number" name="role" class="form-control" id="role"
-                                        value="2" hidden required>
-                                </div>
-                            </div>
+                            
                             {{-- firstname --}}
                             <div class="col-md-4">
                                 <div class="mb-3">
@@ -271,7 +271,7 @@
                             <div class="mb-3">
                                 <div class="d-flex justify-content-center">
                                     <div class="d-grid w-50">
-                                        <button class="btn btn-primary">Register Driver</button>
+                                        <button type="submit" class="btn btn-primary">Register Driver</button>
                                     </div>
                                 </div>
                             </div>
@@ -288,6 +288,7 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
     </script>
@@ -299,20 +300,47 @@
         // Get a reference to the file input element
         const inputElement = document.querySelector('input[type="file"]');
 
+
         // Create a FilePond instance
-        const pond = FilePond.create(inputElement);
-        FilePond.setOptions({
-            server: {
-                process: '/tmp-upload',
-                revert: '/tmp-delete',
+    const pond = FilePond.create(inputElement, {
+        server: {
+            process: {
+                url: '/tmp-upload', // Change to your upload URL
+                method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                onload: (response) => {
+                    // The server response is available in the 'response' object
+                    // const uploadedId = response.uploaded_id;
+                    const uuid = JSON.parse(response)
+                    console.log('Uploaded ID: ', uuid.uploaded_id);
+
+                    localStorage.setItem('profileUpload',JSON.stringify(uuid))
+
+                    // set to hidden input
+                    $('#uuid').val(uuid.uploaded_id)
+                },
+                onerror: (error) => {
+                    console.error('Error uploading image:', error);
                 }
-                // restore: './restore/',
-                // load: './load/',
-                // fetch: './fetch/',
             },
-        });
+            revert: {
+                url: '/tmp-delete', // Change to your delete URL
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+            }     
+        }
+    });
+     // Add the "removefile" event listener
+     pond.on('removefile', (file) => {
+        // Remove the data from localStorage when the file is removed by the user
+        localStorage.removeItem('profileUpload');
+        // set to hidden input
+        $('#uuid').val(0)
+    });
     </script>
 </body>
 

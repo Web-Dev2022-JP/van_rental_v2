@@ -20,8 +20,9 @@
     </div>
     <!-- table -->
     <div class="card mx-3 mt-3 p-4">
-        <h1>Tables</h1>
+        {{-- {{ Auth::user() }} --}}
+        <h1>{{ Auth::user() }}</h1>
     </div>
-
-    
 @endsection
+
+

@@ -4,6 +4,7 @@
 <head>
     @include('components.drivers.head.head')
     @yield('header')
+    @yield('links')
 </head>
 
 <body>
@@ -211,6 +212,7 @@
           }
       });
   </script>
+  @yield('script')
 </body>
 
 </html>

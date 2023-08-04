@@ -88,7 +88,7 @@
         </div>
     </div>
     {{-- script for otp --}}
-    <script></script>
+    {{-- <script></script> --}}
 </body>
 
 </html>
