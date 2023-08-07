@@ -108,8 +108,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-location/{id}',[LocationController::class,'getUserLocation'])->name('driver.location');
     // get user location
     Route::get('/get-Driver-Credentials/{id}',[DriverController::class,'getUserCredentials'])->name('driver.credentials');
+    // chat
     Route::get('/chatroom-driver',[DriverController::class,'chatRoomDriver'])->name('client-dash-chatroom-driver');
-    
+    Route::post('/send-client-message',[DriverController::class,'sendClientMessage'])->name('send-message');
+    Route::post('/get-client-message',[DriverController::class,'getClientMessage'])->name('get-message');
 
     // client home
     Route::get('/client-dashboard',[ClientController::class,'clientHome'])->name('client-dash');

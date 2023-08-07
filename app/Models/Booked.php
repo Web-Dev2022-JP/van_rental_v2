@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Booked extends Model
 {
-    protected $fillable = ['user_id','firstname','lastname','middlename','contact','email','destination','pickup','landmark','dateoftrip','pax','daysandhours','pickuptime','status'];
+    protected $fillable = ['user_id','sender_id','firstname','lastname','middlename','contact','email','destination','pickup','landmark','dateoftrip','pax','daysandhours','pickuptime','status'];
     use HasFactory;
     
 }

@@ -117,7 +117,7 @@
                                 </div>
                                 <div class="col-sm-6" id="chat-container">
                                     <div class="mb-3">
-                                        <a href="{{ route('client-dash-chatroom-driver') }}" type="button" id="chat" class="btn btn-success form-control">Chat</a>
+                                        <a href="#" type="button" id="chat-driver-side" class="btn btn-success form-control">Chat</a>
                                     </div>
                                 </div>
                             </div>

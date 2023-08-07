@@ -272,7 +272,7 @@
                         const day = date_object.getDate().toString().padStart(2, "0");
                         const year = date_object.getFullYear();
 
-                        const formatted_date = `${month}/${day}/${year}`;
+                        const formatted_date = `${year}-${month}-${day}`;
                         console.log(formatted_date)
 
                         $(document).ready(function() {

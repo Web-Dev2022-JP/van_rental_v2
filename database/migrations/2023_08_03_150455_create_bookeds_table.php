@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('bookeds', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
+            $table->integer('sender_id');
             $table->string('firstname');
             $table->string('lastname');
             $table->string('middlename')->nullable();

@@ -894,6 +894,9 @@
     </div>
     @include('components.drivers.customer-info')
     @yield('customer.info')
+
+    {{-- @include('components.drivers.chatroom')
+    @yield('driver.chat.customer') --}}
     <!-- boxes -->
     {{-- <div class="card mx-3 mt-3 p-4" style="overflow-x: hidden">
         <div class="row">
@@ -1027,6 +1030,7 @@
         $(document).ready(function() {
             sendRequest();
             setInterval(sendRequest, 10000); // Refresh the data every 3 seconds
+
         });
 
         const clickHandler = async (data) => {
@@ -1049,7 +1053,10 @@
                 $('#pax').val(foundObject.pax + ' Person')
                 $('#daysandhours').val(foundObject.daysandhours + ' Hour/s')
                 $('#time').val(convertTo12HourFormat(foundObject.pickuptime))
+                $('#chat-driver-side').attr('value',foundObject.sender_id)
             })
+
+            
         }
 
         // convert time to AM/PM
@@ -1065,6 +1072,27 @@
 
             // Return the time in AM/PM format
             return `${hours12Format}:${minutes.toString().padStart(2, "0")} ${period}`;
+        }
+
+        // testing phase
+        const NotifyUser = async (message) => {
+            if ('Notification' in window) {
+                Notification.requestPermission()
+                    .then(permission => {
+                        if (permission === 'granted') {
+                            // Permission granted, you can now show notifications
+                            const notification = new Notification('Title', {
+                                body: 'This is the notification message.',
+                                icon: 'path/to/icon.png' // Optional
+                            });
+
+                            // You can also handle notification events
+                            notification.onclick = () => {
+                                // Handle notification click
+                            };
+                        }
+                    });
+            }
         }
     </script>
 @endsection

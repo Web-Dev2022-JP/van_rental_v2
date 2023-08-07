@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booked;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -35,6 +36,7 @@ class ClientController extends Controller
         // Now you can directly create a new record in the "trips" table
         $clientBooked = Booked::create([
             'user_id' => $request->id,
+            'sender_id' => Auth::user()->id,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'middlename' => $request->middlename,

@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('temporaryfiles', function (Blueprint $table) {
-            // $table->id();
-            // $table->bigIncrements('uuid')->unsigned()->index();
-            $table->uuid('uuid')->primary(); // Use uuid() method for UUID column
-            $table->string('folder');
-            $table->string('file');
-
+        Schema::create('chats', function (Blueprint $table) {
+            $table->id();
+            // reciever
+            $table->integer('incoming_msg_id');
+            // sender
+            $table->integer('outgoing_msg_id');
+            $table->string('msg', 1000);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('temporaryfiles');
+        Schema::dropIfExists('chats');
     }
 };
