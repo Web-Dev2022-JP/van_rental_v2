@@ -163,6 +163,8 @@
 
                 // Log the data-id to the console
                 console.log(dataId);
+                $('#chat-driver').attr('value',dataId)
+
                 $("#details").modal({
                     backdrop: "static",
                     keyboard: false, // Optional: Disable closing the modal with the keyboard
@@ -193,7 +195,7 @@
                                 `${baseUrl}/storage/profile/${data.user.documents[0].path}`)
                             profileContents = `
                                 <div class="col-sm-12 mb-3">
-                                    <h5 class="border-bottom"><b>MACS VAN RENTALS</b></h5>
+                                    <h5 class="border-bottom"><b>not available</b></h5>
                                     <span class="d-flex flex-column justify-content-center align-items-center"
                                         style="margin-top: -10px;color: rgb(2, 47, 61);"><b>Company name</b></span>
                                 </div>

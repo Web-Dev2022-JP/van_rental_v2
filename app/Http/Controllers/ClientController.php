@@ -56,7 +56,11 @@ class ClientController extends Controller
         return response()->json(['message' => 'Booking Successfully sent!','booking' => $clientBooked]);
     }
     // chatroom
-    public function chatRoom(Request $request){
-        return view('components.clients.chatroom');
+    // public function chatRoom(Request $request){
+    //     return view('components.clients.chatroom');
+    // }
+
+    public function getUnseenMessageClient(Request $request){
+        
     }
 }

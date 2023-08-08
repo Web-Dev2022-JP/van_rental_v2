@@ -999,7 +999,7 @@
                             data: "user_id",
                             render(data, type, row, meta) {
                                 var a = `
-                            <a href="#" value="${row.id}" id="view" class="">view more</a>
+                            <a href="#" value="${row.id}" data-id="${row.sender_id}" id="view" class="">view more</a>
                         `;
                                 return a;
                             }
@@ -1029,7 +1029,7 @@
 
         $(document).ready(function() {
             sendRequest();
-            setInterval(sendRequest, 10000); // Refresh the data every 3 seconds
+            setInterval(sendRequest, 15000); // Refresh the data every 15 seconds
 
         });
 

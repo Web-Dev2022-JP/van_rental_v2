@@ -112,6 +112,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/chatroom-driver',[DriverController::class,'chatRoomDriver'])->name('client-dash-chatroom-driver');
     Route::post('/send-client-message',[DriverController::class,'sendClientMessage'])->name('send-message');
     Route::post('/get-client-message',[DriverController::class,'getClientMessage'])->name('get-message');
+    Route::post('/get-unseen-message',[DriverController::class,'getUnseenMessage'])->name('get-unseen-message');
+    Route::post('/update-unseen-message',[DriverController::class,'updateUnseenMessage'])->name('update-unseen-message');
 
     // client home
     Route::get('/client-dashboard',[ClientController::class,'clientHome'])->name('client-dash');
@@ -123,8 +125,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile',[ClientController::class,'clientProfile'])->name('client-dash-profile');
     // client Location
     Route::get('/location',[ClientController::class,'clientLocation'])->name('client-dash-location');
-    Route::get('/chatroom',[ClientController::class,'chatRoom'])->name('client-dash-chatroom');
-
+    
+    // Route::get('/chatroom',[ClientController::class,'chatRoom'])->name('client-dash-chatroom');
+    Route::post('/get-unseen-message-client',[ClientController::class,'getUnseenMessageClient'])->name('get-unseen-message-client');
 
     // post request client
     Route::post('/post-Client-Booked',[ClientController::class,'clientBooked'])->name('client-dash-booked');

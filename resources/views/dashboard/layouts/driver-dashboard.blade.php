@@ -149,7 +149,7 @@
         }
 
         /* Responive media query */
-        @media screen and (max-width: 450px) {
+        @media screen and (max-width: 500px) {
             /* .form, .users{
           padding: 20px;
         }
@@ -280,13 +280,13 @@
                             </span>
 
                         </a>
-                        <a type="button" class="text-color-dark me-2" data-bs-toggle="offcanvas"
+                        {{-- <a type="button" class="text-color-dark me-2" data-bs-toggle="offcanvas"
                             data-bs-target="#messages" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                             <span class='bx bx-message-dots text-secondary h4'>
                                 <span
                                     class="position-absolute top-2 start-200 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
                             </span>
-                        </a>
+                        </a> --}}
                         <button type="button" class="btn">
                             <img src="{{ asset('assets/img/user-06.jpg') }}" class="rounded-circle driver-profile"
                                 width="30" alt="Admin">
@@ -302,25 +302,9 @@
                     <h5 class="offcanvas-title" id="notificationLabel">Notifications</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div class="offcanvas-body">
-                    <div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;">
-                        <div class="row g-0">
-                            <div class="col-md-2 justify-contents">
-                                <img class="img-fluid rounded-start"
-                                    src="https://png.pngtree.com/png-vector/20190406/ourmid/pngtree-img-file-document-icon-png-image_913759.jpg"
-                                    alt="">
-                            </div>
-                            <div class="col-md-8" style="height: fit-content">
-                                <div class="card-body">
-                                    <span class="card-title"><b>John Doe</b></span>
-                                    <span class="card-text">has a request.</span><br>
-                                    <span class="card-text"><small class="text-body-secondary text-secondary">3 mins
-                                            ago</small></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card border-0 rounded notification-container" style="max-width: 540px;">
+                <div class="offcanvas-body" id="notif-card">
+
+                    {{-- <div class="card border-0 rounded notification-container" style="max-width: 540px;">
                         <div class="row g-0">
                             <div class="col-md-2 justify-contents">
                                 <img class="img-fluid rounded"
@@ -336,11 +320,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <!-- for message -->
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="messages" aria-labelledby="offcanvasNavbarLabel">
+            {{-- <div class="offcanvas offcanvas-end" tabindex="-1" id="messages" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="notificationLabel">Messages</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -381,10 +365,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- for guidelines -->
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="guidelines"
-                aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="guidelines" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title text-danger" id="notificationLabel">How to enabled location in a
                         browser?</h5>
@@ -468,18 +451,18 @@
 
         // chat functionality
         incoming_id = 0,
-        $(document).on('click', '#chat-driver-side', function(e) {
-            // alert('yes')
-            // client id
-            var reciever_id = parseInt($(this).attr("value"), 10);
-            $('#incoming_id').val(reciever_id);
-            incoming_id = reciever_id
-            // alert(reciever_id)
-            $('#customerInfo').offcanvas('hide')
-            $('#chat-customer').offcanvas('show')
-            renderMessage()
+            $(document).on('click', '#chat-driver-side', function(e) {
+                // alert('yes')
+                // client id
+                var reciever_id = parseInt($(this).attr("value"), 10);
+                $('#incoming_id').val(reciever_id);
+                incoming_id = reciever_id
+                // alert(reciever_id)
+                $('#customerInfo').offcanvas('hide')
+                $('#chat-customer').offcanvas('show')
+                renderMessage()
 
-        })
+            })
 
 
         const form = $(".typing-area"),
@@ -541,24 +524,24 @@
                     var html = ''
 
                     data.forEach(msg => {
-                      // reciever
-                      if(msg.outgoing_msg_id === incoming_id){
-                        $('#user_header_name').html(`${msg.firstname} ${msg.lastname}`)
-                        html += `<div class="chat incoming">
+                        // reciever
+                        if (msg.outgoing_msg_id === incoming_id) {
+                            $('#user_header_name').html(`${msg.firstname} ${msg.lastname}`)
+                            html += `<div class="chat incoming">
                                 <img src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" alt="">
                                 <div class="details">
                                     <p>${msg.msg}</p>
                                 </div>
                                 </div>`
-                      }else{
-                        html += `<div class="chat outgoing">
+                        } else {
+                            html += `<div class="chat outgoing">
                                 <div class="details">
                                     <p>'${msg.msg}'</p>
                                 </div>
                                 </div>`
-                      }
+                        }
                     });
-                    
+
                     chatBox.empty();
                     chatBox.append(html);
                     if (!chatBox.hasClass("active")) {
@@ -571,11 +554,127 @@
             });
         };
 
+        const getUnseenMessage = async () => {
+            var reciever_id = parseInt($('#view').attr("data-id"), 10);
+            console.log(reciever_id)
+            $.ajax({
+                type: "POST",
+                url: "/get-unseen-message",
+                data: {
+                    // for now
+                    incoming_id: reciever_id
+                },
+                success: (data) => {
+                    // chatBox.html(data);
+                    var html = ''
+                    if (data.length === 0) {
+                        html += `<div class="card border-0 mb-1 rounded" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
+                                    <div class="row g-0">
+                                        <div class="col-md-8" style="height: fit-content">
+                                            <div class="card-body">
+                                                <span class="card-title text-secondary"><b>There is no notifications</b></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
+                    }else{
+                        data.forEach(msg => {
+                        console.log(msg)
+                        // reciever
+                        //   if(msg.outgoing_msg_id === incoming_id){
+                        //     $('#user_header_name').html(`${msg.firstname} ${msg.lastname}`)
+                        html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
+                                    <div class="row g-0">
+                                        <div class="col-md-2 justify-contents">
+                                            <img class="img-fluid rounded-start"
+                                                src="https://png.pngtree.com/png-vector/20190406/ourmid/pngtree-img-file-document-icon-png-image_913759.jpg"
+                                                alt="">
+                                        </div>
+                                        <div class="col-md-8" style="height: fit-content">
+                                            <div class="card-body">
+                                                <span class="card-title"><b>${msg.firstname} ${msg.lastname}</b></span>
+                                                <span class="card-text">has a message.</span><br>
+                                                <span class="card-text"><small class="text-body-secondary text-secondary">${msg.created_at}</small></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
+                        //   }else{
+                        //     html += `<div class="chat outgoing">
+                    //             <div class="details">
+                    //                 <p>'${msg.msg}'</p>
+                    //             </div>
+                    //             </div>`
+                        //   }
+                    });
+                    }
+                    
+                    $('#notif-card').html(html)
+
+                },
+                error: (xhr, status, error) => {
+                    console.error(error);
+                }
+            });
+        }
 
         function scrollToBottom() {
             chatBox.scrollTop(chatBox[0].scrollHeight);
         }
 
+        setInterval(() => {
+            getUnseenMessage()
+        }, 1000);
+
+
+        // click the notification container
+        $(document).on('click','.notification-container',function(){
+            var client_id = parseInt($(this).data("id"), 10);
+            incoming_id = client_id
+            $('#incoming_id').val(incoming_id);
+                // alert(reciever_id)
+            // $('#notification').offcanvas('hide')
+            $('#chat-customer').offcanvas('show')
+            renderMessage()
+            updateUnseenMessage(incoming_id)
+        })
+
+        // update the unseen message to seen
+        const updateUnseenMessage = async (customer_id) => {
+            $.ajax({
+                type: "POST",
+                url: "/update-unseen-message",
+                data: {
+                    outgoing_id: customer_id
+                },
+                success: (data) => {
+                   console.log(data)
+
+                },
+                error: (xhr, status, error) => {
+                    console.error(error);
+                }
+            });
+        }
+
+        // const getTimeAgo =  (timestamp) => {
+        //     const currentTime = new Date();
+        //     const previousTime = new Date(timestamp);
+        //     const timeDifferenceInSeconds = Math.floor((currentTime - previousTime) / 1000);
+
+        //     if (timeDifferenceInSeconds < 60) {
+        //         return `${timeDifferenceInSeconds} secs ago`;
+        //     } else if (timeDifferenceInSeconds < 3600) {
+        //         const minutes = Math.floor(timeDifferenceInSeconds / 60);
+        //         return `${minutes} mins ago`;
+        //     } else if (timeDifferenceInSeconds < 86400) {
+        //         const hours = Math.floor(timeDifferenceInSeconds / 3600);
+        //         return `${hours} hours ago`;
+        //     } else {
+        //         const days = Math.floor(timeDifferenceInSeconds / 86400);
+        //         return `${days} days ago`;
+        //     }
+        // }
     </script>
     @yield('script')
 </body>

@@ -100,7 +100,7 @@
                                 
                             </div>
                             <div class="col-sm-12 mt-4 ">
-                                <a href="{{ route('client-dash-chatroom') }}" class="btn btn-info mb-2">CHAT WITH DRIVER</a>
+                                <a href="#" id="chat-driver" class="btn btn-info mb-2">CHAT WITH DRIVER</a>
                                 <a href="{{ route('client-dash-about') }}" class="btn btn-info mb-2">ABOUT DRIVER</a>
                                 <a href="{{ route('client-dash-location') }}" class="btn btn-info mb-2">LOCATE DRIVER</a>
                             </div>
