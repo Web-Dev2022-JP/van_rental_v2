@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 // use App\Models\Client;
 use App\Mail\OTPMail;
+// use App\Models\Booked;
 
 use App\Models\Document;
+use App\Models\Van;
 use App\Models\Verifytoken;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -15,6 +17,8 @@ use App\Models\Temporaryfile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingConfirmationMail;
+use App\Models\Booked;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -64,7 +68,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             // Rest of the attributes...
         ]);
-        return redirect()->route('login')->with(['success' => 'Register successfully', 'is_activated'=>$client->is_activated]);
+        return redirect()->route('login')->with(['success' => 'Register successfully', 'is_activated' => $client->is_activated]);
     }
     public function registerDriverPost(Request $request)
     {
@@ -94,41 +98,41 @@ class AuthController extends Controller
         ]);
 
         // call temporaryfile model
-        $temporaryfiles = Temporaryfile::where('uuid',$request->uuid)->first();
+        $temporaryfiles = Temporaryfile::where('uuid', $request->uuid)->first();
         // dd($request);
         if ($validator->fails()) {
             // foreach ($temporaryfiles as $tempfile) {
-                // delete the folder
-                Storage::deleteDirectory('profile/tmp/' . $temporaryfiles->folder);
-                $temporaryfiles->delete();
+            // delete the folder
+            Storage::deleteDirectory('profile/tmp/' . $temporaryfiles->folder);
+            $temporaryfiles->delete();
             // }
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-       
+
 
         // $user = User::create($validator->validated());
-        
+
         // send otp first for email validation
         // $validToken = rand(10,100..'2023');
         // $get_token = new Verifytoken();
         // $get_token->token = $validToken;
         // $get_token->email = $request->email;
         // $get_token->save();
-         // pass the request to a verify-Email function
+        // pass the request to a verify-Email function
         //  $this->verifyEmail($request);
         $get_user_email = $request->email;
-        $get_user_name = $request->firstname." ".$request->lastname;
-        Mail::to($request->email)->send(new OTPMail($get_user_email, "Submit your application, just click the link below.", $get_user_name, "Verify Email",'otp.verify-email'));
+        $get_user_name = $request->firstname . " " . $request->lastname;
+        Mail::to($request->email)->send(new OTPMail($get_user_email, "Submit your application, just click the link below.", $get_user_name, "Verify Email", 'otp.verify-email'));
         // pass the request to a verify-Email function
-         $this->verifyEmail($request);
+        $this->verifyEmail($request);
         // Redirect to the login page with success and approval messages
         return redirect()->route('register.driver')->with([
             'success' => 'Register successfully',
             'approved' => 'We sent a verification link to your email!, Click the links below to continue the registration form.',
-            'is_activated'=>false,
+            'is_activated' => false,
         ]);
-        
+
         // // get the store file
         // $tmp_file = Temporaryfile::where('folder', $request->image)->first();
 
@@ -191,7 +195,8 @@ class AuthController extends Controller
     }
 
     // driver verify email
-    public function verifyEmail(Request $request){
+    public function verifyEmail(Request $request)
+    {
         // dd($request);
         $user = User::create([
             'role' => $request->role,
@@ -217,52 +222,53 @@ class AuthController extends Controller
         ]);
 
         // call temporaryfile model
-        $temporaryfiles = Temporaryfile::where('uuid',$request->uuid)->first();
+        $temporaryfiles = Temporaryfile::where('uuid', $request->uuid)->first();
         // dd($temporaryfiles->uuid);
         // foreach ($temporaryfiles as $tempfile) {
-            // copy the tmp                                             sstore to  new folder
-            Storage::copy('profile/tmp/' . $temporaryfiles->folder . '/' . $temporaryfiles->file, 'profile/' . $temporaryfiles->folder . '/' . $temporaryfiles->file);
-            Document::create([
-                'user_id' => $user->id,
-                'name' => $temporaryfiles->file,
-                'path' => $temporaryfiles->folder . '/' . $temporaryfiles->file,
-            ]);
-            // delete the folder
-            Storage::deleteDirectory('profile/tmp/' . $temporaryfiles->folder);
-            $temporaryfiles->delete();
+        // copy the tmp                                             sstore to  new folder
+        Storage::copy('profile/tmp/' . $temporaryfiles->folder . '/' . $temporaryfiles->file, 'profile/' . $temporaryfiles->folder . '/' . $temporaryfiles->file);
+        Document::create([
+            'user_id' => $user->id,
+            'name' => $temporaryfiles->file,
+            'path' => $temporaryfiles->folder . '/' . $temporaryfiles->file,
+        ]);
+        // delete the folder
+        Storage::deleteDirectory('profile/tmp/' . $temporaryfiles->folder);
+        $temporaryfiles->delete();
         // }
 
         // Redirect to the login page with success and approval messages
         return redirect()->route('register.driver')->with([
             'success' => 'Email Verified successfully',
             'approved' => 'Verified email, your form is now submitted. Wait for administrator to approved your application.',
-            'is_activated'=>false,
+            'is_activated' => false,
         ]);
     }
 
-    public function verifyEmailPost(Request $request){
+    public function verifyEmailPost(Request $request)
+    {
         $account = User::findOrFail($request->email);
         // Perform the necessary update logic
         $account->is_activated = 1;
         $account->save();
-         // Redirect to the login page with success and approval messages
-         return redirect()->route('register.driver')->with([
+        // Redirect to the login page with success and approval messages
+        return redirect()->route('register.driver')->with([
             'success' => 'Email Verified successfully',
             'approved' => 'Verified email, your form is now submitted. Wait for administrator to approved your application.',
-            'is_activated'=>false,
+            'is_activated' => false,
         ]);
-    } 
+    }
 
     // email verified
-    public function emailVerified(Request $request, $email){
+    public function emailVerified(Request $request, $email)
+    {
         // dd($email);
-        $account = User::where('email',$email)->first();
-        
-        if($account){
+        $account = User::where('email', $email)->first();
+
+        if ($account) {
             $account->approved = 1;
             $account->is_activated = 1;
             $account->save();
-            
         }
         // Redirect to the login page with success and approval messages
         return redirect()->route('login')->with([
@@ -280,7 +286,7 @@ class AuthController extends Controller
             $file_name = $image->getClientOriginalName();
             // Generate a unique folder name for storing the image
             $folder = uniqid('profile', true);
-              // Generate a unique number as the ID for the image
+            // Generate a unique number as the ID for the image
             $uploadedId = Temporaryfile::max('uuid') + 1;
             // Store the image in the specified folder
             $image->storeAs('profile/tmp/' . $folder, $file_name);
@@ -293,7 +299,7 @@ class AuthController extends Controller
             // $request->session()->put('uploaded_id', $uploadedId);
             // $request->session()->save(); // Save the session immediately after updating
             // return $folder;
-            return response()->json(['folder'=>$folder,'uploaded_id' => $uploadedId]);
+            return response()->json(['folder' => $folder, 'uploaded_id' => $uploadedId]);
         }
     }
 
@@ -323,49 +329,49 @@ class AuthController extends Controller
             'password' => $request->password,
         ];
 
-        
-            // Get the user account by email
-            $user = User::where('email', $request->email)->first();
 
-            if ($user) {
-                // Check if the user is a driver and if the account is activated
-                if ($user->role == 2 && $user->is_activated == 1) {
-                    $credentials = [
-                        // 'otp' => $request->otp,
-                        'email' => $request->email,
-                        'password' => $request->password,
-                    ];
-                    //get the token from verify
-                    $get_token = Verifytoken::where('token', $request->otp)->first();
-                    if ($get_token) {
-                        $get_token->is_activated = 2;
-                        $get_token->save();
+        // Get the user account by email
+        $user = User::where('email', $request->email)->first();
 
-                        // updates the user account
-                        $user = User::where('email',$get_token->email)->first();
-                        $user->is_activated = 2;
-                        $user->save();
+        if ($user) {
+            // Check if the user is a driver and if the account is activated
+            if ($user->role == 2 && $user->is_activated == 1) {
+                $credentials = [
+                    // 'otp' => $request->otp,
+                    'email' => $request->email,
+                    'password' => $request->password,
+                ];
+                //get the token from verify
+                $get_token = Verifytoken::where('token', $request->otp)->first();
+                if ($get_token) {
+                    $get_token->is_activated = 2;
+                    $get_token->save();
 
-                        // delete the token
-                        $getting_token = Verifytoken::where('token',$get_token->token)->first();
-                        $getting_token->delete();
-                    }else{
-                        Auth::logout();
-                        // User is a driver pending approval ,'is_activated'=>$user->is_activated
-                        return redirect()->route('login')->with(['is_activated'=> 0, 'approved'=>"You need O T P a to proceed."]);
-                    }
+                    // updates the user account
+                    $user = User::where('email', $get_token->email)->first();
+                    $user->is_activated = 2;
+                    $user->save();
+
+                    // delete the token
+                    $getting_token = Verifytoken::where('token', $get_token->token)->first();
+                    $getting_token->delete();
                 } else {
-                    $credentials = [
-                        'email' => $request->email,
-                        'password' => $request->password,
-                    ];
+                    Auth::logout();
+                    // User is a driver pending approval ,'is_activated'=>$user->is_activated
+                    return redirect()->route('login')->with(['is_activated' => 0, 'approved' => "You need O T P a to proceed."]);
                 }
             } else {
-                // Handle the case when the user account does not exist
-                // You can add your own logic here, such as showing an error message
-                // or redirecting the user to a specific page
+                $credentials = [
+                    'email' => $request->email,
+                    'password' => $request->password,
+                ];
             }
-        
+        } else {
+            // Handle the case when the user account does not exist
+            // You can add your own logic here, such as showing an error message
+            // or redirecting the user to a specific page
+        }
+
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
@@ -380,12 +386,12 @@ class AuthController extends Controller
             } elseif ($user->role == 2) {
                 if ($user->approved) {
                     // User is an approved driver
-                    return redirect('/driver-dashboard')->with(['success'=>'Login Success','is_activated'=>$user->is_activated]);
+                    return redirect('/driver-dashboard')->with(['success' => 'Login Success', 'is_activated' => $user->is_activated]);
                 } else {
                     // need to logout if not approved
                     Auth::logout();
                     // User is a driver pending approval ,'is_activated'=>$user->is_activated
-                    return redirect()->route('login')->with(['approved'=>'Email verification success!. However your account is pending approval. Please wait for Bataan Van Rental Administrator authorization.']);
+                    return redirect()->route('login')->with(['approved' => 'Email verification success!. However your account is pending approval. Please wait for Bataan Van Rental Administrator authorization.']);
                 }
             } elseif ($user->role == 3) {
                 // User is an admin
@@ -528,5 +534,23 @@ class AuthController extends Controller
         Auth::logout();
 
         return redirect('/')->with('logout', true);
+    }
+
+    public function confirmationBooking(Request $request)
+    {
+        $driver = Van::where('user_id', Auth::user()->id)->first();
+        if ($driver) {
+            $get_user_email = $request->email;
+            $get_user_name = $request->user_name;
+            $get_booking_id = $request->booking_id;
+            // $get_vehicle_name = $request->vehicle_name;
+            $get_pickup = $request->pickup;
+            $get_dropoff = $request->dropoff;
+            $get_booking_date = $request->booking_date;
+            // $get_total_amount = $request->total_amount;
+            Mail::to($get_user_email)->send(new BookingConfirmationMail($get_user_name, $get_booking_id, $get_pickup, $get_dropoff, $get_booking_date));
+
+            return response()->json(['status' => 'succecss']);
+        }
     }
 }

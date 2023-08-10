@@ -260,33 +260,28 @@
                         <a type="button" class="text-color-dark position-relative" data-bs-toggle="offcanvas"
                             data-bs-target="#guidelines" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                             <span class='bx bx-info-circle h4 text-secondary'>
-                                <span
-                                    class="position-absolute top-2 start-200 translate-middle p-1 bg-danger border border-light rounded-circle">
-                                    {{-- class="visually-hidden" --}}
-                                    {{-- <span id="notif-counts">1</span> --}}
-                                </span>
+
                             </span>
 
                         </a>
+
                         <a type="button" class="text-color-dark mx-3 position-relative" data-bs-toggle="offcanvas"
                             data-bs-target="#notification" aria-controls="offcanvasNavbar"
                             aria-label="Toggle navigation">
-                            <span class='bx bx-bell h4 text-secondary'>
-                                <span
-                                    class="position-absolute top-2 start-200 translate-middle p-1 bg-danger border border-light rounded-circle">
-                                    {{-- class="visually-hidden" --}}
-                                    {{-- <span id="notif-counts">1</span> --}}
-                                </span>
+                            <span class='bx bx-bell h4 text-secondary' id="bell">
+
                             </span>
 
                         </a>
-                        {{-- <a type="button" class="text-color-dark me-2" data-bs-toggle="offcanvas"
+
+                        <a type="button" class="text-color-dark me-2" data-bs-toggle="offcanvas"
                             data-bs-target="#messages" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                            <span class='bx bx-message-dots text-secondary h4'>
+                            <span class='bx bx-message-dots text-secondary h4' id="chats">
                                 <span
-                                    class="position-absolute top-2 start-200 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                                    class="position-absolute top-2 start-200 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                </span>
                             </span>
-                        </a> --}}
+                        </a>
                         <button type="button" class="btn">
                             <img src="{{ asset('assets/img/user-06.jpg') }}" class="rounded-circle driver-profile"
                                 width="30" alt="Admin">
@@ -303,7 +298,15 @@
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body" id="notif-card">
-
+                    <div class="card border-0 mb-1 rounded" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
+                        <div class="row g-0">
+                            <div class="col-md-8" style="height: fit-content">
+                                <div class="card-body">
+                                    <span class="card-title text-secondary"><b>There is no notifications</b></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {{-- <div class="card border-0 rounded notification-container" style="max-width: 540px;">
                         <div class="row g-0">
                             <div class="col-md-2 justify-contents">
@@ -323,64 +326,46 @@
                     </div> --}}
                 </div>
             </div>
-            <!-- for message -->
-            {{-- <div class="offcanvas offcanvas-end" tabindex="-1" id="messages" aria-labelledby="offcanvasNavbarLabel">
+            <!-- for messages -->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="messages" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="notificationLabel">Messages</h5>
+                    <h5 class="offcanvas-title" id="notificationLabel">Messages History</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div class="offcanvas-body">
-                    <div class="card border-0 rounded notification-container mb-1" style="max-width: 540px;">
-                        <div class="row g-0">
-                            <div class="col-md-2 justify-contents">
-                                <img class="img-fluid rounded-start"
-                                    src="https://png.pngtree.com/png-vector/20190406/ourmid/pngtree-img-file-document-icon-png-image_913759.jpg"
-                                    alt="">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <span class="card-title"><b>John Doe</b></span>
-                                    <span class="card-text">has a request.</span><br>
-                                    <span class="card-text"><small class="text-body-secondary text-secondary">3 mins
-                                            ago</small></span>
-                                </div>
-                            </div>
-                        </div>
+                <div class="offcanvas-body" id="messages-card">
+
+                    {{-- <div class="card border-0 rounded notification-container" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-2 justify-contents">
+                        <img class="img-fluid rounded"
+                            src="https://w7.pngwing.com/pngs/895/199/png-transparent-spider-man-heroes-download-with-transparent-background-free-thumbnail.png"
+                            alt="">
                     </div>
-                    <div class="card border-0 rounded notification-container mb-1" style="max-width: 540px;">
-                        <div class="row g-0">
-                            <div class="col-md-2 justify-contents">
-                                <img class="img-fluid rounded-start"
-                                    src="https://w7.pngwing.com/pngs/895/199/png-transparent-spider-man-heroes-download-with-transparent-background-free-thumbnail.png"
-                                    alt="">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <span class="card-title"><b>John Doe</b></span>
-                                    <span class="card-text">has a request.</span><br>
-                                    <span class="card-text"><small class="text-body-secondary text-secondary">3 mins
-                                            ago</small></span>
-                                </div>
-                            </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <span class="card-title"><b>John Doe</b></span>
+                            <span class="card-text">has a request.</span><br>
+                            <span class="card-text"><small class="text-body-secondary text-secondary">3 mins
+                                    ago</small></span>
                         </div>
                     </div>
                 </div>
             </div> --}}
+                </div>
+            </div>
             <!-- for guidelines -->
             <div class="offcanvas offcanvas-end" tabindex="-1" id="guidelines" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title text-danger" id="notificationLabel">How to enabled location in a
                         browser?</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
                     <h4 class="mb-4">Enhance Your Experience with Accurate Location</h4>
                     <p><span class="text-primary">advantage </span> to share your location with us and receive
                         personalized services and faster delivery options.</p>
 
-                    <button type="button" class="btn btn-danger mt-3 mx-5" data-bs-dismiss="modal"
-                        aria-label="Close">
+                    <button type="button" class="btn btn-danger mt-3 mx-5" data-bs-dismiss="modal" aria-label="Close">
                         <i class='bx bxs-x-circle'></i>
                         You Declined Permission
                     </button>
@@ -420,6 +405,7 @@
     @yield('footer')
 
     <script>
+        const baseUrls = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
         // Register the plugin
         FilePond.registerPlugin(FilePondPluginImagePreview);
         // Get a reference to the file input element
@@ -524,11 +510,16 @@
                     var html = ''
 
                     data.forEach(msg => {
+                        const regex = /(?:liscensed|vehicle|profile)(?=\d)/;
+                        const matches = msg.documents && msg.documents[0] && msg.documents[0]
+                            .path && regex.test(msg.documents[0].path) ? msg.documents[0].path :
+                            'profile.png';
+                        let extPath = msg.documents[0] ? "profile" : "default";
                         // reciever
                         if (msg.outgoing_msg_id === incoming_id) {
                             $('#user_header_name').html(`${msg.firstname} ${msg.lastname}`)
                             html += `<div class="chat incoming">
-                                <img src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" alt="">
+                                <img src="${baseUrls}/storage/${extPath}/${matches}" alt="">
                                 <div class="details">
                                     <p>${msg.msg}</p>
                                 </div>
@@ -556,44 +547,78 @@
 
         const getUnseenMessage = async () => {
             var reciever_id = parseInt($('#view').attr("data-id"), 10);
-            console.log(reciever_id)
+
             $.ajax({
                 type: "POST",
                 url: "/get-unseen-message",
                 data: {
-                    // for now
                     incoming_id: reciever_id
                 },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: (messageData) => {
+                    // Fetch booking data after fetching messages
+                    $.ajax({
+                        type: "GET",
+                        url: "/get-booked",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content')
+                        },
+                        success: (bookingData) => {
+                            // Combine messages and booking requests
+                            const mergedData = [...messageData, ...bookingData];
+
+                            // Render the combined data
+                            renderData(mergedData);
+                        },
+                        error: (xhr, status, error) => {
+                            console.error(error);
+                        }
+                    });
+                },
+                error: (xhr, status, error) => {
+                    console.error(error);
+                }
+            });
+
+        }
+
+        const getBooking = async () => {
+            $.ajax({
+                type: "GET",
+                url: "/get-booked",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: (data) => {
+                    console.log(data)
                     // chatBox.html(data);
-                    var html = ''
-                    if (data.length === 0) {
-                        html += `<div class="card border-0 mb-1 rounded" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
-                                    <div class="row g-0">
-                                        <div class="col-md-8" style="height: fit-content">
-                                            <div class="card-body">
-                                                <span class="card-title text-secondary"><b>There is no notifications</b></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>`
-                    }else{
-                        data.forEach(msg => {
+                    var dots = ''
+                    var html2 = ''
+                    // Generate HTML for the latest messages
+                    data.forEach(msg => {
                         console.log(msg)
-                        // reciever
-                        //   if(msg.outgoing_msg_id === incoming_id){
-                        //     $('#user_header_name').html(`${msg.firstname} ${msg.lastname}`)
-                        html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
+                        const regex = /(?:liscensed|vehicle|profile)(?=\d)/;
+                        const matches = msg.documents && msg.documents[0] && msg.documents[0]
+                            .path && regex.test(msg.documents[0].path) ? msg.documents[0].path :
+                            'profile.png';
+                        let extPath = msg.documents ? "profile" : "default";
+                        dots = `<span class="position-absolute top-2 start-200 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                    </span>`
+                        html2 += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
                                     <div class="row g-0">
                                         <div class="col-md-2 justify-contents">
                                             <img class="img-fluid rounded-start"
-                                                src="https://png.pngtree.com/png-vector/20190406/ourmid/pngtree-img-file-document-icon-png-image_913759.jpg"
+                                                src="${baseUrls}/storage/${extPath}/${matches}"
                                                 alt="">
                                         </div>
                                         <div class="col-md-8" style="height: fit-content">
                                             <div class="card-body">
                                                 <span class="card-title"><b>${msg.firstname} ${msg.lastname}</b></span>
-                                                <span class="card-text">has a message.</span><br>
+                                                <span class="card-text">has a booking request.</span><br>
+                                                <span class="card-text">status <span class="text-warning">${msg.status}</span>.</span><br>
                                                 <span class="card-text"><small class="text-body-secondary text-secondary">${msg.created_at}</small></span>
                                             </div>
                                         </div>
@@ -607,9 +632,211 @@
                     //             </div>`
                         //   }
                     });
+                    // Clear the existing content of #notif-card
+                    // 
+                    $('#bell').html(dots)
+                    // $('.bx-message-dots').html(dots)
+                    $('#notif-card').html(html2)
+
+                },
+                error: (xhr, status, error) => {
+                    console.error(error);
+                }
+            });
+        }
+
+        // render data
+        const renderData = (data) => {
+            var dots = '';
+            var message = '';
+            var html = '';
+
+            if (data.length > 0) {
+                console.log(data.length)
+                // alert('dwadwad')
+                // Organize messages and booking requests
+                const groupedData = {};
+                data.forEach(item => {
+                    const key = item.id; // Use a unique identifier for each item
+
+                    if (!groupedData[key] || item.created_at > groupedData[key].created_at) {
+                        groupedData[key] = item;
                     }
-                    
-                    $('#notif-card').html(html)
+                });
+
+                // Generate HTML for the merged data
+                Object.values(groupedData).forEach(item => {
+
+                    const regex = /(?:liscensed|vehicle|profile)(?=\d)/;
+                    const matches = item.documents && item.documents[0] && item.documents[0].path && regex.test(
+                        item
+                        .documents[0].path) ? item.documents[0].path : 'profile.png';
+                    let extPath = ''
+                    dots =
+                        `<span class="position-absolute top-2 start-200 translate-middle p-1 bg-danger border border-light rounded-circle"></span>`;
+
+                    if (item.hasOwnProperty('msg')) {
+                        extPath = item.documents[0] ? 'profile' : 'default';
+                        // Render message
+                        html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="${item.outgoing_msg_id}">
+                                    <div class="row g-0">
+                                        <div class="col-md-2 justify-contents">
+                                            <img class="img-fluid rounded-start"
+                                                src="${baseUrls}/storage/${extPath}/${matches}"
+                                                alt="">
+                                        </div>
+                                        <div class="col-md-8" style="height: fit-content">
+                                            <div class="card-body">
+                                                <span class="card-title"><b>${item.firstname} ${item.lastname}</b></span>
+                                                <span class="card-text">has a message.</span><br>
+                                                <span class="card-text"><small class="text-body-secondary text-secondary">${item.created_at}</small></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+                    } else {
+                        // Render booking request
+                        // if (item.status === 'pending') {
+                        html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="BKD-${item.id}">
+                                    <div class="row g-0">
+                                        <div class="col-md-2 justify-contents">
+                                            <img class="img-fluid rounded-start"
+                                                src="${baseUrls}/storage/default/profile.png"
+                                                alt="">
+                                        </div>
+                                        <div class="col-md-8" style="height: fit-content">
+                                            <div class="card-body">
+                                                <span class="card-title"><b>${item.firstname} ${item.lastname}</b></span>
+                                                <span class="card-text">has a booking request.</span><br>
+                                                <span class="card-text">status <span class="text-warning">${item.status}</span>.</span><br>
+                                                <span class="card-text"><small class="text-body-secondary text-secondary">${item.created_at}</small></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+                        // }
+                    }
+                });
+            } else {
+                dots = ``
+                html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;">
+                                    <div class="row g-0">
+                                        
+                                        <div class="col-md-12" style="height: fit-content">
+                                            <div class="card-body">
+                                                <span class="card-title text-secondary"><b>There's is no Notification's</b></span>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+            }
+
+
+            // Update the container with the merged data
+            $('#bell').html(dots);
+            $('#notif-card').html(html);
+        };
+
+        // get the seen message for history
+        const getSeenMessage = async () => {
+            // var reciever_id = parseInt($('#view').attr("data-id"), 10);
+            // console.log(reciever_id)
+            $.ajax({
+                type: "POST",
+                url: "/get-seen-message",
+                data: {
+                    // for now
+                    incoming_id: 1
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: (data) => {
+                    // chatBox.html(data);
+                    var html = ''
+                    if (data.length === 0) {
+                        html += `<div class="card border-0 mb-1 rounded" style="max-width: 540px;">
+                                    <div class="row g-0">
+                                        <div class="col-md-8" style="height: fit-content">
+                                            <div class="card-body">
+                                                <span class="card-title text-secondary"><b>There is no message history</b></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
+                    } else {
+                        // Organize messages by sender or recipient
+                        const groupedMessages = {};
+                        data.forEach(msg => {
+                            const key = msg.outgoing_msg_id === incoming_id ? msg
+                                .incoming_msg_id : msg.outgoing_msg_id;
+
+                            if (!groupedMessages[key] || msg.created_at > groupedMessages[key]
+                                .created_at) {
+                                groupedMessages[key] = msg;
+                            }
+                        });
+                        // Generate HTML for the latest messages
+                        Object.values(groupedMessages).forEach(msg => {
+                            const regex = /(?:liscensed|vehicle|profile)(?=\d)/;
+                            const matches = msg.documents && msg.documents[0] && msg.documents[
+                                    0].path && regex.test(msg.documents[0].path) ? msg
+                                .documents[0].path : 'profile.png';
+                            let extPath = msg.documents[0] ? "profile" : "default";
+                            // console.log(msg)
+                            if (msg.read != 'seen') {
+                                html += `<div class="card border-0 mb-1 rounded notification-container position-relative" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
+                                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                        
+                                    </span>
+                                    <div class="row g-0">
+                                        <div class="col-md-2 justify-contents">
+                                            <img class="img-fluid rounded-start"
+                                                src="${baseUrls}/storage/${extPath}/${matches}"
+                                                alt="">
+                                        </div>
+                                        <div class="col-md-8" style="height: fit-content">
+                                            <div class="card-body">
+                                                <span class="card-title"><b>${msg.firstname} ${msg.lastname}</b></span>
+                                                
+                                                <span class="card-text"><small class="text-body-secondary text-secondary">${msg.created_at}</small></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
+                            } else {
+                                html += `<div class="card border-0 mb-1 rounded notification-container position-relative bg-white" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
+                                   
+                                    <div class="row g-0">
+                                        <div class="col-md-2 justify-contents">
+                                            <img class="img-fluid rounded-start"
+                                                src="${baseUrls}/storage/${extPath}/${matches}"
+                                                alt="">
+                                        </div>
+                                        <div class="col-md-8" style="height: fit-content">
+                                            <div class="card-body">
+                                                <span class="card-title"><b>${msg.firstname} ${msg.lastname}</b></span>
+                                                
+                                                <span class="card-text"><small class="text-body-secondary text-secondary">${msg.created_at}</small></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
+                            }
+
+
+                            //   }else{
+                            //     html += `<div class="chat outgoing">
+                        //             <div class="details">
+                        //                 <p>'${msg.msg}'</p>
+                        //             </div>
+                        //             </div>`
+                            //   }
+                        });
+                    }
+
+                    $('#messages-card').html(html)
 
                 },
                 error: (xhr, status, error) => {
@@ -621,23 +848,38 @@
         function scrollToBottom() {
             chatBox.scrollTop(chatBox[0].scrollHeight);
         }
-
         setInterval(() => {
+            // getBooking()
+            getSeenMessage()
             getUnseenMessage()
-        }, 1000);
-
+        }, 5000);
 
         // click the notification container
-        $(document).on('click','.notification-container',function(){
-            var client_id = parseInt($(this).data("id"), 10);
-            incoming_id = client_id
-            $('#incoming_id').val(incoming_id);
-                // alert(reciever_id)
-            // $('#notification').offcanvas('hide')
-            $('#chat-customer').offcanvas('show')
-            renderMessage()
-            updateUnseenMessage(incoming_id)
-        })
+        $(document).on('click', '.notification-container', function() {
+            const pattern = /^(BKD-)?\d+$/;
+            const dataId = $(this).data("id").toString();
+            const isMatch = pattern.test(dataId);
+
+            if (isMatch) {
+                if (dataId.startsWith("BKD-")) {
+                    console.log(`String '${dataId}' starts with 'BKD-'`);
+                    // Extract the number from the data-id value
+                    const numberPart = dataId.replace("BKD-", "");
+                    console.log(`Number part: ${numberPart}`);
+                } else {
+                    console.log(`String '${dataId}' is a number`);
+                    var client_id = parseInt(dataId, 10);
+                    incoming_id = client_id;
+                    $('#incoming_id').val(incoming_id);
+                    $('#chat-customer').offcanvas('show');
+                    renderMessage();
+                    updateUnseenMessage(incoming_id);
+                }
+            } else {
+                console.log(`String '${dataId}' does not match the pattern`);
+            }
+        });
+
 
         // update the unseen message to seen
         const updateUnseenMessage = async (customer_id) => {
@@ -648,7 +890,7 @@
                     outgoing_id: customer_id
                 },
                 success: (data) => {
-                   console.log(data)
+                    console.log(data)
 
                 },
                 error: (xhr, status, error) => {
@@ -656,6 +898,36 @@
                 }
             });
         }
+
+        // const accept booking
+        $(document).on('click', '#accept', function() {
+            alert('sent email to the user')
+            // $user_name, $booking_id,$pickup,$dropoff, $booking_date
+            const email = $('#email').val()
+            const user_name = $('#firstname').val()
+            const booking_id = $('#booking-id').val()
+            const dropoff = $('#destination').val()
+            const pickup = $('#pickup').val()
+            const booking_date = $('#dateoftrip').val()
+            $.ajax({
+                type: "POST",
+                url: "/confirmation-email",
+                data: {
+                    email: email,
+                    booking_id: booking_id,
+                    dropoff: dropoff,
+                    pickup: pickup,
+                    booking_date: booking_date,
+                },
+                success: (data) => {
+                    console.log(data)
+
+                },
+                error: (xhr, status, error) => {
+                    console.error(error);
+                }
+            });
+        })
 
         // const getTimeAgo =  (timestamp) => {
         //     const currentTime = new Date();

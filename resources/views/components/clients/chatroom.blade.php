@@ -22,22 +22,7 @@
                                 </div>
                             </header>
                             <div class="chat-box">
-                                <div class="chat outgoing">
-                                    <div class="details">
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, provident
-                                            exercitationem ea, repellat corrupti at minus fugit culpa similique nam aut
-                                            atque consequuntur, expedita deleniti eius quos est maxime? Ratione.</p>
-                                    </div>
-                                </div>
-                                <div class="chat incoming">
-                                    <img src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-                                        alt="">
-                                    <div class="details">
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, provident
-                                            exercitationem ea, repellat corrupti at minus fugit culpa similique nam aut
-                                            atque consequuntur, expedita deleniti eius quos est maxime? Ratione.</p>
-                                    </div>
-                                </div>
+                                
                             </div>
                             <form action="#" class="typing-area">
                                 {{-- user who recieve message --}}

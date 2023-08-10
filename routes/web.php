@@ -23,7 +23,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// get user location
+Route::get('/get-Van-Display',[HomeController::class,'getVanCredentials'])->name('van.credentials');
 Route::group(['middleware' => 'guest'], function () {
+    
     // client
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
@@ -66,8 +69,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/register-edit',[RequestController::class, 'editRegistration'])->name('register.edit');
 
     // temp uploads
-    Route::post('/tmp-UploadLicensed',[HomeController::class, 'tmpUploadLicensed']);
-    Route::delete('/tmp-deleteLicensed',[HomeController::class, 'tmpDeleteLicensed']);
+    Route::post('/tmp-UploadLicensed',[RequestController::class, 'tmpUploadLicensed']);
+    Route::delete('/tmp-deleteLicensed',[RequestController::class, 'tmpDeleteLicensed']);
 
     Route::post('/tmp-UploadVehicleProfile',[RequestController::class, 'tmpUploadVehicleProfile']);
     Route::delete('/tmp-deleteVehicleProfile',[RequestController::class, 'tmpDeleteVehicleProfile']);
@@ -108,12 +111,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-location/{id}',[LocationController::class,'getUserLocation'])->name('driver.location');
     // get user location
     Route::get('/get-Driver-Credentials/{id}',[DriverController::class,'getUserCredentials'])->name('driver.credentials');
+    // get booked
+    Route::get('/get-booked',[DriverController::class,'getBookedRequest'])->name('get.booked');
+    
     // chat
     Route::get('/chatroom-driver',[DriverController::class,'chatRoomDriver'])->name('client-dash-chatroom-driver');
     Route::post('/send-client-message',[DriverController::class,'sendClientMessage'])->name('send-message');
     Route::post('/get-client-message',[DriverController::class,'getClientMessage'])->name('get-message');
     Route::post('/get-unseen-message',[DriverController::class,'getUnseenMessage'])->name('get-unseen-message');
     Route::post('/update-unseen-message',[DriverController::class,'updateUnseenMessage'])->name('update-unseen-message');
+    // accept and send confirmation email
+    Route::post('/confirmation-email',[AuthController::class,'confirmationBooking'])->name('accept.booking');
 
     // client home
     Route::get('/client-dashboard',[ClientController::class,'clientHome'])->name('client-dash');
@@ -128,6 +136,7 @@ Route::group(['middleware' => 'auth'], function () {
     
     // Route::get('/chatroom',[ClientController::class,'chatRoom'])->name('client-dash-chatroom');
     Route::post('/get-unseen-message-client',[ClientController::class,'getUnseenMessageClient'])->name('get-unseen-message-client');
+    Route::post('/get-seen-message',[ClientController::class,'getSeenMessageClient'])->name('get-seen-message-client');
 
     // post request client
     Route::post('/post-Client-Booked',[ClientController::class,'clientBooked'])->name('client-dash-booked');

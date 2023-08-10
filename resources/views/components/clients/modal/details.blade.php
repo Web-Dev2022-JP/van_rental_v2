@@ -105,50 +105,8 @@
                                 <a href="{{ route('client-dash-location') }}" class="btn btn-info mb-2">LOCATE DRIVER</a>
                             </div>
                             <div class="col-sm-12 mt-3">
-                                <div class="row">
-                                    <div class="col-sm-6 card" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
-                                        <img src="{{ asset('img/default-van-img.webp') }}" alt="Profile Image"
-                                            class="img-fluid">
-                                    </div>
-                                    <div class="col-sm-6 mt-2">
-                                        <h6 style="color: rgb(2, 47, 61);"><b>DETAILS</b></h6>
-                                        <div class="text-center"
-                                            style="display: flex; align-items:start;justify-content:start;color: rgb(2, 47, 61);">
-                                            <div class="pt-2 me-2">
-                                                <i class='bx bxs-shopping-bags h4' style="font-size: 2em;"></i>
-                                            </div>
-                                            <div class="pt-2">
-                                                <div class="h6 mt-2"> <b>Bags | 8 Bags</b></div>
-                                            </div>
-                                        </div>
-                                        <div class="text-center"
-                                            style="display: flex; align-items:start;justify-content:start;color: rgb(2, 47, 61);">
-                                            <div class="pt-2 me-2">
-                                                <i class='bx bxs-user-plus h4' style="font-size: 2em;"></i>
-                                            </div>
-                                            <div class="pt-2">
-                                                <div class="h6 mt-2"> <b>People | 11 Setas People</b></div>
-                                            </div>
-                                        </div>
-                                        <div class="text-center"
-                                            style="display: flex; align-items:start;justify-content:start;color: rgb(2, 47, 61);">
-                                            <div class="pt-2 me-2">
-                                                <i class='bx bxs-gas-pump h4' style="font-size: 2em;"></i>
-                                            </div>
-                                            <div class="pt-2">
-                                                <div class="h6 mt-2"> <b>Bags | 8 Bags</b></div>
-                                            </div>
-                                        </div>
-                                        <div class="text-center"
-                                            style="display: flex; align-items:start;justify-content:start;color: rgb(2, 47, 61);">
-                                            <div class="pt-2 me-2">
-                                                <i class='bx bxs-thermometer h4' style="font-size: 2em;"></i>
-                                            </div>
-                                            <div class="pt-2">
-                                                <div class="h6 mt-2"> <b>Air Conditioning | Dual Zone</b></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="row" id="vehicle-info">
+                                    
                                 </div>
                             </div>
                         </div>

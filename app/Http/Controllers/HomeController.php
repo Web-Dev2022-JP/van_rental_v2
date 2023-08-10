@@ -118,35 +118,10 @@ class HomeController extends Controller
         ]);
     }
 
-     // uploads tmp
-     public function tmpUploadLicensed(Request $request)
-     {
-        // dd($request);
-         if ($request->hasFile('imageLicensed')) {
-             $image = $request->file('imageLicensed');
-             $file_name = $image->getClientOriginalName();
-             // Generate a unique folder name for storing the image
-             $folder = uniqid('liscensed', true);
- 
-             // Store the image in the specified folder
-             $image->storeAs('liscensed/tmp/' . $folder, $file_name);
-             Temporaryfile::create([
-                 'folder' => $folder,
-                 "file" => $file_name,
-             ]);
-             return $folder;
-         }
-     }
-     // delete
-    public function tmpDeleteLicensed()
-    {
-        $tmp_file = Temporaryfile::where('folder', request()->getContent())->first();
-        if ($tmp_file) {
-            // delete the folder
-            Storage::deleteDirectory('liscensed/tmp/' . $tmp_file->folder);
-            $tmp_file->delete();
-            return response('');
-        }
+    // get Van Credentials
+    public function getVanCredentials(){
+        $vans = Van::with(['user','user.documents'])->orderBy('created_at', 'desc')->get();
+        return response()->json($vans);
     }
 
     // about page

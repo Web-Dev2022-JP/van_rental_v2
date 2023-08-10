@@ -50,6 +50,11 @@
                     <div class="offcanvas-body">
                         <div class="col-sm-12">
                             <div class="mb-2">
+                                <input type="text" id="booking-id" class="form-control" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-2">
                                 <input type="text" id="firstname" class="form-control" placeholder="First Name">
                             </div>
                         </div>
@@ -112,7 +117,7 @@
                             <div class="row">
                                 <div class="col-sm-6" id="success-container">
                                     <div class="mb-3">
-                                        <a href="#" type="button" id="success" class="btn btn-success form-control" >Successful</a>
+                                        <a href="#" type="button" id="accept" class="btn btn-success form-control" >Accept</a>
                                     </div>
                                 </div>
                                 <div class="col-sm-6" id="chat-container">

@@ -146,4 +146,37 @@ class RequestController extends Controller
             return response('');
         }
     }
+
+     // uploads tmp
+     public function tmpUploadLicensed(Request $request)
+     {
+        // dd($request);
+         if ($request->hasFile('imageLicensed')) {
+             $image = $request->file('imageLicensed');
+             $file_name = $image->getClientOriginalName();
+             // Generate a unique folder name for storing the image
+             $folder = uniqid('liscensed', true);
+            // Generate a unique ID for the image (optional but useful for identification)
+            $uploadedId = Str::uuid();
+             // Store the image in the specified folder
+             $image->storeAs('liscensed/tmp/' . $folder, $file_name);
+             Temporaryfile::create([
+                    'uuid'=>$uploadedId,
+                 'folder' => $folder,
+                 "file" => $file_name,
+             ]);
+             return $folder;
+         }
+     }
+     // delete
+    public function tmpDeleteLicensed()
+    {
+        $tmp_file = Temporaryfile::where('folder', request()->getContent())->first();
+        if ($tmp_file) {
+            // delete the folder
+            Storage::deleteDirectory('liscensed/tmp/' . $tmp_file->folder);
+            $tmp_file->delete();
+            return response('');
+        }
+    }
 }

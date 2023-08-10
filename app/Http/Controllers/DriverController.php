@@ -87,7 +87,26 @@ class DriverController extends Controller
         // $messages now contains the fetched messages
 
     }
+    // get booked request
+    public function getBookedRequest(Request $request){
+         // Get the Booked model data with status "pending" for the authenticated user
+        //  $booked = Booked::where('user_id', Auth::user()->id)
+        //  ->where('status', 'pending')
+        //  ->get();
 
+         $booked = DB::table('bookeds')
+                ->where('user_id', Auth::user()->id) // Assuming user_id in documents table
+                ->where('status', 'pending') // Assuming user_id in documents table
+                ->get();
+                // Now, loop through the messages and fetch related documents for each user
+        foreach ($booked as $book) {
+            // Convert created_at timestamp to time ago format
+            $book->created_at = $this->getTimeAgo($book->created_at);
+        }
+        //  dd($booked);
+         
+         return response()->json($booked);
+    }
     // get unseen message
     public function getUnseenMessage(Request $request)
     {

@@ -41,8 +41,8 @@
             <div class="card">
                 <div class="card-header">
                     <a href="{{ route('client-dash') }}" class="bx bx-left-arrow-alt" style="text-decoration: none;font-size:24px;"></a>
-                    <img src="https://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png" class="img-fluid rounded-start" alt="profile">
-                    <span><b>Jhon Doe Location's</b></span>
+                    <img id="profile" src="https://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png" class="img-fluid rounded-start" alt="profile">
+                    <span id="name" ><b>Jhon Doe Location's</b></span>
                 </div>
                 <div class="card-body">
                     <div id="map"></div>
@@ -82,14 +82,14 @@
     crossorigin=""></script>
 
     <script>
-       
+       const baseUrls = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
         // Fetch driver coordinates from localStorage
     function getDriverLocation() {
         let driverCredentials = JSON.parse(localStorage.getItem('driver-location'));
 
-        if (driverCredentials !== null && 'latitude' in driverCredentials && 'longitude' in driverCredentials) {
+        if (driverCredentials !== null && 'latitude' in driverCredentials.locations[0] && 'longitude' in driverCredentials.locations[0]) {
             // Create the map and set the initial view
-            var map = L.map('map').setView([driverCredentials.latitude, driverCredentials.longitude], 12);
+            var map = L.map('map').setView([driverCredentials.locations[0].latitude, driverCredentials.locations[0].longitude], 12);
 
             // Add the OpenStreetMap tile layer
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -98,10 +98,10 @@
             }).addTo(map);
 
             // Create a marker at the specified coordinates
-            var marker = L.marker([driverCredentials.latitude, driverCredentials.longitude]).addTo(map);
+            var marker = L.marker([driverCredentials.locations[0].latitude, driverCredentials.locations[0].longitude]).addTo(map);
 
             // Add a circle with a specific radius around the marker
-            var circle = L.circle([driverCredentials.latitude, driverCredentials.longitude], {
+            var circle = L.circle([driverCredentials.locations[0].latitude, driverCredentials.locations[0].longitude], {
                 radius: 1000, // in meters
                 color: 'blue', // circle color
                 fillOpacity: 0.2 // circle fill opacity
@@ -109,6 +109,11 @@
 
             // Add a tooltip to the marker
             marker.bindTooltip('Driver is located here.').openTooltip();
+            const regex = /(?:liscensed|vehicle|profile)(?=\d)/;
+            const matches = driverCredentials.documents && driverCredentials.documents[0] && driverCredentials.documents[0].path && regex.test(driverCredentials.documents[0].path) ? driverCredentials.documents[0].path : 'profile.png';
+            let extPath =  driverCredentials.documents[0] ? "profile" : "default";
+            $('#profile').attr('src',`${baseUrls}/storage/${extPath}/${matches}`)
+            $('#name').html(`<b>${driverCredentials.vans[0].fullname} Location's</b>`)
         } else {
             // Show a message or fallback content when data is not available
             document.getElementById('map').innerHTML = '<p>No driver location data available.</p>';

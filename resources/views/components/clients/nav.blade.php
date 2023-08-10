@@ -3,20 +3,27 @@
     <div class="container-fluid">
       <a class="navbar-brand text-white mt-1" href="#"><h3 class="red">BATAAN VAN RENTAL</h3></a>
       <div class="d-flex">
+        {{-- guide --}}
         <a class="navbar-toggler border-0 text-white" style="text-decoration: none" data-bs-toggle="offcanvas" data-bs-target="#guidelines" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span class="bx bx-info-square position-relative">
-                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-                    {{-- <span class="visually-hidden">New alerts</span> --}}
-                  </span>
+                {{-- <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                    
+                  </span> --}}
             </span>
           </a>
+          {{-- notification --}}
         <a class="navbar-toggler border-0 text-white" style="text-decoration: none" data-bs-toggle="offcanvas" data-bs-target="#notification" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-            <span class="bx bx-bell position-relative">
-                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-                    {{-- <span class="visually-hidden">New alerts</span> --}}
-                  </span>
+            <span class="bx bx-bell position-relative" id="bell">
+                
             </span>
           </a>
+          {{-- message history --}}
+        <a class="navbar-toggler border-0 text-white" style="text-decoration: none" data-bs-toggle="offcanvas" data-bs-target="#messages" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="bx bx-chat position-relative" id="chat">
+                
+            </span>
+          </a>
+          {{-- navigation --}}
           <a class="navbar-toggler border-0 text-white" style="text-decoration: none" data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span>{{ Auth::user()->firstname }}</span>
             <span class="bx bx-dots-vertical-rounded"></span>

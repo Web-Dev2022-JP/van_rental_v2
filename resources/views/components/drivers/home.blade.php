@@ -877,13 +877,13 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Status</th>
                             <th>Contact No.</th>
                             <th>Email</th>
                             <th>Destination</th>
                             <th>Pick Up</th>
                             <th>Land Mark</th>
                             <th>Date of Trip</th>
-                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -970,6 +970,11 @@
                             }
                         },
                         {
+                            data: "status", render(data,type,row,meta){
+                                return `<p><span class="badge ${row.status === 'pending' ? 'text-bg-warning' : row.status === 'accepted' ? 'text-bg-success' : 'text-bg-danger'}">${row.status}</span></p>`
+                            }
+                        },
+                        {
                             data: "contact",
                             render(data, type, row, meta) {
                                 return `<p>+63${row.contact}</p>`
@@ -990,11 +995,7 @@
                         {
                             data: "dateoftrip"
                         },
-                        {
-                            data: "status", render(data,type,row,meta){
-                                return `<p><span class="badge ${row.status === 'pending' ? 'text-bg-warning' : status === 'accepted' ? 'text-bg-success' : 'text-bg-danger'}">${row.status}</span></p>`
-                            }
-                        },
+                        
                         {
                             data: "user_id",
                             render(data, type, row, meta) {
@@ -1041,6 +1042,9 @@
                 const foundObject = data.find(obj => obj.id === view_id);
                 // console.log(foundObject)
                 $('#customerInfo').offcanvas('show')
+                // Determine the class based on status
+                var statusClass = foundObject.status === "pending" ? "text-white border border-danger bg-danger" : "text-white border border-success bg-success";
+                $('#booking-id').val("BKD-"+foundObject.id + ` >> ${foundObject.status.toUpperCase()} STATUS`).addClass(statusClass); // Add the determined class
                 $('#firstname').val(foundObject.firstname)
                 $('#middlename').val(foundObject.middlename)
                 $('#lastname').val(foundObject.lastname)
@@ -1052,7 +1056,7 @@
                 $('#dateoftrip').val(foundObject.dateoftrip)
                 $('#pax').val(foundObject.pax + ' Person')
                 $('#daysandhours').val(foundObject.daysandhours + ' Hour/s')
-                $('#time').val(convertTo12HourFormat(foundObject.pickuptime))
+                $('#time').val("Pickup-time >> "+convertTo12HourFormat(foundObject.pickuptime))
                 $('#chat-driver-side').attr('value',foundObject.sender_id)
             })
 
