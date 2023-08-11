@@ -585,65 +585,65 @@
 
         }
 
-        const getBooking = async () => {
-            $.ajax({
-                type: "GET",
-                url: "/get-booked",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: (data) => {
-                    console.log(data)
-                    // chatBox.html(data);
-                    var dots = ''
-                    var html2 = ''
-                    // Generate HTML for the latest messages
-                    data.forEach(msg => {
-                        console.log(msg)
-                        const regex = /(?:liscensed|vehicle|profile)(?=\d)/;
-                        const matches = msg.documents && msg.documents[0] && msg.documents[0]
-                            .path && regex.test(msg.documents[0].path) ? msg.documents[0].path :
-                            'profile.png';
-                        let extPath = msg.documents ? "profile" : "default";
-                        dots = `<span class="position-absolute top-2 start-200 translate-middle p-1 bg-danger border border-light rounded-circle">
-                                    </span>`
-                        html2 += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
-                                    <div class="row g-0">
-                                        <div class="col-md-2 justify-contents">
-                                            <img class="img-fluid rounded-start"
-                                                src="${baseUrls}/storage/${extPath}/${matches}"
-                                                alt="">
-                                        </div>
-                                        <div class="col-md-8" style="height: fit-content">
-                                            <div class="card-body">
-                                                <span class="card-title"><b>${msg.firstname} ${msg.lastname}</b></span>
-                                                <span class="card-text">has a booking request.</span><br>
-                                                <span class="card-text">status <span class="text-warning">${msg.status}</span>.</span><br>
-                                                <span class="card-text"><small class="text-body-secondary text-secondary">${msg.created_at}</small></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>`
-                        //   }else{
-                        //     html += `<div class="chat outgoing">
-                    //             <div class="details">
-                    //                 <p>'${msg.msg}'</p>
-                    //             </div>
-                    //             </div>`
-                        //   }
-                    });
-                    // Clear the existing content of #notif-card
-                    // 
-                    $('#bell').html(dots)
-                    // $('.bx-message-dots').html(dots)
-                    $('#notif-card').html(html2)
+        // const getBooking = async () => {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "/get-booked",
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         success: (data) => {
+        //             console.log(data)
+        //             // chatBox.html(data);
+        //             var dots = ''
+        //             var html2 = ''
+        //             // Generate HTML for the latest messages
+        //             data.forEach(msg => {
+        //                 console.log(msg)
+        //                 const regex = /(?:liscensed|vehicle|profile)(?=\d)/;
+        //                 const matches = msg.documents && msg.documents[0] && msg.documents[0]
+        //                     .path && regex.test(msg.documents[0].path) ? msg.documents[0].path :
+        //                     'profile.png';
+        //                 let extPath = msg.documents ? "profile" : "default";
+        //                 dots = `<span class="position-absolute top-2 start-200 translate-middle p-1 bg-danger border border-light rounded-circle">
+        //                             </span>`
+        //                 html2 += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
+        //                             <div class="row g-0">
+        //                                 <div class="col-md-2 justify-contents">
+        //                                     <img class="img-fluid rounded-start"
+        //                                         src="${baseUrls}/storage/${extPath}/${matches}"
+        //                                         alt="">
+        //                                 </div>
+        //                                 <div class="col-md-8" style="height: fit-content">
+        //                                     <div class="card-body">
+        //                                         <span class="card-title"><b>${msg.firstname} ${msg.lastname}</b></span>
+        //                                         <span class="card-text">has a booking request.</span><br>
+        //                                         <span class="card-text">status <span class="text-warning">${msg.status}</span>.</span><br>
+        //                                         <span class="card-text"><small class="text-body-secondary text-secondary">${msg.created_at}</small></span>
+        //                                     </div>
+        //                                 </div>
+        //                             </div>
+        //                         </div>`
+        //                 //   }else{
+        //                 //     html += `<div class="chat outgoing">
+        //             //             <div class="details">
+        //             //                 <p>'${msg.msg}'</p>
+        //             //             </div>
+        //             //             </div>`
+        //                 //   }
+        //             });
+        //             // Clear the existing content of #notif-card
+        //             // 
+        //             $('#bell').html(dots)
+        //             // $('.bx-message-dots').html(dots)
+        //             $('#notif-card').html(html2)
 
-                },
-                error: (xhr, status, error) => {
-                    console.error(error);
-                }
-            });
-        }
+        //         },
+        //         error: (xhr, status, error) => {
+        //             console.error(error);
+        //         }
+        //     });
+        // }
 
         // render data
         const renderData = (data) => {
@@ -696,7 +696,7 @@
                                 </div>`;
                     } else {
                         // Render booking request
-                        // if (item.status === 'pending') {
+                        if (item.status === 'pending') {
                         html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="BKD-${item.id}">
                                     <div class="row g-0">
                                         <div class="col-md-2 justify-contents">
@@ -714,7 +714,20 @@
                                         </div>
                                     </div>
                                 </div>`;
-                        // }
+                        }else{
+                            dots = ``
+                            html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;">
+                                                <div class="row g-0">
+                                                    
+                                                    <div class="col-md-12" style="height: fit-content">
+                                                        <div class="card-body">
+                                                            <span class="card-title text-secondary"><b>There's is no Notification's</b></span>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                        }
                     }
                 });
             } else {

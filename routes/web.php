@@ -113,6 +113,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-Driver-Credentials/{id}',[DriverController::class,'getUserCredentials'])->name('driver.credentials');
     // get booked
     Route::get('/get-booked',[DriverController::class,'getBookedRequest'])->name('get.booked');
+    // get booked by id
+    Route::get('/get-booked/{id}',[DriverController::class,'getBookedByIdRequest'])->name('get.booked.id');
     
     // chat
     Route::get('/chatroom-driver',[DriverController::class,'chatRoomDriver'])->name('client-dash-chatroom-driver');

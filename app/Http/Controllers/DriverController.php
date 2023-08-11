@@ -94,19 +94,40 @@ class DriverController extends Controller
         //  ->where('status', 'pending')
         //  ->get();
 
-         $booked = DB::table('bookeds')
-                ->where('user_id', Auth::user()->id) // Assuming user_id in documents table
-                ->where('status', 'pending') // Assuming user_id in documents table
-                ->get();
+        $booked = DB::table('bookeds')
+        ->where(function ($query) {
+            $userId = Auth::user()->id;
+            $query->where('user_id', $userId)
+                ->orWhere('sender_id', $userId);
+        })
+        ->where('status', '!=', 'successful')
+        ->get();
+    
                 // Now, loop through the messages and fetch related documents for each user
         foreach ($booked as $book) {
             // Convert created_at timestamp to time ago format
-            $book->created_at = $this->getTimeAgo($book->created_at);
+            $book->created_at = $this->getTimeAgo($book->updated_at);
         }
         //  dd($booked);
          
          return response()->json($booked);
     }
+    // get booked by id request
+    public function getBookedByIdRequest(Request $request, $id) {
+        $booked = DB::table('bookeds')
+            ->where('id', $id)
+            ->where('status', '!=', 'successful')
+            ->get();
+    
+        // Now, loop through the booked items and modify the created_at timestamp
+        foreach ($booked as $book) {
+            // Convert created_at timestamp to time ago format
+            $book->created_at = $this->getTimeAgo($book->created_at); // Assuming you meant to use created_at here
+        }
+    
+        return response()->json($booked);
+    }
+    
     // get unseen message
     public function getUnseenMessage(Request $request)
     {
