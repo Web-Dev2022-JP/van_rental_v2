@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotificationEvent;
 use App\Models\Chat;
 use App\Models\User;
 use App\Models\Booked;
@@ -14,7 +15,7 @@ class DriverController extends Controller
     public function getUserCredentials(Request $request, $id)
     {
         // dd($id);
-        $driver = User::with(['documents', 'vans', 'locations'])->find($id);
+        $driver = User::with(['documents', 'vans', 'locations','bookeds'])->find($id);
         // If the user with the given ID exists
         if ($driver) {
             // Now you can access the user's documents, vans, and locations
@@ -51,6 +52,8 @@ class DriverController extends Controller
         $message->outgoing_msg_id = Auth::user()->id;
         $message->msg = $request->message;
         $message->save();
+
+        event(new NotificationEvent(Auth::user()->name));
         return response()->json(['status' => 'success']);
     }
 
@@ -87,6 +90,58 @@ class DriverController extends Controller
         // $messages now contains the fetched messages
 
     }
+    // public function getClientMessageDriver(Request $request)
+    // {
+        
+    //     $outgoing_id = Auth::user()->id;
+    // $incoming_id = $request->incoming_id;
+    
+    // $messages = DB::table('chats')
+    //     ->select('chats.*', 'users.*')
+    //     ->leftJoin('users', 'users.id', '=', 'chats.outgoing_msg_id')
+    //     ->leftJoin('documents', 'documents.user_id', '=', 'users.id')
+    //     ->where(function ($query) use ($outgoing_id, $incoming_id) {
+    //         $query->where('outgoing_msg_id', $outgoing_id)
+    //             ->where('incoming_msg_id', $incoming_id);
+    //     })
+    //     ->orWhere(function ($query) use ($outgoing_id, $incoming_id) {
+    //         $query->where('outgoing_msg_id', $incoming_id)
+    //             ->where('incoming_msg_id', $outgoing_id);
+    //     })
+    //     ->orderBy('chats.id')
+    //     ->get();
+
+    // // Create an associative array to hold documents for each user
+    // $userDocumentsMap = [];
+
+    // // Loop through the messages and populate the userDocumentsMap
+    // foreach ($messages as $message) {
+    //     $user_id = $message->id; // Change this to the appropriate user_id field
+
+    //     if (!isset($userDocumentsMap[$user_id])) {
+    //         $userDocumentsMap[$user_id] = [];
+    //     }
+
+    //     $userDocuments = DB::table('documents')
+    //         ->where('user_id', $user_id) // Assuming user_id in documents table
+    //         ->get();
+
+    //     $userDocumentsMap[$user_id] = $userDocuments;
+    // }
+
+    // // Attach the documents to the respective message objects
+    // foreach ($messages as $message) {
+    //     $user_id = $message->id; // Change this to the appropriate user_id field
+
+    //     if (isset($userDocumentsMap[$user_id])) {
+    //         $message->documents = $userDocumentsMap[$user_id];
+    //     }
+    // }
+    // // dd($messages);
+
+    // return response()->json($messages);
+
+    // }
     // get booked request
     public function getBookedRequest(Request $request){
          // Get the Booked model data with status "pending" for the authenticated user
@@ -123,6 +178,20 @@ class DriverController extends Controller
         foreach ($booked as $book) {
             // Convert created_at timestamp to time ago format
             $book->created_at = $this->getTimeAgo($book->created_at); // Assuming you meant to use created_at here
+
+            // new added
+                    // Retrieve documents related to the user_id of this booked item
+            $documents = DB::table('documents')
+                ->where('user_id', $book->user_id)
+                ->get();
+
+            $book->documents = $documents; // Attach documents to the booked item
+
+            $users = DB::table('users')
+                ->where('id', $book->user_id)
+                ->get();
+
+            $book->users = $users; // Attach documents to the booked item
         }
     
         return response()->json($booked);

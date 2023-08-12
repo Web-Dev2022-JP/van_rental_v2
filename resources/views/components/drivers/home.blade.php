@@ -806,9 +806,9 @@
                         <div class="col-sm-8 col-8">
                             <div class="d-flex flex-column justify-content-center h-100">
                                 <span class="mx-auto"><b>Vehicle Maintenance</b></span>
-                                <span class="mx-auto text-danger">Not Available</span>
+                                <span class="mx-auto text-danger" id="maintenance-display">Not Available</span>
                                 <div class="d-flex mx-auto">
-                                    <a class="mr-1 me-1" href="#">Set Status</a>
+                                    <a class="mr-1 me-1" href="#" data-bs-toggle="offcanvas" data-bs-target="#maintenance">Set Status</a>
                                     {{-- <span class="text-success">|</span> --}}
                                     {{-- <a class="ml-1 mx-1" id="vehicle-status" href="#">Status</a> --}}
                                 </div>
@@ -939,164 +939,164 @@
     </div> --}}
 @endsection
 
-@section('script')
+{{-- @section('script')
     <script>
-        let dataTable = null;
+        // let dataTable = null;
 
-        const getAllBooked = async (response) => {
-            if (!dataTable) {
-                dataTable = $('#booked').DataTable({
-                    "data": response,
-                    "responsive": true,
-                    dom: "<'row'<'col-sm-12 col-md-4'l><'col-sm-12 col-md-4'B><'col-sm-12 col-md-4'f>>" +
-                        "<'row'<'col-sm-12'rt>>" +
-                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                    buttons: [
-                        // 'copy', 'spacer', 'csv', 'spacer', 'excel', 'spacer', 'pdf',
-                        // 'spacer', 
-                        {
-                            extend: 'print',
-                            text: 'Print',
-                            exportOptions: {
-                                columns: [0, 1, 2, 3, 4, 5,
-                                6], // Specify the columns to include in the print view
-                            }
-                        },
-                    ],
-                    "columns": [{
-                            data: "id",
-                            render(data, type, row, meta) {
-                                return `<p>BKD-${row.id}</p>`
-                            }
-                        },
-                        {
-                            data: "status", render(data,type,row,meta){
-                                return `<p><span class="badge ${row.status === 'pending' ? 'text-bg-warning' : row.status === 'accepted' ? 'text-bg-success' : 'text-bg-danger'}">${row.status}</span></p>`
-                            }
-                        },
-                        {
-                            data: "contact",
-                            render(data, type, row, meta) {
-                                return `<p>+63${row.contact}</p>`
-                            }
-                        },
-                        {
-                            data: "email"
-                        },
-                        {
-                            data: "destination"
-                        },
-                        {
-                            data: "pickup"
-                        },
-                        {
-                            data: "landmark"
-                        },
-                        {
-                            data: "dateoftrip"
-                        },
+        // const getAllBooked = async (response) => {
+        //     if (!dataTable) {
+        //         dataTable = $('#booked').DataTable({
+        //             "data": response,
+        //             "responsive": true,
+        //             dom: "<'row'<'col-sm-12 col-md-4'l><'col-sm-12 col-md-4'B><'col-sm-12 col-md-4'f>>" +
+        //                 "<'row'<'col-sm-12'rt>>" +
+        //                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        //             buttons: [
+        //                 // 'copy', 'spacer', 'csv', 'spacer', 'excel', 'spacer', 'pdf',
+        //                 // 'spacer', 
+        //                 {
+        //                     extend: 'print',
+        //                     text: 'Print',
+        //                     exportOptions: {
+        //                         columns: [0, 1, 2, 3, 4, 5,
+        //                         6], // Specify the columns to include in the print view
+        //                     }
+        //                 },
+        //             ],
+        //             "columns": [{
+        //                     data: "id",
+        //                     render(data, type, row, meta) {
+        //                         return `<p>BKD-${row.id}</p>`
+        //                     }
+        //                 },
+        //                 {
+        //                     data: "status", render(data,type,row,meta){
+        //                         return `<p><span class="badge ${row.status === 'pending' ? 'text-bg-warning' : row.status === 'accepted' ? 'text-bg-success' : 'text-bg-danger'}">${row.status}</span></p>`
+        //                     }
+        //                 },
+        //                 {
+        //                     data: "contact",
+        //                     render(data, type, row, meta) {
+        //                         return `<p>+63${row.contact}</p>`
+        //                     }
+        //                 },
+        //                 {
+        //                     data: "email"
+        //                 },
+        //                 {
+        //                     data: "destination"
+        //                 },
+        //                 {
+        //                     data: "pickup"
+        //                 },
+        //                 {
+        //                     data: "landmark"
+        //                 },
+        //                 {
+        //                     data: "dateoftrip"
+        //                 },
                         
-                        {
-                            data: "user_id",
-                            render(data, type, row, meta) {
-                                var a = `
-                            <a href="#" value="${row.id}" data-id="${row.sender_id}" id="view" class="">view more</a>
-                        `;
-                                return a;
-                            }
-                        },
-                    ]
-                });
-            } else {
-                dataTable.clear().rows.add(response).draw(); // Update the data and redraw the table
-            }
-        }
+        //                 {
+        //                     data: "user_id",
+        //                     render(data, type, row, meta) {
+        //                         var a = `
+        //                     <a href="#" value="${row.id}" data-id="${row.sender_id}" id="view" class="">view more</a>
+        //                 `;
+        //                         return a;
+        //                     }
+        //                 },
+        //             ]
+        //         });
+        //     } else {
+        //         dataTable.clear().rows.add(response).draw(); // Update the data and redraw the table
+        //     }
+        // }
 
-        const sendRequest = async () => {
-            const id = $('#driver-id').val();
-            $.ajax({
-                url: `/getAllBooked/${id}`,
-                type: "GET",
-                dataType: "json",
-                success: function(res) {
-                    getAllBooked(res);
-                    clickHandler(res)
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        }
+        // const sendRequest = async () => {
+        //     const id = $('#driver-id').val();
+        //     $.ajax({
+        //         url: `/getAllBooked/${id}`,
+        //         type: "GET",
+        //         dataType: "json",
+        //         success: function(res) {
+        //             getAllBooked(res);
+        //             clickHandler(res)
+        //         },
+        //         error: function(error) {
+        //             console.log(error);
+        //         }
+        //     });
+        // }
 
-        $(document).ready(function() {
-            sendRequest();
-            setInterval(sendRequest, 15000); // Refresh the data every 15 seconds
+        // $(document).ready(function() {
+        //     sendRequest();
+        //     setInterval(sendRequest, 15000); // Refresh the data every 15 seconds
 
-        });
+        // });
 
-        const clickHandler = async (data) => {
-            // console.log(data)
-            $(document).on('click', '#view', function(e) {
-                var view_id = parseInt($(this).attr("value"), 10);
-                // Use the find() method to find the object with the specified ID
-                const foundObject = data.find(obj => obj.id === view_id);
-                // console.log(foundObject)
-                $('#customerInfo').offcanvas('show')
-                // Determine the class based on status
-                var statusClass = foundObject.status === "pending" ? "text-white border border-danger bg-danger" : "text-white border border-success bg-success";
-                $('#booking-id').val("BKD-"+foundObject.id + ` >> ${foundObject.status.toUpperCase()} STATUS`).addClass(statusClass); // Add the determined class
-                $('#firstname').val(foundObject.firstname)
-                $('#middlename').val(foundObject.middlename)
-                $('#lastname').val(foundObject.lastname)
-                $('#contact').val(foundObject.contact)
-                $('#email').val(foundObject.email)
-                $('#destination').val(foundObject.destination)
-                $('#pickup').val(foundObject.pickup)
-                $('#landmark').val(foundObject.landmark)
-                $('#dateoftrip').val(foundObject.dateoftrip)
-                $('#pax').val(foundObject.pax + ' Person')
-                $('#daysandhours').val(foundObject.daysandhours + ' Hour/s')
-                $('#time').val("Pickup-time >> "+convertTo12HourFormat(foundObject.pickuptime))
-                $('#chat-driver-side').attr('value',foundObject.sender_id)
-            })
+        // const clickHandler = async (data) => {
+        //     // console.log(data)
+        //     $(document).on('click', '#view', function(e) {
+        //         var view_id = parseInt($(this).attr("value"), 10);
+        //         // Use the find() method to find the object with the specified ID
+        //         const foundObject = data.find(obj => obj.id === view_id);
+        //         // console.log(foundObject)
+        //         $('#customerInfo').offcanvas('show')
+        //         // Determine the class based on status
+        //         var statusClass = foundObject.status === "pending" ? "text-white border border-danger bg-danger" : "text-white border border-success bg-success";
+        //         $('#booking-id').val("BKD-"+foundObject.id + ` >> ${foundObject.status.toUpperCase()} STATUS`).addClass(statusClass); // Add the determined class
+        //         $('#firstname').val(foundObject.firstname)
+        //         $('#middlename').val(foundObject.middlename)
+        //         $('#lastname').val(foundObject.lastname)
+        //         $('#contact').val(foundObject.contact)
+        //         $('#email').val(foundObject.email)
+        //         $('#destination').val(foundObject.destination)
+        //         $('#pickup').val(foundObject.pickup)
+        //         $('#landmark').val(foundObject.landmark)
+        //         $('#dateoftrip').val(foundObject.dateoftrip)
+        //         $('#pax').val(foundObject.pax + ' Person')
+        //         $('#daysandhours').val(foundObject.daysandhours + ' Hour/s')
+        //         $('#time').val("Pickup-time >> "+convertTo12HourFormat(foundObject.pickuptime))
+        //         $('#chat-driver-side').attr('value',foundObject.sender_id)
+        //     })
 
             
-        }
+        // }
 
-        // convert time to AM/PM
-        const convertTo12HourFormat = (time) => {
-            // Parse the time into hours and minutes
-            const [hours, minutes] = time.split(":").map(Number);
+        // // convert time to AM/PM
+        // const convertTo12HourFormat = (time) => {
+        //     // Parse the time into hours and minutes
+        //     const [hours, minutes] = time.split(":").map(Number);
 
-            // Determine if it's AM or PM
-            const period = hours >= 12 ? "PM" : "AM";
+        //     // Determine if it's AM or PM
+        //     const period = hours >= 12 ? "PM" : "AM";
 
-            // Convert hours to 12-hour format
-            const hours12Format = hours % 12 || 12;
+        //     // Convert hours to 12-hour format
+        //     const hours12Format = hours % 12 || 12;
 
-            // Return the time in AM/PM format
-            return `${hours12Format}:${minutes.toString().padStart(2, "0")} ${period}`;
-        }
+        //     // Return the time in AM/PM format
+        //     return `${hours12Format}:${minutes.toString().padStart(2, "0")} ${period}`;
+        // }
 
-        // testing phase
-        const NotifyUser = async (message) => {
-            if ('Notification' in window) {
-                Notification.requestPermission()
-                    .then(permission => {
-                        if (permission === 'granted') {
-                            // Permission granted, you can now show notifications
-                            const notification = new Notification('Title', {
-                                body: 'This is the notification message.',
-                                icon: 'path/to/icon.png' // Optional
-                            });
+        // // testing phase
+        // const NotifyUser = async (message) => {
+        //     if ('Notification' in window) {
+        //         Notification.requestPermission()
+        //             .then(permission => {
+        //                 if (permission === 'granted') {
+        //                     // Permission granted, you can now show notifications
+        //                     const notification = new Notification('Title', {
+        //                         body: 'This is the notification message.',
+        //                         icon: 'path/to/icon.png' // Optional
+        //                     });
 
-                            // You can also handle notification events
-                            notification.onclick = () => {
-                                // Handle notification click
-                            };
-                        }
-                    });
-            }
-        }
+        //                     // You can also handle notification events
+        //                     notification.onclick = () => {
+        //                         // Handle notification click
+        //                     };
+        //                 }
+        //             });
+        //     }
+        // }
     </script>
-@endsection
+@endsection --}}

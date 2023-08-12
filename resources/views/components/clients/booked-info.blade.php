@@ -50,6 +50,26 @@
                     <div class="offcanvas-body">
                         <div class="col-sm-12">
                             <div class="mb-2">
+                                <input type="text" id="payment-status" class="form-control" placeholder="Payment">
+                            </div>
+                        </div>
+                        <div class="card border active mb-3 rounded notification-container" style="max-width: 540px;" data-id="${item.outgoing_msg_id}">
+                            <div class="row g-0">
+                                <div class="col-md-2 justify-contents">
+                                    <img class="img-fluid rounded-start" src="#" alt="" id="profile-payments">
+                                </div>
+                                <div class="col-md-8" style="height: fit-content">
+                                    <div class="card-body">
+                                        <span class="card-title" id="name-payments"><b>jaypee Quintana</b></span><br>
+                                        <span class="card-text" id="gcash-payments">GCASH : 09270316695</span>
+                                        {{-- <span class="card-text bx bxs-receipt"><small class="text-body-secondary text-secondary bx bxs-receipt"></small></span> --}}
+                                    </div>
+                                </div>
+                
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-2">
                                 <input type="text" id="booking-id" class="form-control" placeholder="First Name">
                             </div>
                         </div>
@@ -115,14 +135,14 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6" id="success-container">
+                                {{-- <div class="col-sm-6" id="success-container">
                                     <div class="mb-3">
-                                        <a href="#" type="button" id="accept" class="btn btn-success form-control" >Accept</a>
+                                        <a href="#" type="button" id="accept" class="btn btn-info form-control text-white">Proceed to payment <span class="bx bxl-paypal"> Paypal</span></a>
                                     </div>
-                                </div>
-                                <div class="col-sm-6" id="chat-container">
+                                </div> --}}
+                                <div class="col-sm-12" id="chat-container">
                                     <div class="mb-3">
-                                        <a href="#" type="button" id="chat-driver-side" class="btn btn-success form-control">Chat</a>
+                                        <a href="#" type="button" id="chat-driver-side" class="btn btn-info text-white form-control bx bxs-receipt p-2">Send the reciept</a>
                                     </div>
                                 </div>
                             </div>

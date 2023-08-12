@@ -65,7 +65,16 @@
   .days li.inactive{
     color: #aaa;
   }
+  /* current day */
   .days li.active{
+    color: #fff;
+  }
+  /* booked day */
+  .days li.active-booked{
+    color: #fff;
+  }
+  /* booked day pending*/
+  .days li.active-pending{
     color: #fff;
   }
   .days li::before{
@@ -73,14 +82,20 @@
     content: "";
     left: 15%;
     top: 50%;
-    height: 40px;
-    width: 40px;
+    height: 35px;
+    width: 35px;
     z-index: -1;
     border-radius: 50%;
-    transform: translate(-58%, -50%);
+    transform: translate(-50%, -50%);
   }
   .days li.active::before{
-    background: rgb(10, 139, 179);
+    background: rgb(43, 194, 240);
+  }
+  .days li.active-booked::before{
+    background: rgb(5, 109, 48);
+  }
+  .days li.active-pending::before{
+    background: rgb(224, 174, 7);
   }
   .days li:not(.active):hover::before{
     background: #f2f2f2;

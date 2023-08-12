@@ -85,8 +85,15 @@
                                     <li>Sat</li>
                                 </ul>
                                 <ul class="days"></ul>
+                                <ul class="legends">
+                                    <span class="badge text-bg-warning me-2">Pending</span>
+                                    <span class="badge text-bg-info me-2">current day</span>
+                                    <span class="badge text-bg-success me-2">booked</span>
+                                  
+                                </ul>
                             </div>
                         </div>
+                        
                     </div>
                     {{-- @csrf --}}
                     <div class="col-sm-7 p-3 profile-details">

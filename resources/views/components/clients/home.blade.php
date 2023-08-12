@@ -245,7 +245,7 @@
                                         </div>
                                     </div>`
 
-                           
+
                             $('.profile-contents').html(profileContents)
                             $('#vehicle-info').html(vehicle)
                             // $('#about-page').html(about)
@@ -282,48 +282,71 @@
 
             const getCalendarDays = async (id) => {
                 const curDate = $('.current-date').text()
-                // console.log(curDate)
-                $('li.d').each(function(index, element) {
-                    const dayText = $(element).text();
+                const dataInLocal = JSON.parse(localStorage.getItem('driver-location'))
+                console.log('dwadwadwa')
+                console.log(dataInLocal.bookeds)
+                dataInLocal.bookeds.forEach(day => {
+                    // console.log(day.dateoftrip)
+                    let targetDate = new Date(day.dateoftrip);
+                    let dayOfMonth = targetDate.getDate();
 
-                    // Check if the element has the 'inactive' class
-                    if ($(element).hasClass('inactive')) {
-                        // If the element has the 'inactive' class, ignore it and do not add the click event
-                        console.log('Ignoring inactive day:', dayText);
-                        return; // Skip this iteration and proceed to the next li element
-                    }
+                    console.log(dayOfMonth)
+                    // console.log(curDate)
+                    $('li.d').each(function(index, element) {
+                        const dayText = $(element).text();
 
-                    $(element).on('click', () => {
-                        $("#inquiry").modal({
-                            backdrop: "static",
-                            keyboard: false, // Optional: Disable closing the modal with the keyboard
-                        });
-                        // Show the element with ID "details"
-                        // Show the element with ID "details"
-                        $('#details').modal('hide');
-                        $('#inquiry').modal('show');
+                        // Check if the element has the 'inactive' class
+                        if ($(element).hasClass('inactive')) {
+                            // If the element has the 'inactive' class, ignore it and do not add the click event
+                            console.log('Ignoring inactive day:', dayText);
+                            return; // Skip this iteration and proceed to the next li element
+                        }
 
-                        const date_object = new Date($(element).text() + curDate);
-                        // const options = { day: "numeric", month: "long", year: "numeric" };
-                        // const formatted_date = date_object.toLocaleDateString("en-US", options);
-                        // console.log(formatted_date);  // Output: August 4, 2023
+                        if(dayText == dayOfMonth && day.status == 'pending'){
+                            $(element).addClass('active-pending')
+                        }
 
-                        const month = (date_object.getMonth() + 1).toString().padStart(2,
-                            "0");
-                        const day = date_object.getDate().toString().padStart(2, "0");
-                        const year = date_object.getFullYear();
+                        if(dayText == dayOfMonth && day.status == 'accepted'){
+                            $(element).addClass('active-booked')
+                        }
+                        
 
-                        const formatted_date = `${year}-${month}-${day}`;
-                        console.log(formatted_date)
+                        $(element).on('click', () => {
+                            $("#inquiry").modal({
+                                backdrop: "static",
+                                keyboard: false, // Optional: Disable closing the modal with the keyboard
+                            });
+                            // Show the element with ID "details"
+                            // Show the element with ID "details"
+                            $('#details').modal('hide');
+                            $('#inquiry').modal('show');
 
-                        $(document).ready(function() {
-                            // initialize form
-                            $("#dateoftrip").val(formatted_date);
-                            $('#driver-id').val(id)
-                        });
+                            const date_object = new Date($(element).text() +
+                                curDate);
+                            // const options = { day: "numeric", month: "long", year: "numeric" };
+                            // const formatted_date = date_object.toLocaleDateString("en-US", options);
+                            // console.log(formatted_date);  // Output: August 4, 2023
 
-                    })
+                            const month = (date_object.getMonth() + 1).toString()
+                                .padStart(2,
+                                    "0");
+                            const day = date_object.getDate().toString().padStart(2,
+                                "0");
+                            const year = date_object.getFullYear();
+
+                            const formatted_date = `${year}-${month}-${day}`;
+                            console.log(formatted_date)
+
+                            $(document).ready(function() {
+                                // initialize form
+                                $("#dateoftrip").val(formatted_date);
+                                $('#driver-id').val(id)
+                            });
+
+                        })
+                    });
                 });
+
             }
 
             const back = async () => {
@@ -364,9 +387,15 @@
                             console.log(data)
                             var html = ''
                             data.forEach(van => {
+                                const maintenanceBadge = van.user.maintenances[0]
+                                    .description === 'maintenance' ?
+                                    `<span class="badge position-absolute top-0 end-0 p-3 text-bg-warning">Maintenance Repair</span>` :
+                                    '';
                                 html += `
                                 <div class="col-sm-3 van-col">
+                                    
                                     <div class="card van-card">
+                                        <span class="badge position-absolute top-0 end-0 p-3 text-bg-warning">${van.user.maintenances[0].description}</span>
                                         <img src="${baseUrl}/storage/vehicle/${van.user.documents[1].path}" class="card-img-top" alt="van">
                                         <div class="card-body text-center">
                                             <h5 class="card-title h3 mb-5">${van.model}</h5>

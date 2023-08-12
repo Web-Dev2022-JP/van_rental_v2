@@ -37,7 +37,7 @@
 
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-    <script src="{{ asset('assets/js/app.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/app.js') }}"></script> --}}
     <script src="{{ asset('assets/driver/driver.js') }}"></script>
     <script src="{{ asset('assets/driver/nav.js') }}"></script>
     <script src="{{ asset('assets/driver/location.js') }}"></script>

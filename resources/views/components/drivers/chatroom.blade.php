@@ -280,9 +280,9 @@
                             <form action="#" class="typing-area">
                                 {{-- user who recieve message --}}
                                 <input type="number" class="incoming_id" id="incoming_id" name="incoming_id" hidden>
-                                <input type="text" name="message" class="input-field"
+                                <input type="text" name="message" class="input-field-driver"
                                     placeholder="Type a message here..." autocomplete="off">
-                                <button><i class="bx bxs-paper-plane"></i></button>
+                                <button id="driver-btn"><i class="bx bxs-paper-plane"></i></button>
                             </form>
                         </section>
                         {{-- <div class="wrappers">

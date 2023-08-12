@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Van;
 // use App\Models\Client;
-use App\Mail\OTPMail;
+use App\Models\User;
 // use App\Models\Booked;
 
+use App\Mail\OTPMail;
+use App\Models\Booked;
 use App\Models\Document;
-use App\Models\Van;
 use App\Models\Verifytoken;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
 use App\Models\Temporaryfile;
+use App\Events\NotificationEvent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BookingConfirmationMail;
-use App\Models\Booked;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -549,7 +550,7 @@ class AuthController extends Controller
             $get_booking_date = $request->booking_date;
             // $get_total_amount = $request->total_amount;
             Mail::to($get_user_email)->send(new BookingConfirmationMail($get_user_name, $get_booking_id, $get_pickup, $get_dropoff, $get_booking_date));
-
+            event(new NotificationEvent(Auth::user()->name));
             return response()->json(['status' => 'succecss']);
         }
     }

@@ -416,9 +416,24 @@
     @yield('footer')
 
     @yield('script')
-
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
         const baseUrls = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+        
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('f6459200cae7a43a20f0', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('notifaction-channel');
+        channel.bind('notify-user', function(data) {
+            console.log(JSON.stringify(data.data));
+            getSeenMessage()
+            getUnseenMessage()
+        });
+
         // chat functionality
         incoming_id = 0,
             $(document).on('click', '#chat-driver', function(e) {
@@ -496,10 +511,21 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: (data) => {
+                    // Remove duplicates from the data array based on a unique identifier (e.g., message ID)
+                    const uniqueData = [];
+                    const uniqueIds = new Set();
+
+                    data.forEach(msg => {
+                        // Assuming each message has a unique identifier like "msg"
+                        if (!uniqueIds.has(msg.msg)) {
+                            uniqueIds.add(msg.msg);
+                            uniqueData.push(msg);
+                        }
+                    });
                     // chatBox.html(data);
                     var html = ''
 
-                    data.forEach(msg => {
+                    uniqueData.forEach(msg => {
                         // reciever
                         if (msg.outgoing_msg_id === incoming_id && msg.documents[0].path !=
                             null) {
@@ -785,17 +811,16 @@
             chatBox.scrollTop(chatBox[0].scrollHeight);
         }
 
-        setInterval(() => {
+        // setInterval(() => {
             getUnseenMessage()
             getSeenMessage()
-        }, 1000);
+        // }, 1000);
 
         // click the notification container
         $(document).on('click', '.notification-container', function() {
             const pattern = /^(BKD-)?\d+$/;
             const dataId = $(this).data("id").toString();
             const isMatch = pattern.test(dataId);
-
             if (isMatch) {
                 if (dataId.startsWith("BKD-")) {
                     console.log(`String '${dataId}' starts with 'BKD-'`);
@@ -815,6 +840,11 @@
                             // const foundObject = bookingData[0].find(obj => obj.id === parseInt(numberPart));
                             $('#bookedInfo').offcanvas('show');
                             var statusClass = bookingData[0].status === "pending" ? "text-white border border-danger bg-danger" : "text-white border border-success bg-success";
+                            $('#profile-payments').attr('src',`${baseUrls}/storage/profile/${bookingData[0].documents[0].path}`)
+                            // $('#profile2-payments').attr('src',`${baseUrls}/storage/profile/${bookingData[0].documents[0].path}`)
+                            $('#name-payments').text(`Name : ${bookingData[0].users[0].firstname} ${bookingData[0].users[0].lastname}`)
+                            $('#gcash-payments').text(`Gcash : +63-${bookingData[0].users[0].contact}`)
+                            $('#payment-status').val('Procceed To Payments to secured slot').addClass('border border-0 text-warning');
                             $('#booking-id').val("BKD-"+bookingData[0].id + ` >> ${bookingData[0].status.toUpperCase()} STATUS`).addClass(statusClass); // Add the determined class
                             $('#firstname-booked').val(bookingData[0].firstname)
                             $('#middlename-booked').val(bookingData[0].middlename)

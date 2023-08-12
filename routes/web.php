@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\MaintenanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,10 +121,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/chatroom-driver',[DriverController::class,'chatRoomDriver'])->name('client-dash-chatroom-driver');
     Route::post('/send-client-message',[DriverController::class,'sendClientMessage'])->name('send-message');
     Route::post('/get-client-message',[DriverController::class,'getClientMessage'])->name('get-message');
+    // Route::post('/get-client-message-driver',[DriverController::class,'getClientMessageDriver'])->name('get-message-driver');
     Route::post('/get-unseen-message',[DriverController::class,'getUnseenMessage'])->name('get-unseen-message');
     Route::post('/update-unseen-message',[DriverController::class,'updateUnseenMessage'])->name('update-unseen-message');
     // accept and send confirmation email
     Route::post('/confirmation-email',[AuthController::class,'confirmationBooking'])->name('accept.booking');
+    // post maintenance
+    Route::post('/post-maintenance',[MaintenanceController::class,'postMaintenance'])->name('maintenance.post');
+    Route::get('/get-maintenance',[MaintenanceController::class,'getMaintenance'])->name('maintenance.get');
 
     // client home
     Route::get('/client-dashboard',[ClientController::class,'clientHome'])->name('client-dash');

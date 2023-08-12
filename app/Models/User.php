@@ -79,4 +79,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Location::class);
     }
+    // has many Maintenance relationship
+    public function maintenances()
+    {
+        return $this->hasMany(Maintenance::class);
+    }
+    // has many Booked relationship
+    public function bookeds()
+    {
+        return $this->hasMany(Booked::class);
+    }
 }

@@ -389,7 +389,52 @@
 
                 </div>
             </div>
-
+            <!-- for maintenance vehicle -->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="maintenance"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="notificationLabel"><span class="bx bxs-car-mechanic"></span>
+                        Maintenance</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body" id="maintenance-card">
+                    <div class="col-sm-12">
+                        <div class="mb-3">
+                            <label for="maintenance-date">Maintenance Starting Date</label>
+                            <input type="date" id="maintenance-starting-date" class="form-control text-secondary"
+                                placeholder="Maintenance Date">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="mb-3">
+                            <label for="maintenance-date">Maintenance End Date</label>
+                            <input type="date" id="maintenance-end-date" class="form-control text-secondary"
+                                placeholder="Maintenance Date">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="mb-3">
+                            <label for="maintenance-date">Maintenance Description</label>
+                            <textarea type="text" id="maintenance-description" rows="5" class="form-control text-secondary"
+                                placeholder="Enter your reason, to stay updated your costumer."></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6" id="success-container">
+                            <div class="mb-3">
+                                <a href="#" type="button" id="send-maintenance"
+                                    class="btn btn-success form-control">Set Maintenance</a>
+                            </div>
+                        </div>
+                        {{-- <div class="col-sm-6" id="chat-container">
+                            <div class="mb-3">
+                                <a href="#" type="button" id="chat-driver-side" class="btn btn-success form-control">Chat</a>
+                            </div>
+                        </div> --}}
+                    </div>
+                </div>
+            </div>
             @yield('contents')
         </section>
 
@@ -403,9 +448,26 @@
     </div>
     @include('components.drivers.footer.footer')
     @yield('footer')
-
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
         const baseUrls = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+        let tmpData = '';
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('f6459200cae7a43a20f0', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('notifaction-channel');
+        channel.bind('notify-user', function(data) {
+            console.log(JSON.stringify(data.data));
+            getMaintenance()
+            sendRequest()
+            getSeenMessage()
+            getUnseenMessage()
+        });
+
         // Register the plugin
         FilePond.registerPlugin(FilePondPluginImagePreview);
         // Get a reference to the file input element
@@ -447,13 +509,14 @@
                 $('#customerInfo').offcanvas('hide')
                 $('#chat-customer').offcanvas('show')
                 renderMessage()
+                console.log('#chat-driver-side rendere success')
 
             })
 
 
         const form = $(".typing-area"),
-            inputField = form.find(".input-field"),
-            sendBtn = form.find("button"),
+            inputField = form.find(".input-field-driver"),
+            sendBtnDriver = form.find("#driver-btn"),
             chatBox = $(".chat-box"); // Assuming you have a .chat-box element
 
         form.on("submit", function(e) {
@@ -464,15 +527,14 @@
 
         inputField.on("keyup", function() {
             if (inputField.val() !== "") {
-                sendBtn.addClass("active");
+                sendBtnDriver.addClass("active");
             } else {
-                sendBtn.removeClass("active");
+                sendBtnDriver.removeClass("active");
             }
         });
 
-        sendBtn.on("click", function() {
+        sendBtnDriver.on("click", function() {
             let formData = new FormData(form[0]);
-
             $.ajax({
                 type: "POST",
                 url: "/send-client-message",
@@ -482,6 +544,7 @@
                 success: function(response) {
                     inputField.val("");
                     renderMessage();
+                    console.log('sendBtnDriver rendere success')
                     scrollToBottom();
                 },
                 error: function(xhr, status, error) {
@@ -498,18 +561,35 @@
             chatBox.removeClass("active");
         });
 
-        const renderMessage = async () => {
+        const renderMessage = () => {
             $.ajax({
                 type: "POST",
                 url: "/get-client-message",
                 data: {
                     incoming_id: incoming_id
                 },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: (data) => {
+                    
+                    console.log(data)
+                    // Remove duplicates from the data array based on a unique identifier (e.g., message ID)
+                    const uniqueData = [];
+                    const uniqueIds = new Set();
+
+                    data.forEach(msg => {
+                        // Assuming each message has a unique identifier like "id"
+                        if (!uniqueIds.has(msg.msg)) {
+                            uniqueIds.add(msg.msg);
+                            uniqueData.push(msg);
+                        }
+                    });
+                    console.log(uniqueData)
                     // chatBox.html(data);
                     var html = ''
 
-                    data.forEach(msg => {
+                    uniqueData.forEach(msg => {
                         const regex = /(?:liscensed|vehicle|profile)(?=\d)/;
                         const matches = msg.documents && msg.documents[0] && msg.documents[0]
                             .path && regex.test(msg.documents[0].path) ? msg.documents[0].path :
@@ -544,6 +624,8 @@
                 }
             });
         };
+
+       
 
         const getUnseenMessage = async () => {
             var reciever_id = parseInt($('#view').attr("data-id"), 10);
@@ -584,66 +666,6 @@
             });
 
         }
-
-        // const getBooking = async () => {
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "/get-booked",
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         success: (data) => {
-        //             console.log(data)
-        //             // chatBox.html(data);
-        //             var dots = ''
-        //             var html2 = ''
-        //             // Generate HTML for the latest messages
-        //             data.forEach(msg => {
-        //                 console.log(msg)
-        //                 const regex = /(?:liscensed|vehicle|profile)(?=\d)/;
-        //                 const matches = msg.documents && msg.documents[0] && msg.documents[0]
-        //                     .path && regex.test(msg.documents[0].path) ? msg.documents[0].path :
-        //                     'profile.png';
-        //                 let extPath = msg.documents ? "profile" : "default";
-        //                 dots = `<span class="position-absolute top-2 start-200 translate-middle p-1 bg-danger border border-light rounded-circle">
-        //                             </span>`
-        //                 html2 += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
-        //                             <div class="row g-0">
-        //                                 <div class="col-md-2 justify-contents">
-        //                                     <img class="img-fluid rounded-start"
-        //                                         src="${baseUrls}/storage/${extPath}/${matches}"
-        //                                         alt="">
-        //                                 </div>
-        //                                 <div class="col-md-8" style="height: fit-content">
-        //                                     <div class="card-body">
-        //                                         <span class="card-title"><b>${msg.firstname} ${msg.lastname}</b></span>
-        //                                         <span class="card-text">has a booking request.</span><br>
-        //                                         <span class="card-text">status <span class="text-warning">${msg.status}</span>.</span><br>
-        //                                         <span class="card-text"><small class="text-body-secondary text-secondary">${msg.created_at}</small></span>
-        //                                     </div>
-        //                                 </div>
-        //                             </div>
-        //                         </div>`
-        //                 //   }else{
-        //                 //     html += `<div class="chat outgoing">
-        //             //             <div class="details">
-        //             //                 <p>'${msg.msg}'</p>
-        //             //             </div>
-        //             //             </div>`
-        //                 //   }
-        //             });
-        //             // Clear the existing content of #notif-card
-        //             // 
-        //             $('#bell').html(dots)
-        //             // $('.bx-message-dots').html(dots)
-        //             $('#notif-card').html(html2)
-
-        //         },
-        //         error: (xhr, status, error) => {
-        //             console.error(error);
-        //         }
-        //     });
-        // }
 
         // render data
         const renderData = (data) => {
@@ -697,7 +719,7 @@
                     } else {
                         // Render booking request
                         if (item.status === 'pending') {
-                        html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="BKD-${item.id}">
+                            html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="BKD-${item.id}">
                                     <div class="row g-0">
                                         <div class="col-md-2 justify-contents">
                                             <img class="img-fluid rounded-start"
@@ -714,7 +736,7 @@
                                         </div>
                                     </div>
                                 </div>`;
-                        }else{
+                        } else {
                             dots = ``
                             html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;">
                                                 <div class="row g-0">
@@ -861,11 +883,6 @@
         function scrollToBottom() {
             chatBox.scrollTop(chatBox[0].scrollHeight);
         }
-        setInterval(() => {
-            // getBooking()
-            getSeenMessage()
-            getUnseenMessage()
-        }, 5000);
 
         // click the notification container
         $(document).on('click', '.notification-container', function() {
@@ -879,6 +896,36 @@
                     // Extract the number from the data-id value
                     const numberPart = dataId.replace("BKD-", "");
                     console.log(`Number part: ${numberPart}`);
+                    console.log(tmpData)
+                    // Use the find() method to find the object with the specified ID
+                    const foundObject = tmpData.find(obj => obj.id === parseInt(numberPart));
+                    // console.log(foundObject)
+                    $('#customerInfo').offcanvas('show')
+                    // Determine the class based on status
+                    var statusClass = foundObject.status === "pending" ?
+                        "text-white border border-danger bg-danger" : "text-white border border-success bg-success";
+                    $('#booking-id').val("BKD-" + foundObject.id + ` >> ${foundObject.status.toUpperCase()} STATUS`)
+                        .addClass(statusClass); // Add the determined class
+                    $('#firstname').val(foundObject.firstname)
+                    $('#middlename').val(foundObject.middlename)
+                    $('#lastname').val(foundObject.lastname)
+                    $('#contact').val(foundObject.contact)
+                    $('#email').val(foundObject.email)
+                    $('#destination').val(foundObject.destination)
+                    $('#pickup').val(foundObject.pickup)
+                    $('#landmark').val(foundObject.landmark)
+                    $('#dateoftrip').val(foundObject.dateoftrip)
+                    $('#pax').val(foundObject.pax + ' Person')
+                    $('#daysandhours').val(foundObject.daysandhours + ' Hour/s')
+                    $('#time').val("Pickup-time >> " + convertTo12HourFormat(foundObject.pickuptime))
+                    $('#chat-driver-side').attr('value', foundObject.sender_id)
+                    $(document).on('click', '#accept', function() {
+                        // sendRequest()
+                        $('#customerInfo').offcanvas('hide')
+                        $('#notification').offcanvas('hide')
+                    })
+                    // $('#customerInfo').offcanvas('hide')
+                    
                 } else {
                     console.log(`String '${dataId}' is a number`);
                     var client_id = parseInt(dataId, 10);
@@ -886,13 +933,13 @@
                     $('#incoming_id').val(incoming_id);
                     $('#chat-customer').offcanvas('show');
                     renderMessage();
+                    console.log('.notification-container rendere success')
                     updateUnseenMessage(incoming_id);
                 }
             } else {
                 console.log(`String '${dataId}' does not match the pattern`);
             }
         });
-
 
         // update the unseen message to seen
         const updateUnseenMessage = async (customer_id) => {
@@ -934,6 +981,17 @@
                 },
                 success: (data) => {
                     console.log(data)
+                    if(data.status == 'success'){
+                        $('#customerInfo').offcanvas('hide')
+                        sendRequest()
+                        // Reset input fields to clear their values
+                        $('#email').val('');
+                        $('#firstname').val('');
+                        $('#booking-id').val('');
+                        $('#destination').val('');
+                        $('#pickup').val('');
+                        $('#dateoftrip').val('');
+                    }
 
                 },
                 error: (xhr, status, error) => {
@@ -942,24 +1000,230 @@
             });
         })
 
-        // const getTimeAgo =  (timestamp) => {
-        //     const currentTime = new Date();
-        //     const previousTime = new Date(timestamp);
-        //     const timeDifferenceInSeconds = Math.floor((currentTime - previousTime) / 1000);
+        let dataTable = null;
 
-        //     if (timeDifferenceInSeconds < 60) {
-        //         return `${timeDifferenceInSeconds} secs ago`;
-        //     } else if (timeDifferenceInSeconds < 3600) {
-        //         const minutes = Math.floor(timeDifferenceInSeconds / 60);
-        //         return `${minutes} mins ago`;
-        //     } else if (timeDifferenceInSeconds < 86400) {
-        //         const hours = Math.floor(timeDifferenceInSeconds / 3600);
-        //         return `${hours} hours ago`;
-        //     } else {
-        //         const days = Math.floor(timeDifferenceInSeconds / 86400);
-        //         return `${days} days ago`;
-        //     }
-        // }
+        const getAllBooked = async (response) => {
+            if (!dataTable) {
+                dataTable = $('#booked').DataTable({
+                    "data": response,
+                    "responsive": true,
+                    dom: "<'row'<'col-sm-12 col-md-4'l><'col-sm-12 col-md-4'B><'col-sm-12 col-md-4'f>>" +
+                        "<'row'<'col-sm-12'rt>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        // 'copy', 'spacer', 'csv', 'spacer', 'excel', 'spacer', 'pdf',
+                        // 'spacer', 
+                        {
+                            extend: 'print',
+                            text: 'Print',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4, 5,
+                                    6
+                                ], // Specify the columns to include in the print view
+                            }
+                        },
+                    ],
+                    "columns": [{
+                            data: "id",
+                            render(data, type, row, meta) {
+                                return `<p>BKD-${row.id}</p>`
+                            }
+                        },
+                        {
+                            data: "status",
+                            render(data, type, row, meta) {
+                                return `<p><span class="badge ${row.status === 'pending' ? 'text-bg-warning' : row.status === 'accepted' ? 'text-bg-success' : 'text-bg-danger'}">${row.status}</span></p>`
+                            }
+                        },
+                        {
+                            data: "contact",
+                            render(data, type, row, meta) {
+                                return `<p>+63${row.contact}</p>`
+                            }
+                        },
+                        {
+                            data: "email"
+                        },
+                        {
+                            data: "destination"
+                        },
+                        {
+                            data: "pickup"
+                        },
+                        {
+                            data: "landmark"
+                        },
+                        {
+                            data: "dateoftrip"
+                        },
+
+                        {
+                            data: "user_id",
+                            render(data, type, row, meta) {
+                                var a = `
+                            <a href="#" value="${row.id}" data-id="${row.sender_id}" id="view" class="">view more</a>
+                        `;
+                                return a;
+                            }
+                        },
+                    ]
+                });
+            } else {
+                dataTable.clear().rows.add(response).draw(); // Update the data and redraw the table
+            }
+        }
+
+        const sendRequest = () => {
+            const id = $('#driver-id').val();
+            $.ajax({
+                url: `/getAllBooked/${id}`,
+                type: "GET",
+                dataType: "json",
+                success: function(res) {
+                    tmpData = res;
+                    getAllBooked(res);
+                    clickHandler(res)
+                    
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        // $(document).ready(function() {
+        //     sendRequest();
+        //     setInterval(sendRequest, 15000); // Refresh the data every 15 seconds
+
+        // });
+
+        const clickHandler = async (data) => {
+
+            $(document).on('click', '#view', function(e) {
+                console.log(data)
+                var view_id = parseInt($(this).attr("value"), 10);
+                // Use the find() method to find the object with the specified ID
+                const foundObject = data.find(obj => obj.id === view_id);
+                // console.log(foundObject)
+                $('#customerInfo').offcanvas('show')
+                // Determine the class based on status
+                var statusClass = foundObject.status === "pending" ?
+                    "text-white border border-danger bg-danger" :
+                    "text-white border border-success bg-success";
+                $('#booking-id').val("BKD-" + foundObject.id +
+                    ` >> ${foundObject.status.toUpperCase()} STATUS`).addClass(
+                statusClass); // Add the determined class
+                $('#firstname').val(foundObject.firstname)
+                $('#middlename').val(foundObject.middlename)
+                $('#lastname').val(foundObject.lastname)
+                $('#contact').val(foundObject.contact)
+                $('#email').val(foundObject.email)
+                $('#destination').val(foundObject.destination)
+                $('#pickup').val(foundObject.pickup)
+                $('#landmark').val(foundObject.landmark)
+                $('#dateoftrip').val(foundObject.dateoftrip)
+                $('#pax').val(foundObject.pax + ' Person')
+                $('#daysandhours').val(foundObject.daysandhours + ' Hour/s')
+                $('#time').val("Pickup-time >> " + convertTo12HourFormat(foundObject.pickuptime))
+                $('#chat-driver-side').attr('value', foundObject.sender_id)
+            })
+
+
+        }
+
+        // convert time to AM/PM
+        const convertTo12HourFormat = (time) => {
+            // Parse the time into hours and minutes
+            const [hours, minutes] = time.split(":").map(Number);
+
+            // Determine if it's AM or PM
+            const period = hours >= 12 ? "PM" : "AM";
+
+            // Convert hours to 12-hour format
+            const hours12Format = hours % 12 || 12;
+
+            // Return the time in AM/PM format
+            return `${hours12Format}:${minutes.toString().padStart(2, "0")} ${period}`;
+        }
+
+        // testing phase
+        const NotifyUser = async (message) => {
+            if ('Notification' in window) {
+                Notification.requestPermission()
+                    .then(permission => {
+                        if (permission === 'granted') {
+                            // Permission granted, you can now show notifications
+                            const notification = new Notification('Title', {
+                                body: 'This is the notification message.',
+                                icon: 'path/to/icon.png' // Optional
+                            });
+
+                            // You can also handle notification events
+                            notification.onclick = () => {
+                                // Handle notification click
+                            };
+                        }
+                    });
+            }
+        }
+
+        // POST MAINTENANCE
+        $(document).on('click', '#send-maintenance', function() {
+            const starting = $('#maintenance-starting-date').val()
+            const end = $('#maintenance-end-date').val()
+            const desc = $('#maintenance-description').val()
+            $.ajax({
+                url: `/post-maintenance`,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    startingDate: starting,
+                    endDate: end,
+                    description: desc,
+
+                },
+                success: function(res) {
+                    console.log(res)
+                    if (res.status === 'success') {
+                        $('#maintenance-starting-date').val('')
+                        $('#maintenance-end-date').val('')
+                        $('#maintenance-description').val('')
+                        // $('#maintenance-display').removeClass('text-danger').addClass('text-success').text('Maintenance Repair')
+                        $('#maintenance').offcanvas('hide');
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        })
+
+        // get Maintenance
+        const getMaintenance = async () => {
+            $.ajax({
+                url: `/get-maintenance`,
+                type: "GET",
+                dataType: "json",
+                success: function(res) {
+                    console.log(res)
+                    if (res.maintenance.status === 'success') {
+                        $('#maintenance-display').removeClass('text-danger').addClass('text-success')
+                            .text('Maintenance Success')
+                    } else {
+                        $('#maintenance-display').text('Maintenance Repair')
+                    }
+
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+        // renderMessage()
+        getMaintenance()
+        sendRequest();
+        getSeenMessage()
+        getUnseenMessage()
     </script>
     @yield('script')
 </body>

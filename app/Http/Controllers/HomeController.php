@@ -120,7 +120,7 @@ class HomeController extends Controller
 
     // get Van Credentials
     public function getVanCredentials(){
-        $vans = Van::with(['user','user.documents'])->orderBy('created_at', 'desc')->get();
+        $vans = Van::with(['user','user.documents', 'user.maintenances'])->orderBy('created_at', 'desc')->get();
         return response()->json($vans);
     }
 
