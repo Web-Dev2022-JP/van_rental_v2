@@ -282,17 +282,74 @@
 
             const getCalendarDays = async (id) => {
                 const curDate = $('.current-date').text()
-                const dataInLocal = JSON.parse(localStorage.getItem('driver-location'))
+                const dataInLocal = JSON.parse(localStorage.getItem('driver-location')); // Default to an empty array if localStorage is empty
                 console.log('dwadwadwa')
                 console.log(dataInLocal.bookeds)
-                dataInLocal.bookeds.forEach(day => {
-                    // console.log(day.dateoftrip)
-                    let targetDate = new Date(day.dateoftrip);
-                    let dayOfMonth = targetDate.getDate();
+               if(dataInLocal.bookeds.length > 0){
+                    dataInLocal.bookeds.forEach(day => {
+                        // console.log(day.dateoftrip)
+                        let targetDate = new Date(day.dateoftrip);
+                        let dayOfMonth = targetDate.getDate();
 
-                    console.log(dayOfMonth)
-                    // console.log(curDate)
-                    $('li.d').each(function(index, element) {
+                        console.log(dayOfMonth)
+                        // console.log(curDate)
+                        $('li.d').each(function(index, element) {
+                            const dayText = $(element).text();
+
+                            // Check if the element has the 'inactive' class
+                            if ($(element).hasClass('inactive')) {
+                                // If the element has the 'inactive' class, ignore it and do not add the click event
+                                console.log('Ignoring inactive day:', dayText);
+                                return; // Skip this iteration and proceed to the next li element
+                            }
+
+                            if (dayText == dayOfMonth && day.status == 'pending') {
+                                $(element).addClass('active-pending')
+                            }
+
+                            if (dayText == dayOfMonth && day.status == 'accepted') {
+                                $(element).addClass('active-booked')
+                            }
+
+
+                            $(element).on('click', () => {
+                                // alert('dwadwa')
+                                $("#inquiry").modal({
+                                    backdrop: "static",
+                                    keyboard: false, // Optional: Disable closing the modal with the keyboard
+                                });
+                                // Show the element with ID "details"
+                                // Show the element with ID "details"
+                                $('#details').modal('hide');
+                                $('#inquiry').modal('show');
+
+                                const date_object = new Date($(element).text() +
+                                    curDate);
+                                // const options = { day: "numeric", month: "long", year: "numeric" };
+                                // const formatted_date = date_object.toLocaleDateString("en-US", options);
+                                // console.log(formatted_date);  // Output: August 4, 2023
+
+                                const month = (date_object.getMonth() + 1).toString()
+                                    .padStart(2,
+                                        "0");
+                                const day = date_object.getDate().toString().padStart(2,
+                                    "0");
+                                const year = date_object.getFullYear();
+
+                                const formatted_date = `${year}-${month}-${day}`;
+                                console.log(formatted_date)
+
+                                $(document).ready(function() {
+                                    // initialize form
+                                    $("#dateoftrip").val(formatted_date);
+                                    $('#driver-id').val(id)
+                                });
+
+                            })
+                        });
+                    });
+               }else{
+                $('li.d').each(function(index, element) {
                         const dayText = $(element).text();
 
                         // Check if the element has the 'inactive' class
@@ -302,16 +359,17 @@
                             return; // Skip this iteration and proceed to the next li element
                         }
 
-                        if(dayText == dayOfMonth && day.status == 'pending'){
-                            $(element).addClass('active-pending')
-                        }
+                        // if (dayText == dayOfMonth && day.status == 'pending') {
+                        //     $(element).addClass('active-pending')
+                        // }
 
-                        if(dayText == dayOfMonth && day.status == 'accepted'){
-                            $(element).addClass('active-booked')
-                        }
-                        
+                        // if (dayText == dayOfMonth && day.status == 'accepted') {
+                        //     $(element).addClass('active-booked')
+                        // }
+
 
                         $(element).on('click', () => {
+                            // alert('dwadwa')
                             $("#inquiry").modal({
                                 backdrop: "static",
                                 keyboard: false, // Optional: Disable closing the modal with the keyboard
@@ -345,7 +403,7 @@
 
                         })
                     });
-                });
+               }
 
             }
 
@@ -386,53 +444,107 @@
                         success: function(data) {
                             console.log(data)
                             var html = ''
+
                             data.forEach(van => {
-                                const maintenanceBadge = van.user.maintenances[0]
-                                    .description === 'maintenance' ?
-                                    `<span class="badge position-absolute top-0 end-0 p-3 text-bg-warning">Maintenance Repair</span>` :
-                                    '';
-                                html += `
-                                <div class="col-sm-3 van-col">
-                                    
-                                    <div class="card van-card">
-                                        <span class="badge position-absolute top-0 end-0 p-3 text-bg-warning">${van.user.maintenances[0].description}</span>
-                                        <img src="${baseUrl}/storage/vehicle/${van.user.documents[1].path}" class="card-img-top" alt="van">
-                                        <div class="card-body text-center">
-                                            <h5 class="card-title h3 mb-5">${van.model}</h5>
-                                            <div class="row d-flex justify-content-center gap-1">
-                                                <div class="col-lg-4 col-md-4 card"
-                                                    style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-                                                    <div class="text-center" style="display: flex; align-items:center;justify-content:center">
-                                                        <div class="pt-2 me-2">
-                                                            <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
-                                                        </div>
-                                                        <div class="pt-2">
-                                                            <div class="text-secondary h5 mb-0"> Bags</div>
-                                                            <div style="color: rgb(2, 47, 61);"><b> ${van.bag} Bags</b></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4 col-md-4 card"
-                                                    style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-                                                    <div class="text-center" style="display: flex; align-items:center;justify-content:center">
-                                                        <div class="pt-2 me-2">
-                                                            <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
-                                                        </div>
-                                                        <div class="pt-2">
-                                                            <div class="text-secondary h5 mb-0"> People</div>
-                                                            <div style="color: rgb(2, 47, 61);"><b> ${van.seat} Seater</b></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                const maintenanceEntries = van.user.maintenances;
+                                const hasMaintenance = maintenanceEntries.some(maintenance => maintenance.status === 'maintenance');
+
+                                const badgeClass = hasMaintenance ? 'text-bg-warning' : 'text-bg-success';
+                                const badgeText = hasMaintenance ? 'Maintenance Repair !' : 'Book Now !';
+                                const buttonClass = hasMaintenance ? 'disabled' : '';
+
+                                const vanCard = `
+                                    <div class="col-sm-3 van-col">
+                                        <div class="card van-card">
+                                            <span class="badge position-absolute top-0 end-0 p-3 ${badgeClass}">${badgeText}</span>
+                                            <img src="${baseUrl}/storage/vehicle/${van.user.documents[1].path}" class="card-img-top" alt="van">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title h3 mb-5">${van.model}</h5>
+                                                <!-- Other card body content -->
+                                                <div class="row d-flex justify-content-center gap-1">
+                                                                            <div class="col-lg-4 col-md-4 card"
+                                                                                style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                                                                                <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                                                                    <div class="pt-2 me-2">
+                                                                                        <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
+                                                                                    </div>
+                                                                                    <div class="pt-2">
+                                                                                        <div class="text-secondary h5 mb-0"> Bags</div>
+                                                                                        <div style="color: rgb(2, 47, 61);"><b> ${van.bag} Bags</b></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-4 col-md-4 card"
+                                                                                style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                                                                                <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                                                                    <div class="pt-2 me-2">
+                                                                                        <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
+                                                                                    </div>
+                                                                                    <div class="pt-2">
+                                                                                        <div class="text-secondary h5 mb-0"> People</div>
+                                                                                        <div style="color: rgb(2, 47, 61);"><b> ${van.seat} Seater</b></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                            </div>
+                                            <div class="col-sm-8 mb-3" style="margin: auto">
+                                                <input class="btn btn-secondary form-control details ${buttonClass}" 
+                                                    type="button" value="View Details" data-id="${van.user_id}" 
+                                                    ${buttonClass}>
                                             </div>
                                         </div>
-                                        <div class="col-sm-8 mb-3" style="margin: auto">
-                                            <input class="btn btn-secondary form-control details" type="button" value="View Details"
-                                                data-id="${van.user_id}">
-                                        </div>
                                     </div>
-                                </div>
-                                `
+                                `;
+
+                                html += vanCard;
+                                // const maintenanceBadge = van.user.maintenances[0]
+                                //     .status === 'maintenance' ?
+                                //     `<span class="badge position-absolute top-0 end-0 p-3 text-bg-warning">Maintenance Repair</span>` :
+                                //     '<span class="badge position-absolute top-0 end-0 p-3 text-bg-success">Booked Now</span>';
+                                // html += `
+                            // <div class="col-sm-3 van-col">
+
+                            //     <div class="card van-card">
+                            //         <span class="badge position-absolute top-0 end-0 p-3 ${van.user.maintenances[0]?.status === 'maintenance' ? 'text-bg-warning' : 'text-bg-success'}">${van.user.maintenances[0]?.status === 'maintenance' ? 'Maintenance Repair !' : 'Book Now !'}</span>
+                            //         <img src="${baseUrl}/storage/vehicle/${van.user.documents[1].path}" class="card-img-top" alt="van">
+                            //         <div class="card-body text-center">
+                            //             <h5 class="card-title h3 mb-5">${van.model}</h5>
+                            //             <div class="row d-flex justify-content-center gap-1">
+                            //                 <div class="col-lg-4 col-md-4 card"
+                            //                     style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                            //                     <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                            //                         <div class="pt-2 me-2">
+                            //                             <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
+                            //                         </div>
+                            //                         <div class="pt-2">
+                            //                             <div class="text-secondary h5 mb-0"> Bags</div>
+                            //                             <div style="color: rgb(2, 47, 61);"><b> ${van.bag} Bags</b></div>
+                            //                         </div>
+                            //                     </div>
+                            //                 </div>
+                            //                 <div class="col-lg-4 col-md-4 card"
+                            //                     style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                            //                     <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                            //                         <div class="pt-2 me-2">
+                            //                             <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
+                            //                         </div>
+                            //                         <div class="pt-2">
+                            //                             <div class="text-secondary h5 mb-0"> People</div>
+                            //                             <div style="color: rgb(2, 47, 61);"><b> ${van.seat} Seater</b></div>
+                            //                         </div>
+                            //                     </div>
+                            //                 </div>
+                            //             </div>
+                            //         </div>
+                            //         <div class="col-sm-8 mb-3" style="margin: auto">
+                            //             <input class="btn btn-secondary form-control details ${van.user.maintenances[0]?.status === 'maintenance' ? 'disabled' : ''}" 
+                            //             type="button" value="View Details" data-id="${van.user_id}" 
+                            //             ${van.user.maintenances[0]?.status === 'maintenance' ? 'disabled' : ''}>
+                            //         </div>
+                            //     </div>
+                            // </div>
+                            // `
                             });
 
                             $('.van-row').append(html)

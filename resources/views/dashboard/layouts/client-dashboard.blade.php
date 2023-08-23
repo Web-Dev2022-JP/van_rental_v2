@@ -16,6 +16,17 @@
     {{-- style --}}
     @yield('links')
     <style>
+        /* theming */
+        :root {
+            --white: #fff;
+            /* --primary-color:#6096BA; */
+            --secondary-color: #274C77;
+            --tertiary-color: #33AB63;
+            --last-color: #E74A4A;
+
+
+        }
+
         #chat-driver {
             width: 35%;
             /* background: red; */
@@ -58,7 +69,7 @@
 
         .wrappers {
             margin: auto;
-            background: #fff;
+            background: var(--white);
             max-width: inherit;
             width: 100%;
             border-radius: 16px;
@@ -131,7 +142,7 @@
 
         .outgoing .details p {
             background: var(--primary-color);
-            color: #fff;
+            color: var(--white);
             border-radius: 18px 18px 0 18px;
         }
 
@@ -152,7 +163,7 @@
         }
 
         .incoming .details p {
-            background: #fff;
+            background: var(--white);
             color: var(--primary-color);
             border-radius: 18px 18px 18px 0;
         }
@@ -174,7 +185,7 @@
         }
 
         .typing-area button {
-            color: #fff;
+            color: var(--white);
             width: 55px;
             border: none;
             outline: none;
@@ -193,39 +204,7 @@
         }
 
         /* Responive media query */
-        @media screen and (max-width: 500px) {
-            /* .form, .users{
-        padding: 20px;
-      }
-      .form header{
-        text-align: center;
-      }
-      .form form .name-details{
-        flex-direction: column;
-      }
-      .form .name-details .field:first-child{
-        margin-right: 0px;
-      }
-      .form .name-details .field:last-child{
-        margin-left: 0px;
-      }
-
-      .users header img{
-        height: 45px;
-        width: 45px;
-      }
-      .users header .logout{
-        padding: 6px 10px;
-        font-size: 16px;
-      }
-      :is(.users, .users-list) .content .details{
-        margin-left: 15px;
-      }
-
-      .users-list a{
-        padding-right: 10px;
-      } */
-
+        @media screen and (max-width: 600px) {
             .chat-area header {
                 padding: 15px 20px;
             }
@@ -275,6 +254,40 @@
             #chat-driver {
                 /* background: red; */
                 width: 100%;
+
+            }
+
+            #pay-container {
+                display: flex;
+                flex-direction: row;
+                background: var(--secondary-color);
+                color: var(--white);
+                border-radius: 10px;
+                align-content: center;
+                justify-content: center;
+            }
+
+            #contents {
+                /* border: 1px solid red; */
+                width: 80%;
+            }
+
+            #chat-driver-side {
+                background: var(--secondary-color);
+            }
+
+            .label {
+                color: var(--secondary-color);
+                font-size: 12px;
+            }
+
+            .input {
+                color: var(--secondary-color);
+                letter-spacing: 2px;
+                font-weight: 550;
+                text-align: center;
+                font-size: 16px;
+                border: 0 0 1px 0;
             }
         }
     </style>
@@ -409,6 +422,9 @@
         {{-- booked information --}}
         @include('components.clients.booked-info')
         @yield('booked.info')
+        {{-- payments information --}}
+        @include('components.clients.payment')
+        @yield('payment.info')
     </main>
 
 
@@ -416,10 +432,111 @@
     @yield('footer')
 
     @yield('script')
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
         const baseUrls = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-        
+
+        // Register the plugin
+        FilePond.registerPlugin(FilePondPluginImagePreview);
+        // Get a reference to the file input element
+        const inputElement = document.querySelector('#reciept-image');
+
+
+        // Create a FilePond instance
+        // Create a FilePond instance
+        const receipt = FilePond.create(inputElement, {
+            server: {
+                process: {
+                    url: '/tmp-upload-reciept',
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    onload: (response) => {
+                        // The server response is available in the 'response' object
+                        const parsedResponse = JSON.parse(response);
+                        console.log('Server Response:', parsedResponse);
+
+                        // Store the parsedResponse in a variable
+                        // const storedResponse = parsedResponse;
+                        localStorage.setItem('reciept-upload',JSON.stringify(parsedResponse));
+                        // Handle the server response here
+                    },
+                    onerror: (error) => {
+                        console.error('Error uploading image:', error);
+                    }
+                },
+                revert: {
+                    url: '/tmp-delete-reciept',
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    onload: (response) => {
+                        // The revert server response is available in the 'response' object
+                        const parsedResponse = JSON.parse(response);
+                        console.log('Revert Server Response:', parsedResponse);
+                        
+                        // Handle the revert server response here
+                    },
+                    onerror: (error) => {
+                        console.error('Error reverting file:', error);
+                    }
+                },
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }
+        });
+
+        // Adding a custom event listener to execute revert action with storedResponse
+        receipt.on('revertfile', (file) => {
+            let storedResponse = JSON.parse(localStorage.getItem('reciept-upload'))
+            if (storedResponse) {
+                // Use storedResponse to make the AJAX request for reverting
+                $.ajax({
+                    url: '/tmp-delete-reciept',
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: storedResponse,
+                    success: function(response) {
+                        console.log(response.message);
+                        // Handle the success response
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        // Handle the error
+                    }
+                });
+            }
+        });
+
+        $(document).on('click','.upload-reciept', function(){
+            let recieptInLocal = JSON.parse(localStorage.getItem('reciept-upload'))
+            console.log(recieptInLocal.uploaded_record.folder)
+            $.ajax({
+                type: "POST",
+                url: "/send-driver-reciept",
+                data: {folder : recieptInLocal.uploaded_record.folder},
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                   console.log(response)
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        })
+
+       
+
+
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
 
@@ -437,16 +554,12 @@
         // chat functionality
         incoming_id = 0,
             $(document).on('click', '#chat-driver', function(e) {
-                // alert('yes')
-                // client id
                 var reciever_id = parseInt($(this).attr("value"), 10);
                 $('#incoming_id').val(reciever_id);
                 incoming_id = reciever_id
-                // alert(reciever_id)
                 $('#details').modal('hide')
                 $('#chat-driver-side').offcanvas('show')
                 renderMessage()
-
             })
 
 
@@ -812,8 +925,8 @@
         }
 
         // setInterval(() => {
-            getUnseenMessage()
-            getSeenMessage()
+        getUnseenMessage()
+        getSeenMessage()
         // }, 1000);
 
         // click the notification container
@@ -839,13 +952,21 @@
                             console.log(bookingData)
                             // const foundObject = bookingData[0].find(obj => obj.id === parseInt(numberPart));
                             $('#bookedInfo').offcanvas('show');
-                            var statusClass = bookingData[0].status === "pending" ? "text-white border border-danger bg-danger" : "text-white border border-success bg-success";
-                            $('#profile-payments').attr('src',`${baseUrls}/storage/profile/${bookingData[0].documents[0].path}`)
+                            var statusClass = bookingData[0].status === "pending" ?
+                                "text-white border border-danger bg-danger" :
+                                "text-white border border-success bg-success";
+                            $('#profile-payments').attr('src',
+                                `${baseUrls}/storage/profile/${bookingData[0].documents[0].path}`)
                             // $('#profile2-payments').attr('src',`${baseUrls}/storage/profile/${bookingData[0].documents[0].path}`)
-                            $('#name-payments').text(`Name : ${bookingData[0].users[0].firstname} ${bookingData[0].users[0].lastname}`)
+                            $('#name-payments').text(
+                                `Name : ${bookingData[0].users[0].firstname} ${bookingData[0].users[0].lastname}`
+                            )
                             $('#gcash-payments').text(`Gcash : +63-${bookingData[0].users[0].contact}`)
-                            $('#payment-status').val('Procceed To Payments to secured slot').addClass('border border-0 text-warning');
-                            $('#booking-id').val("BKD-"+bookingData[0].id + ` >> ${bookingData[0].status.toUpperCase()} STATUS`).addClass(statusClass); // Add the determined class
+                            $('#payment-status').val('Procceed To Payments to secured slot').addClass(
+                                'border border-0 text-warning');
+                            $('#booking-id').val("BKD-" + bookingData[0].id +
+                                ` >> ${bookingData[0].status.toUpperCase()} STATUS`).addClass(
+                                statusClass); // Add the determined class
                             $('#firstname-booked').val(bookingData[0].firstname)
                             $('#middlename-booked').val(bookingData[0].middlename)
                             $('#lastname-booked').val(bookingData[0].lastname)
@@ -856,15 +977,15 @@
                             $('#landmark-booked').val(bookingData[0].landmark)
                             $('#dateoftrip-booked').val(bookingData[0].dateoftrip)
                             $('#pax-booked').val(bookingData[0].pax + ' Person')
-                            $('#daysandhours-booked').val(bookingData[0].daysandhours + ' Hour/s')
-                            $('#time').val("Pickup-time >> "+convertTo12HourFormat(bookingData[0].pickuptime))
-                            $('#chat-driver-side').attr('value',bookingData[0].sender_id)
+                            $('#daysandhours-booked').val(bookingData[0].daysandhours + ' Day/s')
+                            $('#time').val(convertTo12HourFormat(bookingData[0].pickuptime))
+                            $('#chat-driver-side').attr('value', bookingData[0].sender_id)
                         },
                         error: (xhr, status, error) => {
                             console.error(error);
                         }
                     });
-                    
+
                 } else {
                     console.log(`String '${dataId}' is a number`);
                     var client_id = parseInt(dataId, 10);
@@ -909,6 +1030,10 @@
             $('#chat-driver-side').offcanvas('hide')
         })
 
+        $(document).on('click', '.reciept', function() {
+            $('#bookedInfo').offcanvas('hide')
+            $('#paymentInfo').offcanvas('show')
+        })
         // convert time to AM/PM
         const convertTo12HourFormat = (time) => {
             // Parse the time into hours and minutes

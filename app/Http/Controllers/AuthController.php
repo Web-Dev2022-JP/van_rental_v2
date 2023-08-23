@@ -216,6 +216,8 @@ class AuthController extends Controller
             'barangay' => $request->barangay,
             'street' => $request->street,
             'password' => Hash::make($request->password),
+            // for email used
+            'is_activated' => 3,
             // 'idno' => $request->idNumber,
             // 'orcr' => $request->orcr,
             // 'platenumber' => $request->plateNumber,
@@ -267,7 +269,7 @@ class AuthController extends Controller
         $account = User::where('email', $email)->first();
 
         if ($account) {
-            $account->approved = 1;
+            $account->approved = 0;
             $account->is_activated = 1;
             $account->save();
         }
@@ -325,6 +327,7 @@ class AuthController extends Controller
 
     public function loginPost(Request $request)
     {
+        $otpCheck = true;
         $credentials = [
             'email' => $request->email,
             'password' => $request->password,
@@ -332,51 +335,56 @@ class AuthController extends Controller
 
 
         // Get the user account by email
-        $user = User::where('email', $request->email)->first();
+        // $user = User::where('email', $request->email)->first();
 
-        if ($user) {
-            // Check if the user is a driver and if the account is activated
-            if ($user->role == 2 && $user->is_activated == 1) {
-                $credentials = [
-                    // 'otp' => $request->otp,
-                    'email' => $request->email,
-                    'password' => $request->password,
-                ];
-                //get the token from verify
-                $get_token = Verifytoken::where('token', $request->otp)->first();
-                if ($get_token) {
-                    $get_token->is_activated = 2;
-                    $get_token->save();
-
-                    // updates the user account
-                    $user = User::where('email', $get_token->email)->first();
-                    $user->is_activated = 2;
-                    $user->save();
-
-                    // delete the token
-                    $getting_token = Verifytoken::where('token', $get_token->token)->first();
-                    $getting_token->delete();
-                } else {
-                    Auth::logout();
-                    // User is a driver pending approval ,'is_activated'=>$user->is_activated
-                    return redirect()->route('login')->with(['is_activated' => 0, 'approved' => "You need O T P a to proceed."]);
-                }
-            } else {
-                $credentials = [
-                    'email' => $request->email,
-                    'password' => $request->password,
-                ];
-            }
-        } else {
-            // Handle the case when the user account does not exist
-            // You can add your own logic here, such as showing an error message
-            // or redirecting the user to a specific page
-        }
-
+        // if ($user) {
+        //     // Check if the user is a driver and if the account is activated
+        //     // if ($user->role == 2 && $user->is_activated == 1) {
+        //     //     $credentials = [
+        //     //         // 'otp' => $request->otp,
+        //     //         'email' => $request->email,
+        //     //         'password' => $request->password,
+        //     //     ];
+                
+        //     // } else {
+        //     //     $credentials = [
+        //     //         'email' => $request->email,
+        //     //         'password' => $request->password,
+        //     //     ];
+        //     // }
+        //     // dd($request->otp);
+        //     // OTP Methods for  Driver
+        //     $get_token = Verifytoken::where('token', $request->otp)->first();
+        //     if ($get_token) {
+        //         $get_token->is_activated = 2;
+        //         $get_token->save();
+    
+        //         // updates the user account
+        //         $user = User::where('email', $get_token->email)->first();
+        //         $user->is_activated = 2;
+        //         $user->save();
+    
+        //         // delete the token
+        //         $getting_token = Verifytoken::where('token', $get_token->token)->first();
+        //         $getting_token->delete();
+        //         $otpCheck = true;
+        //     } else {
+        //         $otpCheck = false;
+        //         Auth::logout();
+        //         // $this->loginPostOtp();
+        //         // User is a driver pending approval ,'is_activated'=>$user->is_activated
+        //         return redirect()->route('login')->with(['is_activated' => 0, 'approved' => "You need O T P to proceed."]);
+            
+        //     }
+        // } else {
+        //     // Handle the case when the user account does not exist
+        //     // You can add your own logic here, such as showing an error message
+        //     // or redirecting the user to a specific page
+        // }
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-
+            // dd($user->role);
             if ($user->role == 1) {
                 // User is a client
                 return redirect('/client-dashboard')->with([
@@ -385,128 +393,96 @@ class AuthController extends Controller
                     'showAlert' => true
                 ]);
             } elseif ($user->role == 2) {
-                if ($user->approved) {
+                if ($user->approved == 1) {
                     // User is an approved driver
                     return redirect('/driver-dashboard')->with(['success' => 'Login Success', 'is_activated' => $user->is_activated]);
-                } else {
+                } elseif($user->approved == 0) {
                     // need to logout if not approved
                     Auth::logout();
                     // User is a driver pending approval ,'is_activated'=>$user->is_activated
                     return redirect()->route('login')->with(['approved' => 'Email verification success!. However your account is pending approval. Please wait for Bataan Van Rental Administrator authorization.']);
+                }elseif($user->approved == 5){
+                    Auth::logout();
+                    return redirect()->route('login')->with([
+                        'is_activated' => false,
+                        'email' => $request->email,
+                        'password' => $request->password,]);
                 }
             } elseif ($user->role == 3) {
                 // User is an admin
                 return redirect('/admin-dashboard')->with('success', 'Login Success');
             }
         }
-
         return back()->with('error', 'Invalid email or password');
-
-
-
-
-
-
-        // // for administrator
-        // if($request->email === 'administrator@email.com'){
-        //     $credentials = [
-        //         'email' => $request->email,
-        //         'password' => $request->password,
-        //     ];
-        // }
-
-        // // get the accounts credentails for driver
-        // $driver = User::where('email',$request->email)->first();
-        // if($driver){
-        //     if($driver->is_activated === 0){
-        //         $credentials = [
-        //             'otp' => $request->otp,
-        //             'email' => $request->email,
-        //             'password' => $request->password,
-        //         ];
-        //     }else{
-        //         $credentials = [
-        //             'email' => $request->email,
-        //             'password' => $request->password,
-        //         ];
-        //     }
-        // }else{
-
-        // }
-
-        // if (Auth::attempt($credentials)) {
-        //     $user = Auth::user();
-
-        //     if ($user->role == 1) {
-        //         // User is a client
-        //         return redirect('/client-dashboard')->with([
-        //             'success' => 'Login Success',
-        //             'name' => $user->firstname,
-        //             'showAlert' => true
-        //         ]);
-        //     } elseif ($user->role == 2) {
-        //         if ($user->approved) {
-        //             // User is an approved driver
-        //             return redirect('/driver-dashboard')->with('success', 'Login Success');
-        //         } else {
-        //             // need to logout if not approved
-        //             Auth::logout();
-        //             // User is a driver pending approval
-        //             return redirect()->route('login')->with('approved', 'Your account is pending approval. Please wait for Bataan Van Rental Administrator authorization.');
-        //         }
-        //     } elseif ($user->role == 3) {
-        //         // User is an admin
-        //         return redirect('/admin-dashboard')->with('success', 'Login Success');
-        //     }
-        // }
-
-        // return back()->with('error', 'Invalid email or password');
-
-
-
-
-
-
-
-
-        // $credentials = [
-        //     'email' => $request->email,
-        //     'password' => $request->password,
-        // ];
-
-        // Attempt authentication for User
-        // if (Auth::guard('web')->attempt($credentials)) {
-        //     $user = Auth::guard('web')->user();
-        //     if ($user->role == 2) {
-        //         if ($user->approved) {
-        //             // User is an approved driver
-        //             return redirect('/driver-dashboard')->with('success', 'Login Success');
-        //         } else {
-        //             // need to logout if not approved
-        //             Auth::guard('web')->logout();
-        //             // User is a driver pending approval
-        //             return redirect()->route('login')->with('approved', 'Your account is pending approval. Please wait for Bataan Van Rental Administrator authorization.');
-        //         }
-        //     } elseif ($user->role == 3) {
-        //         // User is an admin
-        //         return redirect('/admin-dashboard')->with('success', 'Login Success');
-        //     }
-        // }
-
-        // // Attempt authentication for Client
-        // if (Auth::guard('client')->attempt($credentials)) {
-        //     $client = Auth::guard('client')->user();
-        //     // Handle the logic for Client login
-        //     return redirect('/client-dashboard')->with([
-        //         'success' => 'Login Success',
-        //         'name' => $client->name,
-        //         'showAlert' => true
-        //     ]);
-        // }
-
-        // return back()->with('error', 'Invalid email or password');
-
     }
+    public function loginPostOtp(Request $request)
+    {
+        // dd($request);
+        $enteredOtp = $request->otp;
+        $enteredEmail = $request->email;
+        $enteredPassword = $request->password;
+    
+        $credentials = [
+            'email' => $enteredEmail,
+            'password' => $enteredPassword,
+        ];
+    
+        // OTP Methods for Driver
+        $get_token = Verifytoken::where('token', $enteredOtp)->first();
+    
+        if ($get_token) {
+            $get_token->is_activated = 2;
+            $get_token->save();
+    
+            // Update the user account
+            $user = User::where('email', $get_token->email)->first();
+            $user->is_activated = 1; // Assuming 1 means verified
+            $user->approved = 1; // Assuming 1 means approved
+            $user->save();
+    
+            // Delete the token
+            $get_token->delete();
+    
+            if (Auth::attempt($credentials)) {
+                $user = Auth::user();
+                // if ($user->role == 2 && $user->is_activated == 1 && $user->approved == 1) {
+                    // User is an approved and verified driver
+                    return redirect('/driver-dashboard')->with(['success' => 'Login Success', 'is_activated' => $user->is_activated]);
+                // }
+            }
+        } else {
+            Auth::logout();
+            // User failed OTP verification
+            return redirect()->route('login')->with(['is_activated' => 0, 'approved' => "You need OTP to proceed."]);
+        }
+    }
+    
+
+    // OTP Methods
+    // public function otpMethod($otp){
+    //     //get the token from verify
+    //     $get_token = Verifytoken::where('token', $otp)->first();
+    //     if ($get_token) {
+    //         $get_token->is_activated = 2;
+    //         $get_token->save();
+
+    //         // updates the user account
+    //         $user = User::where('email', $get_token->email)->first();
+    //         $user->is_activated = 2;
+    //         $user->save();
+
+    //         // delete the token
+    //         $getting_token = Verifytoken::where('token', $get_token->token)->first();
+    //         $getting_token->delete();
+    //         return true;
+    //     } else {
+    //         Auth::logout();
+    //         // User is a driver pending approval ,'is_activated'=>$user->is_activated
+    //         return redirect()->route('login')->with(['is_activated' => 0, 'approved' => "You need O T P a to proceed."]);
+    //     }
+
+       
+    // }
 
     // public function loginClient(Request $request)
     // {

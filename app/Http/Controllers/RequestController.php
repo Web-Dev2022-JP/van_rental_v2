@@ -30,7 +30,7 @@ class RequestController extends Controller
         // Find the account based on the provided ID
         $account = User::findOrFail($id);
         // Perform the necessary update logic
-        $account->approved = 1;
+        $account->approved = 5;
         // test
         $account->is_activated = 1;
         $account->save();

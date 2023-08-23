@@ -42,6 +42,18 @@ function FetchNotification() {
                 //                         src="{{ asset('assets/img/profile/img-1.jpg') }}"
                 //                         alt=""></a><a
                 //                     href="profile.html">Parker <span></span></a></h2>
+
+                // status
+                var stats = ''
+                if (account.approved == 0) {
+                    stats = '<span class="badge badge-danger p-2">Pending</span>'
+                }else if(account.is_activated === 0){
+                    stats = '<span class="badge badge-success p-2">Vehicle registration</span>'
+                }else if (account.approved == 1){
+                    stats = '<span class="badge badge-success p-2">Account Approved</span>'
+                }else if (account.is_activated === 1){
+                    stats = '<span class="badge badge-success p-2">Vehicle Deployed</span>'
+                }
                 driverTable += `
                         <tr>
                             <td>
@@ -61,11 +73,7 @@ function FetchNotification() {
                             <td>${account.barangay}, ${account.street} st.</td>
                             
                             <td>${
-                                account.approved === 0
-                                    ? '<span class="badge badge-danger p-2">Pending</span>'
-                                    : account.is_activated === 0
-                                    ? '<span class="badge badge-success p-2">Vehicle registration</span>'
-                                    : '<span class="badge badge-danger p-2">OTP</span>'
+                               stats
                             }</td>
                             
                             <td class="text-right">

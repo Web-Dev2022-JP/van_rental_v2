@@ -8,6 +8,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\RecieptController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,13 +49,14 @@ Route::group(['middleware' => 'guest'], function () {
 
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
+    Route::post('/check-otp', [AuthController::class, 'loginPostOtp'])->name('login.otp');
 });
 
 Route::group(['middleware' => 'auth'], function () {
     // Route::get('/home', [HomeController::class, 'index']);
     // Route::get('/client-dashboard', [HomeController::class, 'client'])->name('client-dash');
     // Route::get('/about',[HomeController::class, 'about'])->name('about');
-    Route::get('/inquiry',[HomeController::class, 'inquiry'])->name('inquiry');
+    // Route::get('/inquiry',[HomeController::class, 'inquiry'])->name('inquiry');
 
 
 
@@ -147,5 +149,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // post request client
     Route::post('/post-Client-Booked',[ClientController::class,'clientBooked'])->name('client-dash-booked');
-
+    Route::post('/tmp-upload-reciept',[RecieptController::class, 'tmpUploadReciept'])->name('reciept.upload');
+    Route::delete('/tmp-delete-reciept',[RecieptController::class, 'tmpDeleteReciept'])->name('reciept.delete');
+    Route::post('/send-driver-reciept',[RecieptController::class, 'tmpSendReciept'])->name('reciept.send');
 });

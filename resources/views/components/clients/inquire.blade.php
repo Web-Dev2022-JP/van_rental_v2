@@ -28,26 +28,27 @@
                         </div>
                         <div class="section-title text-center p-2 ">
                             Personal Information
+                            {{-- {{ Auth::user() }} --}}
                         </div>
                         {{-- first name --}}
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <input type="text" name="firstname" class="form-control" id="firstname"
-                                    placeholder="First Name" required>
+                                    placeholder="First Name" required value="{{ Auth::user()->firstname }}">
                             </div>
                         </div>
                         {{-- last name --}}
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <input type="text" name="lastname" class="form-control" id="lastname"
-                                    placeholder="Last Name" required>
+                                    placeholder="Last Name" required value="{{ Auth::user()->lastname }}">
                             </div>
                         </div>
                         {{-- middle name --}}
                         <div class="col-md-12 col-sm-12">
                             <div class="mb-3">
                                 <input type="text" name="middlename" class="form-control" id="middlename"
-                                    placeholder="Middle Name" required>
+                                    placeholder="Middle Name" required value="{{ Auth::user()->middlename }}">
                             </div>
                         </div>
                         <div class="row">
@@ -56,7 +57,7 @@
                             <div class="mb-3">
                                 <input type="tel" name="contact" class="form-control" id="contact"
                                     placeholder="Contact: +63" required pattern="[0-9]{10}"
-                                    title="Please enter a valid 10-digit mobile number">
+                                    title="Please enter a valid 10-digit mobile number" value="0{{ Auth::user()->contact }}">
                                 <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
                             </div>
                         </div>
@@ -64,7 +65,7 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="mb-3">
                                 <input type="email" name="email" class="form-control" id="email"
-                                    placeholder="Email" required>
+                                    placeholder="Email" required value="{{ Auth::user()->email }}">
                             </div>
                         </div>
                         <div class="section-title text-center p-2">Rental Information</div>
