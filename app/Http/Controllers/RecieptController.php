@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RecieptSent;
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Reciept;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\RecieptRecieved;
 use App\Models\Temporaryfile;
 use App\Events\NotificationEvent;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class RecieptController extends Controller
@@ -62,7 +68,7 @@ class RecieptController extends Controller
 
 // send DRiver a reciept
 public function tmpSendReciept(Request $request){
-    // dd($request->folder);
+    // dd($request);
     // call temporaryfile model
     $temporaryfiles = Temporaryfile::where('folder', $request->folder)->first();
     // dd($temporaryfiles->uuid);
@@ -71,15 +77,77 @@ public function tmpSendReciept(Request $request){
     Storage::copy('reciept/tmp/' . $temporaryfiles->folder . '/' . $temporaryfiles->file, 'reciept/' . $temporaryfiles->folder . '/' . $temporaryfiles->file);
     Reciept::create([
         'user_id' => Auth::user()->id,
+        'reciever_id' => $request->driverId,
         'reciept' => $temporaryfiles->file,
         'path' => $temporaryfiles->folder . '/' . $temporaryfiles->file,
     ]);
     // delete the folder
     Storage::deleteDirectory('reciept/tmp/' . $temporaryfiles->folder);
     $temporaryfiles->delete();
+
+    $driver = User::where('id',$request->driverId)->first();
+    // dd($driver->email);
+    if($driver){
+        $name = Auth::user()->firstname.' '.Auth::user()->lastname;
+        Mail::to($driver->email)->send(new RecieptSent($name, Auth::user()->email));
+    }
     // trigger the event notify
     event(new NotificationEvent(Auth::user()->firstname));
     // Optionally, you can return the updated user data in the response
     return response()->json(['message' => 'sent successfully'], 200);
+}
+
+// get reciept
+public function getPayments(){
+    $reciepts = DB::table('reciepts')
+    ->join('users', 'reciepts.user_id', '=', 'users.id')
+    ->select('reciepts.*','users.firstname','users.lastname','users.email')
+    ->where('reciepts.reciever_id', Auth::user()->id)
+    ->where('reciepts.status', 0)
+    ->latest()
+    ->get();
+    // $reciepts = Reciept::with('user')->where('reciever_id',Auth::user()->id)->latest()->get();
+    foreach ($reciepts as $reciept) {
+         // Convert created_at timestamp to time ago format
+        $reciept->created_at = $this->getTimeAgo($reciept->created_at);
+    }
+    // dd($reciept);
+    return response()->json($reciepts);
+}
+
+// recieved
+public function postPayments (Request $request){
+    // Find the receipt record by its ID
+    $receipt = Reciept::find($request->id);
+    if ($receipt) {
+        // Update the status attribute
+        $receipt->status = 1; // New status value
+        // Save the changes
+        $receipt->save();
+        // trigger the event notify
+        event(new NotificationEvent(Auth::user()->firstname));
+        Mail::to($request->email)->send(new RecieptRecieved($request->name, $request->email));
+        return response()->json(['status'=>'success']);
+    }
+}
+
+// Function to convert timestamp to time ago format
+private function getTimeAgo($timestamp)
+{
+    $currentTime = now();
+    $previousTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $timestamp);
+    $diffInMinutes = $previousTime->diffInMinutes($currentTime);
+
+    if ($diffInMinutes < 1) {
+        return 'Just now';
+    } elseif ($diffInMinutes < 60) {
+        return $diffInMinutes . ' mins ago';
+    } elseif ($diffInMinutes < 1440) {
+        $diffInHours = floor($diffInMinutes / 60);
+        return $diffInHours . ' hours ago';
+    } else {
+        $diffInDays = floor($diffInMinutes / 1440);
+        return $diffInDays . ' days ago';
+    }
 }
 }

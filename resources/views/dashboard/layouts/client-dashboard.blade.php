@@ -517,11 +517,12 @@
 
         $(document).on('click','.upload-reciept', function(){
             let recieptInLocal = JSON.parse(localStorage.getItem('reciept-upload'))
+            let dID = localStorage.getItem('driver-id')
             console.log(recieptInLocal.uploaded_record.folder)
             $.ajax({
                 type: "POST",
                 url: "/send-driver-reciept",
-                data: {folder : recieptInLocal.uploaded_record.folder},
+                data: {folder : recieptInLocal.uploaded_record.folder, driverId : parseInt(dID)},
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -726,7 +727,7 @@
                     } else {
                         // Render booking request
                         // if (item.status === 'pending') {
-                        html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="BKD-${item.id}">
+                        html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="BKD-${item.id}" data-driver="${item.user_id}">
                                     <div class="row g-0">
                                         <div class="col-md-2 justify-contents">
                                             <img class="img-fluid rounded-start"
@@ -933,9 +934,11 @@
         $(document).on('click', '.notification-container', function() {
             const pattern = /^(BKD-)?\d+$/;
             const dataId = $(this).data("id").toString();
+            const driverIdRequest = $(this).data("driver")
             const isMatch = pattern.test(dataId);
             if (isMatch) {
                 if (dataId.startsWith("BKD-")) {
+                    localStorage.setItem('driver-id',driverIdRequest);
                     console.log(`String '${dataId}' starts with 'BKD-'`);
                     // Extract the number from the data-id value
                     const numberPart = dataId.replace("BKD-", "");
@@ -1033,6 +1036,7 @@
         $(document).on('click', '.reciept', function() {
             $('#bookedInfo').offcanvas('hide')
             $('#paymentInfo').offcanvas('show')
+            $('#reciever_id').val(localStorage.getItem('driver-id'))
         })
         // convert time to AM/PM
         const convertTo12HourFormat = (time) => {

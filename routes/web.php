@@ -8,6 +8,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RecieptController;
 
 /*
@@ -152,4 +153,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/tmp-upload-reciept',[RecieptController::class, 'tmpUploadReciept'])->name('reciept.upload');
     Route::delete('/tmp-delete-reciept',[RecieptController::class, 'tmpDeleteReciept'])->name('reciept.delete');
     Route::post('/send-driver-reciept',[RecieptController::class, 'tmpSendReciept'])->name('reciept.send');
+
+    // payments
+    Route::get('/get-payments', [RecieptController::class,'getPayments'])->name('driver.payments');
+    Route::post('/post-recieved', [RecieptController::class,'postPayments'])->name('driver.payments.post');
 });

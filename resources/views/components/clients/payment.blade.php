@@ -48,7 +48,7 @@
                             @csrf
                             <div class="col-sm-12">
                                 <div class="mb-3">
-                                    <input type="number" name="uuid" class="form-control" id="uuid-reciept" required>
+                                    <input type="number" name="reciever_id" class="form-control" id="reciever_id" required hidden>
                                     <label class="label text-center"><b>Upload your
                                             Reciept Here.</b></label>
                                     <input type="file" name="reciept" class="form-control" id="reciept-image" multiple
@@ -74,4 +74,5 @@
 @endsection
 
 @section('script')
+   
 @endsection

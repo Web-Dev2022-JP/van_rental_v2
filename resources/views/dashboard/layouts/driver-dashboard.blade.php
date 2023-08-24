@@ -298,7 +298,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body" id="notif-card">
-                    <div class="card border-0 mb-1 rounded" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
+                    {{-- <div class="card border-0 mb-1 rounded" style="max-width: 540px;" data-id="${msg.outgoing_msg_id}">
                         <div class="row g-0">
                             <div class="col-md-8" style="height: fit-content">
                                 <div class="card-body">
@@ -306,7 +306,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- <div class="card border-0 rounded notification-container" style="max-width: 540px;">
                         <div class="row g-0">
                             <div class="col-md-2 justify-contents">
@@ -444,6 +444,9 @@
         @include('components.drivers.chatroom')
         @yield('driver.chat.customer')
 
+        @include('components.drivers.reciept-modal')
+        @yield('reciept.modal')
+
         {{-- </div> --}}
     </div>
     @include('components.drivers.footer.footer')
@@ -452,6 +455,7 @@
     <script>
         const baseUrls = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
         let tmpData = '';
+        let tmpRcpt = '';
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
 
@@ -572,7 +576,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: (data) => {
-                    
+
                     console.log(data)
                     // Remove duplicates from the data array based on a unique identifier (e.g., message ID)
                     const uniqueData = [];
@@ -625,45 +629,88 @@
             });
         };
 
-       
+
 
         const getUnseenMessage = async () => {
             var reciever_id = parseInt($('#view').attr("data-id"), 10);
 
-            $.ajax({
-                type: "POST",
-                url: "/get-unseen-message",
-                data: {
-                    incoming_id: reciever_id
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: (messageData) => {
-                    // Fetch booking data after fetching messages
-                    $.ajax({
-                        type: "GET",
-                        url: "/get-booked",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                                'content')
-                        },
-                        success: (bookingData) => {
-                            // Combine messages and booking requests
-                            const mergedData = [...messageData, ...bookingData];
+            try {
+                // Fetch unseen message data
+                const messageData = await $.ajax({
+                    type: "POST",
+                    url: "/get-unseen-message",
+                    data: {
+                        incoming_id: reciever_id
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
-                            // Render the combined data
-                            renderData(mergedData);
-                        },
-                        error: (xhr, status, error) => {
-                            console.error(error);
-                        }
-                    });
-                },
-                error: (xhr, status, error) => {
-                    console.error(error);
-                }
-            });
+                // Fetch booking data
+                const bookingData = await $.ajax({
+                    type: "GET",
+                    url: "/get-booked",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                // Fetch payment data
+                const paymentData = await $.ajax({
+                    type: "GET",
+                    url: "/get-payments",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                // Combine messages, booking requests, and payment data
+                const mergedData = [...messageData, ...bookingData, ...paymentData];
+
+                // Render the combined data
+                renderData(mergedData);
+            } catch (error) {
+                console.error(error);
+            }
+
+
+
+            // old version function
+            // $.ajax({
+            //     type: "POST",
+            //     url: "/get-unseen-message",
+            //     data: {
+            //         incoming_id: reciever_id
+            //     },
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     },
+            //     success: (messageData) => {
+            //         // Fetch booking data after fetching messages
+            //         $.ajax({
+            //             type: "GET",
+            //             url: "/get-booked",
+            //             headers: {
+            //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+            //                     'content')
+            //             },
+            //             success: (bookingData) => {
+            //                 // Combine messages and booking requests
+            //                 const mergedData = [...messageData, ...bookingData];
+
+            //                 // Render the combined data
+            //                 renderData(mergedData);
+            //             },
+            //             error: (xhr, status, error) => {
+            //                 console.error(error);
+            //             }
+            //         });
+            //     },
+            //     error: (xhr, status, error) => {
+            //         console.error(error);
+            //     }
+            // });
 
         }
 
@@ -672,8 +719,9 @@
             var dots = '';
             var message = '';
             var html = '';
-
-            if (data.length > 0) {
+            console.log('the data is here')
+            console.log(data)
+            if (data.length > 1) {
                 console.log(data.length)
                 // alert('dwadwad')
                 // Organize messages and booking requests
@@ -716,10 +764,28 @@
                                         </div>
                                     </div>
                                 </div>`;
+                    }else if(item.hasOwnProperty('reciept')){
+                        tmpRcpt = item;
+                        html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="RCPT-${item.id}" data-driver="${item.user_id}">
+                                    <div class="row g-0">
+                                        <div class="col-md-2 justify-contents">
+                                            <img class="img-fluid rounded-start"
+                                                src="${baseUrls}/storage/reciept/${item.path}"
+                                                alt="">
+                                        </div>
+                                        <div class="col-md-8" style="height: fit-content">
+                                            <div class="card-body">
+                                                <span class="card-title"><b>${item.firstname} ${item.lastname}</b></span>
+                                                <span class="card-text">has sent you a reciept.</span><br>
+                                                <span class="card-text"><small class="text-body-secondary text-secondary">${item.created_at}</small></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
                     } else {
                         // Render booking request
                         if (item.status === 'pending') {
-                            html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="BKD-${item.id}">
+                            html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;" data-id="BKD-${item.id}" data-driver="${item.user_id}">
                                     <div class="row g-0">
                                         <div class="col-md-2 justify-contents">
                                             <img class="img-fluid rounded-start"
@@ -736,7 +802,10 @@
                                         </div>
                                     </div>
                                 </div>`;
-                        } else {
+                        } 
+                    }
+                });
+            }else {
                             dots = ``
                             html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;">
                                                 <div class="row g-0">
@@ -750,22 +819,6 @@
                                                 </div>
                                             </div>`;
                         }
-                    }
-                });
-            } else {
-                dots = ``
-                html += `<div class="card border-0 mb-1 rounded notification-container" style="max-width: 540px;">
-                                    <div class="row g-0">
-                                        
-                                        <div class="col-md-12" style="height: fit-content">
-                                            <div class="card-body">
-                                                <span class="card-title text-secondary"><b>There's is no Notification's</b></span>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>`;
-            }
 
 
             // Update the container with the merged data
@@ -888,10 +941,19 @@
         $(document).on('click', '.notification-container', function() {
             const pattern = /^(BKD-)?\d+$/;
             const dataId = $(this).data("id").toString();
+            // const driverIdRequest = $(this).data("driver")
             const isMatch = pattern.test(dataId);
+            // RCPT
+            const patternRCPT = /^(RCPT-)?\d+$/;
+            const dataIdRCPT = $(this).data("id").toString();
+            // const driverIdRequest = $(this).data("driver")
+            const isMatchRCPT = patternRCPT.test(dataIdRCPT);
 
-            if (isMatch) {
+           
+            if (isMatch || isMatchRCPT) {
                 if (dataId.startsWith("BKD-")) {
+                    // set the driver id to localStorage
+                    // localStorage.setItem('driver-id',driverIdRequest);
                     console.log(`String '${dataId}' starts with 'BKD-'`);
                     // Extract the number from the data-id value
                     const numberPart = dataId.replace("BKD-", "");
@@ -925,7 +987,14 @@
                         $('#notification').offcanvas('hide')
                     })
                     // $('#customerInfo').offcanvas('hide')
-                    
+
+                } else if(dataIdRCPT.startsWith('RCPT-')) {
+                    $('#receiptModal').modal('show');
+                    $('#notification').offcanvas('hide')
+                    $('#rcpt').attr('src',baseUrls+'/storage/reciept/'+tmpRcpt.path)
+                    $('#first_name').val(tmpRcpt.firstname)
+                    $('#last_name').val(tmpRcpt.lastname)
+
                 } else {
                     console.log(`String '${dataId}' is a number`);
                     var client_id = parseInt(dataId, 10);
@@ -940,6 +1009,32 @@
                 console.log(`String '${dataId}' does not match the pattern`);
             }
         });
+
+        // recieved
+        $(document).on('click', '#recieved', function() {
+            // alert('recieved')
+            $.ajax({
+                url: `/post-recieved`,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    id: tmpRcpt.id,
+                    name: tmpRcpt.firstname + ' '+ tmpRcpt.lastname,
+                    email: tmpRcpt.email,
+                },
+                success: function(res) {
+                    console.log(res)
+                    if(res.status == 'success'){
+                        $('#receiptModal').modal('hide');
+                        $('#notification').offcanvas('show')
+                    }
+                    
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        })
 
         // update the unseen message to seen
         const updateUnseenMessage = async (customer_id) => {
@@ -981,7 +1076,7 @@
                 },
                 success: (data) => {
                     console.log(data)
-                    if(data.status == 'success'){
+                    if (data.status == 'success') {
                         $('#customerInfo').offcanvas('hide')
                         sendRequest()
                         // Reset input fields to clear their values
@@ -1083,7 +1178,7 @@
                     tmpData = res;
                     getAllBooked(res);
                     clickHandler(res)
-                    
+
                 },
                 error: function(error) {
                     console.log(error);
@@ -1091,11 +1186,6 @@
             });
         }
 
-        // $(document).ready(function() {
-        //     sendRequest();
-        //     setInterval(sendRequest, 15000); // Refresh the data every 15 seconds
-
-        // });
 
         const clickHandler = async (data) => {
 
@@ -1112,7 +1202,7 @@
                     "text-white border border-success bg-success";
                 $('#booking-id').val("BKD-" + foundObject.id +
                     ` >> ${foundObject.status.toUpperCase()} STATUS`).addClass(
-                statusClass); // Add the determined class
+                    statusClass); // Add the determined class
                 $('#firstname').val(foundObject.firstname)
                 $('#middlename').val(foundObject.middlename)
                 $('#lastname').val(foundObject.lastname)
@@ -1219,6 +1309,7 @@
                 }
             });
         }
+
         // renderMessage()
         getMaintenance()
         sendRequest();

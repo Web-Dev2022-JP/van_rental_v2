@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Van;
 use App\Models\User;
 use App\Mail\OTPMail;
+use App\Mail\RegistrationVehicleSuccess;
 use App\Models\Document;
 use Illuminate\Http\Request;
 use App\Models\Temporaryfile;
@@ -107,8 +108,8 @@ class HomeController extends Controller
                 'approved' => 'Error Sending!',
             ]);
         }
-        
-        Mail::to($user->email)->send(new OTPMail($user->email, "Registration for your vehicle is sent successfully!", $user->name, "Registration sent",'otp.vehicle-registration'));
+        $name = $user->firstname.' '.$user->lastname;
+        Mail::to($user->email)->send(new RegistrationVehicleSuccess($name,$user->email));
 
          // Redirect to the login page with success and approval messages
          return redirect()->route('register.vehicle')->with([
