@@ -53,12 +53,12 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h1 class="modal-title fs-5 d-flex justify-content-center" id="exampleModalLabel">
+                <div class="modal-header primary-bg text-white">
+                    {{-- <h1 class="modal-title fs-5 d-flex justify-content-center" id="exampleModalLabel">
                         <i class='bx bxs-user h1'></i>
-                    </h1>
+                    </h1> --}}
                     <b><span class="h3 ml-2">DRIVER'S INFORMATION</span></b>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 {{-- <form method="POST" action="{{ route('login') }}"> --}}
                 <div class="modal-body row modalBody">
@@ -97,7 +97,7 @@
                     </div>
                     {{-- @csrf --}}
                     <div class="col-sm-7 p-3 profile-details">
-                        <div class="row  mx-auto">
+                        <div class="row mx-auto">
                             <div class="col-sm-6 profile-container"
                                 style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
                                 <img src="{{ asset('img/default-van-img.webp') }}" alt="Profile Image"
@@ -106,10 +106,10 @@
                             <div class="col-sm-6 profile-contents">
                                 
                             </div>
-                            <div class="col-sm-12 mt-4 ">
-                                <a href="#" id="chat-driver" class="btn btn-info mb-2">CHAT WITH DRIVER</a>
-                                <a href="{{ route('client-dash-about') }}" class="btn btn-info mb-2">ABOUT DRIVER</a>
-                                <a href="{{ route('client-dash-location') }}" class="btn btn-info mb-2">LOCATE DRIVER</a>
+                            <div class="col-sm-12 row mt-4 primary-btn-container">
+                                <a href="#" id="chat-driver" class="btn primary-btn mb-2 p-2 col-sm-3 mx-auto">CHAT WITH DRIVER</a>
+                                <a href="{{ route('client-dash-about') }}" class="btn mb-2 primary-btn p-2 col-sm-3 mx-auto">ABOUT DRIVER</a>
+                                <a href="{{ route('client-dash-location') }}" class="btn mb-2 primary-btn p-2 col-sm-3 mx-auto">LOCATE DRIVER</a>
                             </div>
                             <div class="col-sm-12 mt-3">
                                 <div class="row" id="vehicle-info">

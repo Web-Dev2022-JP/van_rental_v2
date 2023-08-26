@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Bataan Van Rental Service</title>
         {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.2.2/css/bootstrap.min.css"> --}}
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -22,19 +22,20 @@
         
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
    
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/home/home.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/home/burgermenu_v2.css') }}">
+        {{-- <link rel="stylesheet" href="{{ asset('css/style.css') }}"> --}}
+        {{-- <link rel="stylesheet" href="{{ asset('css/home/home.css') }}"> --}}
+        {{-- <link rel="stylesheet" href="{{ asset('css/home/burgermenu_v2.css') }}"> --}}
    
         <link rel="stylesheet" href="{{ asset('css/calendar.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css" integrity="sha512-cn16Qw8mzTBKpu08X0fwhTSv02kK/FojjNLz0bwp2xJ4H+yalwzXKFw/5cLzuBZCxGWIA+95X4skzvo8STNtSg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         {{-- <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet"> --}}
+        <link rel="stylesheet" href="{{ asset('theming/universal.css') }}">
     </head>
     <body class="antialiased">
         <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
             
             @if (Route::has('login'))
-                <div class="header sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
+                <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10 navigation-header">
                     @auth
                         @if (auth()->user()->role == 1)
                             <a href="{{ url('/client-dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">{{ 'Client' }}</a>
@@ -45,7 +46,17 @@
                         @endif
                         
                     @else
-                        <div class="hamburger-container">
+            
+                           <!-- Flex container for login and registration links -->
+                        <div class="d-flex justify-content-end">
+                        
+                            <a href="{{ route('login') }}" class="text-white me-2" style="text-decoration: none"><b>Login</b></a>
+                            <div class="border me-2"></div>
+                            @if (Route::has('register'))
+                                <a id="registration-id" class="text-white" style="text-decoration: none; cursor: pointer"><b>Register</b></a>
+                            @endif
+                        </div>
+                        {{-- <div class="hamburger-container">
                             <div class="hamburger-menu">
                                 <div></div>
                                 <div></div>
@@ -59,18 +70,44 @@
                                     <a id="registration-id" class="text-black" style="text-decoration: none; cursor: pointer"><b>Register</b></a>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
+
+                        {{-- <nav class="navbar navbar-expand-lg bg-body-tertiary"> --}}
+                            <div class="container-fluid">
+                              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                              </button>
+                              <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                                <a class="navbar-brand" href="#">Hidden brand</a>
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                  <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="#">Link</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                                  </li>
+                                </ul>
+                                <form class="d-flex" role="search">
+                                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                  <button class="btn btn-outline-success" type="submit">Search</button>
+                                </form>
+                              </div>
+                            </div>
+                          </nav>
                     @endauth
                 </div>
             @endif
             <main>
                 @section('content')
                 {{-- banner --}}
-                <div class="container-fluid border banner p-4" style="width: 98%;border-radius:10px;margin-top:4.8em">
+                <div class="container-fluid border banner p-4">
                     <h4 class="text-center mb-3">UNLOCK ADVENTURE ON FOUR WHEELS WITH OUR VAN RENTAL SERVICE</h4>
                     <h1 class="text-center mb-3">BATAAN VAN SERVICE</h1>
                 </div>
-                <div class="container-fluid border bg-light p-2 mt-1 row mx-auto" style="width: 98%;border-radius:10px">
+                <div class="container-fluid border bg-light p-2 row mx-auto" style="width: 98%;border-radius:10px">
                     <div class="col-sm-3 text-success h5">
                         <i class='bx bxs-check-circle'></i>
                         <span>Best Available Rates</span>
@@ -90,129 +127,323 @@
                 </div>
 
                 {{-- section van  --}}
-                <div class="container-fluid van-container p-0 mt-5" style="width: 98%;border-radius:10px">
-                    <div class="row van-row">
+                <div class="row p-3">
 
-                        <div class="col-sm-3 van-col">
-                            <div class="card van-card">
-                                <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title h3 mb-5">2018 TOYOTA HI-ACE VAN</h5>
-                                    <div class="row d-flex justify-content-center gap-1">
-                                        <div class="col-lg-4 col-md-4 card"
-                                            style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-                                            <div class="text-center" style="display: flex; align-items:center;justify-content:center">
-                                                <div class="pt-2 me-2">
-                                                    <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
-                                                </div>
-                                                <div class="pt-2">
-                                                    <div class="text-secondary h5 mb-0"> Bags</div>
-                                                    <div style="color: rgb(2, 47, 61);"><b> 8 Bags</b></div>
-                                                </div>
+                    <div class="col-sm-3 mb-3 mb-sm-0 van-col">
+                        <div class="card van-card position-relative">
+                            <span class="position-absolute top-10 end-0  p-2 primary-bg border border-light">
+                                <span>Book Now!</span>
+                              </span>
+                            <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
+                            <div class="card-body text-center primary-color">
+                                <h5 class="card-title h3 mb-5">2018 TOYOTA HI-ACE VAN</h5>
+                                <div class="row d-flex justify-content-center gap-1">
+                                    <div class="col-lg-4 col-md-4 card welcome-bags-card primary-color">
+                                        <div class="text-center welcome-card-text">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-bags-card-text primary-color">
+                                                <div class="h5 mb-0"> Bags</div>
+                                                <div><b> 8 Bags</b></div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 card"
-                                            style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-                                            <div class="text-center" style="display: flex; align-items:center;justify-content:center">
-                                                <div class="pt-2 me-2">
-                                                    <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
-                                                </div>
-                                                <div class="pt-2">
-                                                    <div class="text-secondary h5 mb-0"> People</div>
-                                                    <div style="color: rgb(2, 47, 61);"><b> 11 Seater</b></div>
-                                                </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 card welcome-people-card primary-color">
+                                        <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-people-card-text primary-color">
+                                                <div class="h5 mb-0"> People</div>
+                                                <div><b> 11 Seater</b></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-8 mb-3" style="margin: auto">
-                                    <input class="btn btn-secondary form-control" type="button" value="View Details" data-bs-toggle="modal" data-bs-target="#details-modal">
-                                </div>
+                            </div>
+                            <div class="col-sm-8 mb-3" style="margin: auto">
+                                <input class="btn btn-secondary form-control" type="button" value="View Details" data-bs-toggle="modal" data-bs-target="#details-modal">
                             </div>
                         </div>
-
-                        <div class="col-sm-3 van-col">
-                            <div class="card van-card">
-                                <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title h3 mb-5">2018 TOYOTA HI-ACE VAN</h5>
-                                    <div class="row d-flex justify-content-center gap-1">
-                                        <div class="col-lg-4 col-md-4 card"
-                                            style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-                                            <div class="text-center" style="display: flex; align-items:center;justify-content:center">
-                                                <div class="pt-2 me-2">
-                                                    <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
-                                                </div>
-                                                <div class="pt-2">
-                                                    <div class="text-secondary h5 mb-0"> Bags</div>
-                                                    <div style="color: rgb(2, 47, 61);"><b> 8 Bags</b></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 card"
-                                            style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-                                            <div class="text-center" style="display: flex; align-items:center;justify-content:center">
-                                                <div class="pt-2 me-2">
-                                                    <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
-                                                </div>
-                                                <div class="pt-2">
-                                                    <div class="text-secondary h5 mb-0"> People</div>
-                                                    <div style="color: rgb(2, 47, 61);"><b> 11 Seater</b></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-8 mb-3" style="margin: auto">
-                                    <input class="btn btn-secondary form-control" type="button" value="View Details" data-bs-toggle="modal" data-bs-target="#details-modal">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-sm-3 van-col">
-                            <div class="card van-card">
-                                <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title h3 mb-5">2018 TOYOTA HI-ACE VAN</h5>
-                                    <div class="row d-flex justify-content-center gap-1">
-                                        <div class="col-lg-4 col-md-4 card"
-                                            style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-                                            <div class="text-center" style="display: flex; align-items:center;justify-content:center">
-                                                <div class="pt-2 me-2">
-                                                    <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
-                                                </div>
-                                                <div class="pt-2">
-                                                    <div class="text-secondary h5 mb-0"> Bags</div>
-                                                    <div style="color: rgb(2, 47, 61);"><b> 8 Bags</b></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 card"
-                                            style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-                                            <div class="text-center" style="display: flex; align-items:center;justify-content:center">
-                                                <div class="pt-2 me-2">
-                                                    <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
-                                                </div>
-                                                <div class="pt-2">
-                                                    <div class="text-secondary h5 mb-0"> People</div>
-                                                    <div style="color: rgb(2, 47, 61);"><b> 11 Seater</b></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-8 mb-3" style="margin: auto">
-                                    <input class="btn btn-secondary form-control" type="button" value="View Details" data-bs-toggle="modal" data-bs-target="#details-modal">
-                                </div>
-                            </div>
-                        </div>
-            
-            
-                        {{-- <div class="col-sm-4 van-col d-flex justify-content-center" style="margin-top: -5em">
-                            <button class="btn btn-info text-white"><b>VIEW MORE</b></button>
-                        </div> --}}
                     </div>
-                </div>
+
+                    <div class="col-sm-3 mb-3 van-col">
+                        <div class="card van-card position-relative">
+                            <span class="position-absolute top-10 end-0  p-2 primary-bg border border-light">
+                                <span>Book Now!</span>
+                              </span>
+                            <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
+                            <div class="card-body text-center primary-color">
+                                <h5 class="card-title h3 mb-5">2018 TOYOTA HI-ACE VAN</h5>
+                                <div class="row d-flex justify-content-center gap-1">
+                                    <div class="col-lg-4 col-md-4 card welcome-bags-card primary-color">
+                                        <div class="text-center welcome-card-text">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-bags-card-text primary-color">
+                                                <div class="h5 mb-0"> Bags</div>
+                                                <div><b> 8 Bags</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 card welcome-people-card primary-color">
+                                        <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-people-card-text primary-color">
+                                                <div class="h5 mb-0"> People</div>
+                                                <div><b> 11 Seater</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 mb-3" style="margin: auto">
+                                <input class="btn btn-secondary form-control" type="button" value="View Details" data-bs-toggle="modal" data-bs-target="#details-modal">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 mb-3 van-col">
+                        <div class="card van-card position-relative">
+                            <span class="position-absolute top-10 end-0  p-2 primary-bg border border-light">
+                                <span>Book Now!</span>
+                              </span>
+                            <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
+                            <div class="card-body text-center primary-color">
+                                <h5 class="card-title h3 mb-5">2018 TOYOTA HI-ACE VAN</h5>
+                                <div class="row d-flex justify-content-center gap-1">
+                                    <div class="col-lg-4 col-md-4 card welcome-bags-card primary-color">
+                                        <div class="text-center welcome-card-text">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-bags-card-text primary-color">
+                                                <div class="h5 mb-0"> Bags</div>
+                                                <div><b> 8 Bags</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 card welcome-people-card primary-color">
+                                        <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-people-card-text primary-color">
+                                                <div class="h5 mb-0"> People</div>
+                                                <div><b> 11 Seater</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 mb-3" style="margin: auto">
+                                <input class="btn btn-secondary form-control" type="button" value="View Details" data-bs-toggle="modal" data-bs-target="#details-modal">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 mb-3 van-col">
+                        <div class="card van-card position-relative">
+                            <span class="position-absolute top-10 end-0  p-2 primary-bg border border-light">
+                                <span>Book Now!</span>
+                              </span>
+                            <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
+                            <div class="card-body text-center primary-color">
+                                <h5 class="card-title h3 mb-5">2018 TOYOTA HI-ACE VAN</h5>
+                                <div class="row d-flex justify-content-center gap-1">
+                                    <div class="col-lg-4 col-md-4 card welcome-bags-card primary-color">
+                                        <div class="text-center welcome-card-text">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-bags-card-text primary-color">
+                                                <div class="h5 mb-0"> Bags</div>
+                                                <div><b> 8 Bags</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 card welcome-people-card primary-color">
+                                        <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-people-card-text primary-color">
+                                                <div class="h5 mb-0"> People</div>
+                                                <div><b> 11 Seater</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 mb-3" style="margin: auto">
+                                <input class="btn btn-secondary form-control" type="button" value="View Details" data-bs-toggle="modal" data-bs-target="#details-modal">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 mb-3 van-col">
+                        <div class="card van-card position-relative">
+                            <span class="position-absolute top-10 end-0  p-2 primary-bg border border-light">
+                                <span>Book Now!</span>
+                              </span>
+                            <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
+                            <div class="card-body text-center primary-color">
+                                <h5 class="card-title h3 mb-5">2018 TOYOTA HI-ACE VAN</h5>
+                                <div class="row d-flex justify-content-center gap-1">
+                                    <div class="col-lg-4 col-md-4 card welcome-bags-card primary-color">
+                                        <div class="text-center welcome-card-text">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-bags-card-text primary-color">
+                                                <div class="h5 mb-0"> Bags</div>
+                                                <div><b> 8 Bags</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 card welcome-people-card primary-color">
+                                        <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-people-card-text primary-color">
+                                                <div class="h5 mb-0"> People</div>
+                                                <div><b> 11 Seater</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 mb-3" style="margin: auto">
+                                <input class="btn btn-secondary form-control" type="button" value="View Details" data-bs-toggle="modal" data-bs-target="#details-modal">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 mb-3 van-col">
+                        <div class="card van-card position-relative">
+                            <span class="position-absolute top-10 end-0  p-2 primary-bg border border-light">
+                                <span>Book Now!</span>
+                              </span>
+                            <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
+                            <div class="card-body text-center primary-color">
+                                <h5 class="card-title h3 mb-5">2018 TOYOTA HI-ACE VAN</h5>
+                                <div class="row d-flex justify-content-center gap-1">
+                                    <div class="col-lg-4 col-md-4 card welcome-bags-card primary-color">
+                                        <div class="text-center welcome-card-text">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-bags-card-text primary-color">
+                                                <div class="h5 mb-0"> Bags</div>
+                                                <div><b> 8 Bags</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 card welcome-people-card primary-color">
+                                        <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-people-card-text primary-color">
+                                                <div class="h5 mb-0"> People</div>
+                                                <div><b> 11 Seater</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 mb-3" style="margin: auto">
+                                <input class="btn btn-secondary form-control" type="button" value="View Details" data-bs-toggle="modal" data-bs-target="#details-modal">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 mb-3 van-col">
+                        <div class="card van-card position-relative">
+                            <span class="position-absolute top-10 end-0  p-2 primary-bg border border-light">
+                                <span>Book Now!</span>
+                              </span>
+                            <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
+                            <div class="card-body text-center primary-color">
+                                <h5 class="card-title h3 mb-5">2018 TOYOTA HI-ACE VAN</h5>
+                                <div class="row d-flex justify-content-center gap-1">
+                                    <div class="col-lg-4 col-md-4 card welcome-bags-card primary-color">
+                                        <div class="text-center welcome-card-text">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-bags-card-text primary-color">
+                                                <div class="h5 mb-0"> Bags</div>
+                                                <div><b> 8 Bags</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 card welcome-people-card primary-color">
+                                        <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-people-card-text primary-color">
+                                                <div class="h5 mb-0"> People</div>
+                                                <div><b> 11 Seater</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 mb-3" style="margin: auto">
+                                <input class="btn btn-secondary form-control" type="button" value="View Details" data-bs-toggle="modal" data-bs-target="#details-modal">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 mb-3 van-col">
+                        <div class="card van-card position-relative">
+                            <span class="position-absolute top-10 end-0  p-2 primary-bg border border-light">
+                                <span>Book Now!</span>
+                              </span>
+                            <img src="{{ asset('img/default-van-img.webp') }}" class="card-img-top" alt="van">
+                            <div class="card-body text-center primary-color">
+                                <h5 class="card-title h3 mb-5">2018 TOYOTA HI-ACE VAN</h5>
+                                <div class="row d-flex justify-content-center gap-1">
+                                    <div class="col-lg-4 col-md-4 card welcome-bags-card primary-color">
+                                        <div class="text-center welcome-card-text">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-bags-card-text primary-color">
+                                                <div class="h5 mb-0"> Bags</div>
+                                                <div><b> 8 Bags</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 card welcome-people-card primary-color">
+                                        <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                            <div class="pt-2 me-2">
+                                                <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
+                                            </div>
+                                            <div class="pt-2 welcome-people-card-text primary-color">
+                                                <div class="h5 mb-0"> People</div>
+                                                <div><b> 11 Seater</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 mb-3" style="margin: auto">
+                                <input class="btn btn-secondary form-control" type="button" value="View Details" data-bs-toggle="modal" data-bs-target="#details-modal">
+                            </div>
+                        </div>
+                    </div>
+    
+                  </div>
+
+                
                   @endsection
                   {{-- Include details section --}}
                   @section('details-modal')
@@ -247,7 +478,7 @@
         <script src="{{ asset('js/calendar.js') }}"></script>
         
         {{-- custom js --}}
-          <script src="{{ asset('assets/js/burgermenu/burgermenu.js') }}"></script>
+          {{-- <script src="{{ asset('assets/js/burgermenu/burgermenu.js') }}"></script> --}}
           <script src="{{ asset('js/register-popups.js') }}"></script>
     </body>
 </html>

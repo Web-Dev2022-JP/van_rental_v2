@@ -10,7 +10,7 @@
                 <div class="modal-body">
                     <img src="#" class="img-fluid" alt="Receipt Image" id="rcpt">
                     <div class="col-sm-12 row">
-                        <div class="mt-3 col-sm-">
+                        <div class="mt-3 col-sm-6">
                             <label for="first_name" class="form-label">First Name:</label>
                             <input type="text" class="form-control" id="first_name" placeholder="Enter first name">
                         </div>

@@ -44,11 +44,11 @@ class BookingConfirmationMail extends Mailable
             $this->vehicle_name = $van->model;
             $this->driver_name = $van->fullname;
             $this->total_amount = '₱1000';
-            $this->status = 'Booked';
+            $this->status = 'Secured your slot proceed to payments';
 
             $booked = Booked::where('user_id',Auth::user()->id)->first();
             if($booked){
-                $booked->status = 'accepted';
+                $booked->status = 'payment';
                 $booked->save();
             }
 

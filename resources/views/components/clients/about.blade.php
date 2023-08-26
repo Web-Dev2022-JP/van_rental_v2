@@ -46,6 +46,21 @@
             width: 100%;
             height: 100%;
         }
+        /* 500 width */
+        @media screen and (max-width: 500px) {
+            .driver-info-container>.info-title,
+            .service-offered-container>.info-title {
+                font-size: 1.5rem;
+            }
+            .driver-info-container{
+                border: 2px solid var(--dark-text);
+                height: fit-content;
+            }
+            .terms-title{
+                color: var(--dark-text);
+                font-size: 1.3rem;
+            }
+        }
     </style>
 @endsection
 @section('contents')
@@ -162,13 +177,13 @@
                                 </div>
                                 <div class="mb-3 text-center d-flex justify-content-center p-5">
                                     <div class="d-grid">
-                                        <a id="name" href="{{ asset('inquiry') }}" class="text-white btn btn-info"><b>INQUIRE
+                                        <a id="name" href="{{ asset('inquiry') }}" class="text-white btn primary-bg"><b>INQUIRE
                                                 NOW</b></a>
                                     </div>
                                 </div>
                                 <div class="terms-and-conditions-container p-5">
                                     <div class="terms-and-conditions d-flex flex-column align-items-center justify-content-center gap-5">
-                                        <h1>TERMS AND CONDITIONS:</h1>
+                                        <h1 class="terms-title">TERMS AND CONDITIONS:</h1>
                                         <ul>
                                             <li>ROUND TRIP VAN TRANSFER MANILA TO ANY POINT AND VICE VERSA</li>
                                             <li>MAXIMUM OF 14 CAPACITY</li>

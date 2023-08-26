@@ -6,8 +6,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
 
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/home/home.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/style.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('css/home/home.css') }}"> --}}
+
+    <link rel="stylesheet" href="{{ asset('theming/universal.css') }}">
 
     {{-- <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/css/style-v2.css') }}"> --}}

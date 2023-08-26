@@ -1,14 +1,11 @@
 @section('client-nav')
-<nav class="navbar fixed-top">
-    <div class="container-fluid">
-      <a class="navbar-brand text-white mt-1" href="#"><h3 class="red">BATAAN VAN RENTAL</h3></a>
-      <div class="d-flex">
+<nav class="navbar fixed-top navigation-header">
+    <div class="container-fluid navigation-content">
+      <a class="navbar-brand text-white mt-1" href="#"><h3 class="nav-title">BATAAN VAN RENTAL</h3></a>
+      <div class="d-flex nav-title">
         {{-- guide --}}
         <a class="navbar-toggler border-0 text-white" style="text-decoration: none" data-bs-toggle="offcanvas" data-bs-target="#guidelines" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span class="bx bx-info-square position-relative">
-                {{-- <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-                    
-                  </span> --}}
             </span>
           </a>
           {{-- notification --}}
@@ -30,50 +27,6 @@
           </a>
       </div>
 
-      {{-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
-          <li class="nav-item">
-            <a class="nav-link text-white active" aria-current="page" href="#">HOME</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">SERVICES</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">LOCATION</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{{ route('about') }}">ABOUT</a>
-          </li>
-        </ul>
-        <form action="{{ route('logout') }}" method="POST" class="d-flex" role="search">
-            @csrf
-            @method('DELETE')
-            <button class="btn btn-danger" type="submit">Logout</button>
-        </form>
-
-        <ul class="navbar-nav ">
-          <li class="nav-item dropdown">
-            <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                {{ Auth::user()->firstname }}
-            </a>
-        
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ route('logout') }}"
-                    onclick="event.preventDefault();
-                    document.getElementById('logout-form').submit();">
-                    {{ __('Logout') }}
-                </a>
-        
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger" type="submit">Logout</button>
-                </form>
-            </div>
-        </li>
-        </ul>
-      </div> --}}
-
       <div class="offcanvas offcanvas-end" tabindex="-1" id="settings" aria-labelledby="offcanvasNavbarLabel" style="max-width: 40%;background: #274C77;">
         <div class="offcanvas-header border-bottom">
           <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Navigation</h5>
@@ -93,24 +46,7 @@
                         <span class="mx-2">SERVICES</span>
                     </a>
                 </li>
-                {{-- <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('client-dash-services') }}">
-                        <span class="bx bxs-wrench"></span>
-                        <span class="mx-2">Chatroom</span>
-                    </a>
-                </li> --}}
-                {{-- <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('client-dash-location') }}">
-                        <span class="bx bxs-map"></span>
-                        <span class="mx-2">LOCATION</span>
-                    </a>
-                </li> --}}
-                {{-- <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('client-dash-about') }}">
-                        <span class="bx bxs-info-circle"></span>
-                        <span class="mx-2">ABOUT</span>
-                    </a>
-                </li> --}}
+          
                 <li class="nav-item">
                     <a class="nav-link text-white" href="{{ route('client-dash-profile') }}">
                         <span class="bx bxs-user"></span>

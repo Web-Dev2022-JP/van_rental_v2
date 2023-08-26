@@ -269,7 +269,7 @@
                                         class="bx bx-left-arrow-alt h1"></i></a>
                                 <img src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
                                     alt="">
-                                <div class="details">
+                                <div class="details secondary-color">
                                     <span id="user_header_name">Jaypee Quintana</span>
                                     <p>Active now</p>
                                 </div>

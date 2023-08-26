@@ -524,10 +524,16 @@ class AuthController extends Controller
             $get_pickup = $request->pickup;
             $get_dropoff = $request->dropoff;
             $get_booking_date = $request->booking_date;
+
+            $booked = Booked::where('user_id',Auth::user()->id)->first();
+            if($booked){
+                $booked->status = 'payment';
+                $booked->save();
+            }
             // $get_total_amount = $request->total_amount;
             Mail::to($get_user_email)->send(new BookingConfirmationMail($get_user_name, $get_booking_id, $get_pickup, $get_dropoff, $get_booking_date));
             event(new NotificationEvent(Auth::user()->name));
-            return response()->json(['status' => 'succecss']);
+            return response()->json(['status' => 'success']);
         }
     }
 }

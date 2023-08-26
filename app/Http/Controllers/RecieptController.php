@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\RecieptSent;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Booked;
 use App\Models\Reciept;
+use App\Mail\RecieptSent;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\RecieptRecieved;
@@ -124,6 +125,12 @@ public function postPayments (Request $request){
         $receipt->status = 1; // New status value
         // Save the changes
         $receipt->save();
+
+        $booked = Booked::where('user_id',Auth::user()->id)->first();
+            if($booked){
+                $booked->status = 'accepted';
+                $booked->save();
+            }
         // trigger the event notify
         event(new NotificationEvent(Auth::user()->firstname));
         Mail::to($request->email)->send(new RecieptRecieved($request->name, $request->email));

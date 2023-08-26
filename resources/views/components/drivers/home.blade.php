@@ -749,12 +749,12 @@
     {{-- </div> --}}
 
     <!-- main contents -->
-    <div class="head navbar bg-body-tertiary mx-3 mt-3 pngtree-img-file-document-icon-png-image_913759 container-fluid border rounded"
+    <div class="head navbar mx-3 bg-white mt-3 pngtree-img-file-document-icon-png-image_913759 container-fluid border rounded"
         style="width: 97.8%;">
-        <h5 class="mx-4 mt-2"><span class="text-success mx-2"><b>|</b></span>Dashboard | <span
-                class="text-secondary h6">Welcome {{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</span> </h5>
-        <div class="d-flex mx-3  mt-2">
-            <span class="h5 me-4">
+        <h5 class="mx-4 mt-2"><span class="secondary-color mx-2"><b>|</b></span> <span class="secondary-color">Dashboard</span> | <span
+                class="secondary-color h6">Welcome {{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</span> </h5>
+        <div class="d-flex mx-3  mt-2 secondary-color">
+            <span class="h5 me-4 ">
                 <i class='bx bxs-home'></i>
             </span>
             <span class="h6 me-2">
@@ -764,7 +764,7 @@
                 <i class='bx bx-chevrons-right'></i>
             </span>
             <span class="h6">
-                <a href="#">Dashboard</a>
+                <a href="#" class="secondary-color">Dashboard</a>
             </span>
         </div>
     </div>
@@ -782,7 +782,7 @@
                         </div>
                         <div class="col-sm-8 col-8">
                             <div class="d-flex flex-column justify-content-center h-100">
-                                <span class="mx-auto mb-2"><b>Vehicle Registration</b></span>
+                                <span class="mx-auto mb-2 secondary-color"><b>Vehicle Registration</b></span>
                                 <span class="mx-auto text-white mb-2" id="status"></span>
                                 <div class="d-flex mx-auto">
                                     <a class="mr-1 me-1" href="{{ route('register.vehicle') }}">Registration</a>
@@ -805,7 +805,7 @@
                         </div>
                         <div class="col-sm-8 col-8">
                             <div class="d-flex flex-column justify-content-center h-100">
-                                <span class="mx-auto"><b>Vehicle Maintenance</b></span>
+                                <span class="mx-auto secondary-color"><b>Vehicle Maintenance</b></span>
                                 <span class="mx-auto text-danger" id="maintenance-display">Not Available</span>
                                 <div class="d-flex mx-auto">
                                     <a class="mr-1 me-1" href="#" data-bs-toggle="offcanvas" data-bs-target="#maintenance">Set Status</a>
@@ -869,7 +869,7 @@
     </div>
     <!-- table -->
     <div class='row p-3 mx-auto'>
-        <div class='col-md-12 bg-light p-3 border rounded'>
+        <div class='col-md-12 bg-light secondary-color p-3 border rounded' style="height: 500px">
             <span class="mx-2">Customer Information Table</span>
             <input type="number" id="driver-id" value="{{ Auth::user()->id }}" hidden>
             <div class='table-responsive'>

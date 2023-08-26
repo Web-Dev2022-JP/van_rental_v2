@@ -39,20 +39,20 @@ toggle.addEventListener("click", () => {
     sidebar.classList.toggle("close");
 });
 
-searchBtn.addEventListener("click", () => {
-    // csm8.classList.remove('small')
-    sidebar.classList.remove("close");
-});
+// searchBtn.addEventListener("click", () => {
+//     // csm8.classList.remove('small')
+//     sidebar.classList.remove("close");
+// });
 
-modeSwitch.addEventListener("click", () => {
-    body.classList.toggle("dark");
+// modeSwitch.addEventListener("click", () => {
+//     body.classList.toggle("dark");
 
-    if (body.classList.contains("dark")) {
-        modeText.innerText = "Light mode";
-    } else {
-        modeText.innerText = "Dark mode";
-    }
-});
+//     if (body.classList.contains("dark")) {
+//         modeText.innerText = "Light mode";
+//     } else {
+//         modeText.innerText = "Dark mode";
+//     }
+// });
 setState();
 function setState() {
     // Add the "activeI" class to the anchor element inside the clicked link

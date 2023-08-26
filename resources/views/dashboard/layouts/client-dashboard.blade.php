@@ -26,7 +26,7 @@
 
 
         }
-
+        
         #chat-driver {
             width: 35%;
             /* background: red; */
@@ -290,6 +290,8 @@
                 border: 0 0 1px 0;
             }
         }
+
+        
     </style>
 </head>
 
@@ -299,28 +301,6 @@
     @yield('client-nav')
 
     <main>
-        {{-- van section --}}
-        {{-- @include('components.clients.van')
-        @yield('contents') --}}
-
-        {{-- Include details section --}}
-        {{-- @section('details-modal')
-        @include('components.details')
-        @endsection --}}
-
-        {{-- Include frequently section --}}
-        {{-- @section('frequently')
-        @include('components.frequently')
-        @endsection
-        @section('frequently')
-        @include('modals.about-driver')
-        @endsection --}}
-
-        {{-- Render the content sections --}}
-        {{-- @yield('content')
-        @yield('details-modal')
-        @yield('frequently')
-        @yield('about-driver-modal') --}}
 
         {{-- v1.1 --}}
         @yield('contents')
@@ -461,7 +441,7 @@
 
                         // Store the parsedResponse in a variable
                         // const storedResponse = parsedResponse;
-                        localStorage.setItem('reciept-upload',JSON.stringify(parsedResponse));
+                        localStorage.setItem('reciept-upload', JSON.stringify(parsedResponse));
                         // Handle the server response here
                     },
                     onerror: (error) => {
@@ -478,7 +458,7 @@
                         // The revert server response is available in the 'response' object
                         const parsedResponse = JSON.parse(response);
                         console.log('Revert Server Response:', parsedResponse);
-                        
+
                         // Handle the revert server response here
                     },
                     onerror: (error) => {
@@ -515,19 +495,22 @@
             }
         });
 
-        $(document).on('click','.upload-reciept', function(){
+        $(document).on('click', '.upload-reciept', function() {
             let recieptInLocal = JSON.parse(localStorage.getItem('reciept-upload'))
             let dID = localStorage.getItem('driver-id')
             console.log(recieptInLocal.uploaded_record.folder)
             $.ajax({
                 type: "POST",
                 url: "/send-driver-reciept",
-                data: {folder : recieptInLocal.uploaded_record.folder, driverId : parseInt(dID)},
+                data: {
+                    folder: recieptInLocal.uploaded_record.folder,
+                    driverId: parseInt(dID)
+                },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                   console.log(response)
+                    console.log(response)
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -535,7 +518,7 @@
             });
         })
 
-       
+
 
 
         // Enable pusher logging - don't include this in production
@@ -938,7 +921,7 @@
             const isMatch = pattern.test(dataId);
             if (isMatch) {
                 if (dataId.startsWith("BKD-")) {
-                    localStorage.setItem('driver-id',driverIdRequest);
+                    localStorage.setItem('driver-id', driverIdRequest);
                     console.log(`String '${dataId}' starts with 'BKD-'`);
                     // Extract the number from the data-id value
                     const numberPart = dataId.replace("BKD-", "");
@@ -956,8 +939,10 @@
                             // const foundObject = bookingData[0].find(obj => obj.id === parseInt(numberPart));
                             $('#bookedInfo').offcanvas('show');
                             var statusClass = bookingData[0].status === "pending" ?
-                                "text-white border border-danger bg-danger" :
-                                "text-white border border-success bg-success";
+                            "text-white border border-danger bg-danger" :
+                            (bookingData[0].status === "payment" ?
+                            "text-dark border border-warning bg-warning" :
+                            "text-white border border-success bg-success");
                             $('#profile-payments').attr('src',
                                 `${baseUrls}/storage/profile/${bookingData[0].documents[0].path}`)
                             // $('#profile2-payments').attr('src',`${baseUrls}/storage/profile/${bookingData[0].documents[0].path}`)
@@ -965,8 +950,13 @@
                                 `Name : ${bookingData[0].users[0].firstname} ${bookingData[0].users[0].lastname}`
                             )
                             $('#gcash-payments').text(`Gcash : +63-${bookingData[0].users[0].contact}`)
-                            $('#payment-status').val('Procceed To Payments to secured slot').addClass(
+                                // Additional logic for success condition
+                            if (bookingData[0].status === "accepted") {
+                                $('#payment-status').val('Booking Successful').addClass('border border-0 text-success');
+                            }else{
+                                $('#payment-status').val('Procceed To Payments').addClass(
                                 'border border-0 text-warning');
+                            }
                             $('#booking-id').val("BKD-" + bookingData[0].id +
                                 ` >> ${bookingData[0].status.toUpperCase()} STATUS`).addClass(
                                 statusClass); // Add the determined class
@@ -983,6 +973,12 @@
                             $('#daysandhours-booked').val(bookingData[0].daysandhours + ' Day/s')
                             $('#time').val(convertTo12HourFormat(bookingData[0].pickuptime))
                             $('#chat-driver-side').attr('value', bookingData[0].sender_id)
+                            if(bookingData[0].status == 'accepted'){
+                                $('.reciept').addClass('disabled')
+                            }else{
+                                $('.reciept').removeClass('disabled')
+                            }
+                            
                         },
                         error: (xhr, status, error) => {
                             console.error(error);
@@ -1038,6 +1034,32 @@
             $('#paymentInfo').offcanvas('show')
             $('#reciever_id').val(localStorage.getItem('driver-id'))
         })
+
+        $(document).ready(function() {
+        $("#copy-button").click(function() {
+            var phoneNumber = $("#gcash-payments").text().split(":")[1].trim();
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(phoneNumber)
+                    .then(function() {
+                        // Show the tooltip
+                        $("#copy-button").tooltip("show");
+                        // Hide the tooltip after 3 seconds
+                        setTimeout(function() {
+                            $("#copy-button").tooltip("hide");
+                        }, 3000);
+                    })
+                    .catch(function(err) {
+                        console.error('Unable to copy: ', err);
+                    });
+            } else {
+                console.error('Clipboard API not available.');
+            }
+        });
+    });
+
+
+
         // convert time to AM/PM
         const convertTo12HourFormat = (time) => {
             // Parse the time into hours and minutes

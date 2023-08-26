@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style-v2.css') }}">
     <!----======== CSS ======== -->
     <link rel="stylesheet" href="{{ asset('assets/css/style-nav.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('theming/universal.css') }}"> --}}
 
     <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
     <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />

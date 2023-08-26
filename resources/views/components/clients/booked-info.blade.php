@@ -63,6 +63,7 @@
                                     <div class="card-body">
                                         <span class="card-title" id="name-payments"><b>jaypee Quintana</b></span><br>
                                         <span class="card-text" id="gcash-payments">GCASH : 09270316695</span>
+                                        <button class="btn btn-warning" id="copy-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Phone number copied!">Copy</button>
                                         {{-- <span class="card-text bx bxs-receipt"><small class="text-body-secondary text-secondary bx bxs-receipt"></small></span> --}}
                                     </div>
                                 </div>
@@ -71,7 +72,7 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="mb-2">
-                                <input type="text" id="booking-id" class="form-control" placeholder="First Name">
+                                <input type="text" id="booking-id" class="form-control text-center" placeholder="First Name">
                             </div>
                         </div>
                         <div class="col-sm-12">

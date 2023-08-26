@@ -157,6 +157,21 @@
     <script>
         $(document).ready(function() {
             const baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+
+            var pusher = new Pusher('f6459200cae7a43a20f0', {
+                cluster: 'ap1'
+            });
+
+            var channel = pusher.subscribe('notifaction-channel');
+            channel.bind('notify-user', function(data) {
+                console.log(JSON.stringify(data.data));
+                getDisplayVan()
+                submitBooked()
+            });
+
             // Add a click event handler to all elements with the class "details"
             const getDriverCredentials = async (id) => {
                 try {
@@ -176,71 +191,72 @@
                             $('.profile').attr('src',
                                 `${baseUrl}/storage/profile/${data.user.documents[0].path}`)
                             profileContents = `
-                                <div class="col-sm-12 mb-3">
+                                <br/>
+                                <div class="col-sm-12 mb-3 driver-contents">
                                     <h5 class="border-bottom"><b>${data.user.vans[0].companyname}</b></h5>
                                     <span class="d-flex flex-column justify-content-center align-items-center"
                                         style="margin-top: -10px;color: rgb(2, 47, 61);"><b>Company name</b></span>
                                 </div>
-                                <div class="col-sm-12 mb-3">
+                                <div class="col-sm-12 mb-3 driver-contents">
                                     <h5 class="border-bottom"><b>${data.user.firstname} ${data.user.lastname} ${data.user.middlename}</b></h5>
                                     <span class="d-flex flex-column justify-content-center align-items-center"
                                         style="margin-top: -10px;color: rgb(2, 47, 61);"><b>Driver's name</b></span>
                                 </div>
-                                <div class="col-sm-12 mb-3">
+                                <div class="col-sm-12 mb-3 driver-contents">
                                     <h5 class="border-bottom"><b>${data.user.street}, ${data.user.municipality}</b></h5>
                                     <span class="d-flex flex-column justify-content-center align-items-center"
                                         style="margin-top: -10px;color: rgb(2, 47, 61);"><b>Address</b></span>
                                 </div>
                         `
-                            vehicle = `<div class="col-sm-6 card" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                            vehicle = `<div class="col-sm-6 card vehicle-card" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 5px;">
                                         <img src="${baseUrl}/storage/vehicle/${data.user.documents[1].path}" alt="Profile Image"
                                             class="img-fluid">
                                     </div>
-                                    <div class="col-sm-6 mt-2">
+                                    <div class="col-sm-6 mt-2 vehicle-contents">
                                         <h6 style="color: rgb(2, 47, 61);"><b>DETAILS</b></h6>
                                         <div class="text-center"
                                             style="display: flex; align-items:start;justify-content:start;color: rgb(2, 47, 61);">
-                                            <div class="pt-2 me-2">
+                                            <div class="me-2">
                                                 <i class='bx bxs-car-garage h4' style="font-size: 2em;"></i>
                                             </div>
-                                            <div class="pt-2">
-                                                <div class="h6 mt-2"> <b>Model | ${data.user.vans[0].model}</b></div>
+                                            <div>
+                                                <div class="h6 mt-1"> <b>Model | ${data.user.vans[0].model}</b></div>
                                             </div>
                                         </div>
                                         <div class="text-center"
                                             style="display: flex; align-items:start;justify-content:start;color: rgb(2, 47, 61);">
-                                            <div class="pt-2 me-2">
+                                            <div class="me-2">
                                                 <i class='bx bxs-shopping-bags h4' style="font-size: 2em;"></i>
                                             </div>
-                                            <div class="pt-2">
-                                                <div class="h6 mt-2"> <b>Bags | ${data.user.vans[0].bag} Bags</b></div>
+                                            <div>
+                                                <div class="h6 mt-1"> <b>Bags | ${data.user.vans[0].bag} Bags</b></div>
                                             </div>
                                         </div>
                                         <div class="text-center"
                                             style="display: flex; align-items:start;justify-content:start;color: rgb(2, 47, 61);">
-                                            <div class="pt-2 me-2">
+                                            <div class="me-2">
                                                 <i class='bx bxs-user-plus h4' style="font-size: 2em;"></i>
                                             </div>
-                                            <div class="pt-2">
-                                                <div class="h6 mt-2"> <b>People | ${data.user.vans[0].seat} Setas People</b></div>
+                                            <div>
+                                                <div class="h6 mt-1"> <b>People | ${data.user.vans[0].seat} Setas People</b></div>
                                             </div>
                                         </div>
                                         <div class="text-center"
                                             style="display: flex; align-items:start;justify-content:start;color: rgb(2, 47, 61);">
-                                            <div class="pt-2 me-2">
+                                            <div class="me-2">
                                                 <i class='bx bxs-gas-pump h4' style="font-size: 2em;"></i>
                                             </div>
-                                            <div class="pt-2">
-                                                <div class="h6 mt-2"> <b>Bags | ${data.user.vans[0].bag} Bags</b></div>
+                                            <div>
+                                                <div class="h6 mt-1"> <b>Bags | ${data.user.vans[0].bag} Bags</b></div>
                                             </div>
                                         </div>
                                         <div class="text-center"
                                             style="display: flex; align-items:start;justify-content:start;color: rgb(2, 47, 61);">
-                                            <div class="pt-2 me-2">
+                                            <div class="me-2">
                                                 <i class='bx bxs-thermometer h4' style="font-size: 2em;"></i>
                                             </div>
-                                            <div class="pt-2">
-                                                <div class="h6 mt-2"> <b>Air Conditioning | ${data.user.vans[0].ac} Zone</b></div>
+                                            <div>
+                                                <div class="h6 mt-1"> <b>Air Conditioning | ${data.user.vans[0].ac} Zone</b></div>
                                             </div>
                                         </div>
                                     </div>`
@@ -282,10 +298,11 @@
 
             const getCalendarDays = async (id) => {
                 const curDate = $('.current-date').text()
-                const dataInLocal = JSON.parse(localStorage.getItem('driver-location')); // Default to an empty array if localStorage is empty
+                const dataInLocal = JSON.parse(localStorage.getItem(
+                    'driver-location')); // Default to an empty array if localStorage is empty
                 console.log('dwadwadwa')
                 console.log(dataInLocal.bookeds)
-               if(dataInLocal.bookeds.length > 0){
+                if (dataInLocal.bookeds.length > 0) {
                     dataInLocal.bookeds.forEach(day => {
                         // console.log(day.dateoftrip)
                         let targetDate = new Date(day.dateoftrip);
@@ -296,11 +313,30 @@
                         $('li.d').each(function(index, element) {
                             const dayText = $(element).text();
 
+                            // alert(actDay.text())
                             // Check if the element has the 'inactive' class
                             if ($(element).hasClass('inactive')) {
                                 // If the element has the 'inactive' class, ignore it and do not add the click event
                                 console.log('Ignoring inactive day:', dayText);
                                 return; // Skip this iteration and proceed to the next li element
+                            } else if (dayOfMonth > parseInt($(element)
+                                    .text(), 10)) {
+                                $(element).addClass('not-available text-danger').attr({
+                                    'data-bs-toggle': 'tooltip',
+                                    'data-bs-placement': 'top',
+                                    "data-bs-custom-class": "custom-tooltip",
+                                    'data-bs-title': "You can't select the day that already passed by. "
+                                });
+
+                            } else if ($(element).hasClass('active-booked')) {
+                                $(element).attr({
+                                    'data-bs-toggle': 'tooltip',
+                                    'data-bs-placement': 'top',
+                                    "data-bs-custom-class": "custom-tooltip",
+                                    'data-bs-title': "Someone already booked on this day. "
+                                });
+                            } else {
+                                $(element).addClass('available')
                             }
 
                             if (dayText == dayOfMonth && day.status == 'pending') {
@@ -308,48 +344,74 @@
                             }
 
                             if (dayText == dayOfMonth && day.status == 'accepted') {
+                                // $(element).removeClass('active')
                                 $(element).addClass('active-booked')
                             }
 
-
+                            // Initialize tooltips for all elements with [data-bs-toggle="tooltip"]
+                            $('[data-bs-toggle="tooltip"]').tooltip();
+                            var tooltipTimeout; // Declare the tooltipTimeout variable
                             $(element).on('click', () => {
-                                // alert('dwadwa')
-                                $("#inquiry").modal({
-                                    backdrop: "static",
-                                    keyboard: false, // Optional: Disable closing the modal with the keyboard
-                                });
-                                // Show the element with ID "details"
-                                // Show the element with ID "details"
-                                $('#details').modal('hide');
-                                $('#inquiry').modal('show');
 
-                                const date_object = new Date($(element).text() +
-                                    curDate);
-                                // const options = { day: "numeric", month: "long", year: "numeric" };
-                                // const formatted_date = date_object.toLocaleDateString("en-US", options);
-                                // console.log(formatted_date);  // Output: August 4, 2023
+                                if ($(element).hasClass('inactive') || $(element)
+                                    .hasClass('not-available')) {
+                                    // Clear the existing timeout
+                                    if (tooltipTimeout) {
+                                        clearTimeout(tooltipTimeout);
+                                    }
+                                    // Set a new timeout to hide the tooltip after 5 seconds
+                                    tooltipTimeout = setTimeout(function() {
+                                        $('[data-bs-toggle="tooltip"]')
+                                            .tooltip('hide');
+                                    }, 5000);
+                                    // alert('this day is not accepting any booking! ')
+                                } else if ($(element)
+                                    .hasClass('active-booked')) {
 
-                                const month = (date_object.getMonth() + 1).toString()
-                                    .padStart(2,
-                                        "0");
-                                const day = date_object.getDate().toString().padStart(2,
-                                    "0");
-                                const year = date_object.getFullYear();
+                                    // alert('this day is already booked!')
+                                } else {
+                                    $("#inquiry").modal({
+                                        backdrop: "static",
+                                        keyboard: false, // Optional: Disable closing the modal with the keyboard
+                                    });
+                                    // Show the element with ID "details"
+                                    // Show the element with ID "details"
+                                    $('#details').modal('hide');
+                                    $('#inquiry').modal('show');
 
-                                const formatted_date = `${year}-${month}-${day}`;
-                                console.log(formatted_date)
+                                    const date_object = new Date($(element).text() +
+                                        curDate);
+                                    // const options = { day: "numeric", month: "long", year: "numeric" };
+                                    // const formatted_date = date_object.toLocaleDateString("en-US", options);
+                                    // console.log(formatted_date);  // Output: August 4, 2023
 
-                                $(document).ready(function() {
-                                    // initialize form
-                                    $("#dateoftrip").val(formatted_date);
-                                    $('#driver-id').val(id)
-                                });
+                                    const month = (date_object.getMonth() + 1)
+                                        .toString()
+                                        .padStart(2,
+                                            "0");
+                                    const day = date_object.getDate().toString()
+                                        .padStart(2,
+                                            "0");
+                                    const year = date_object.getFullYear();
+
+                                    const formatted_date =
+                                        `${year}-${month}-${day}`;
+                                    console.log(formatted_date)
+
+                                    $(document).ready(function() {
+                                        // initialize form
+                                        $("#dateoftrip").val(
+                                            formatted_date);
+                                        $('#driver-id').val(id)
+                                    });
+                                }
+
 
                             })
                         });
                     });
-               }else{
-                $('li.d').each(function(index, element) {
+                } else {
+                    $('li.d').each(function(index, element) {
                         const dayText = $(element).text();
 
                         // Check if the element has the 'inactive' class
@@ -360,11 +422,11 @@
                         }
 
                         // if (dayText == dayOfMonth && day.status == 'pending') {
-                        //     $(element).addClass('active-pending')
+                        $(element).removeClass('active-pending')
                         // }
 
                         // if (dayText == dayOfMonth && day.status == 'accepted') {
-                        //     $(element).addClass('active-booked')
+                        $(element).removeClass('active-booked')
                         // }
 
 
@@ -403,7 +465,7 @@
 
                         })
                     });
-               }
+                }
 
             }
 
@@ -447,55 +509,97 @@
 
                             data.forEach(van => {
                                 const maintenanceEntries = van.user.maintenances;
-                                const hasMaintenance = maintenanceEntries.some(maintenance => maintenance.status === 'maintenance');
+                                const hasMaintenance = maintenanceEntries.some(
+                                    maintenance => maintenance.status ===
+                                    'maintenance');
 
-                                const badgeClass = hasMaintenance ? 'text-bg-warning' : 'text-bg-success';
-                                const badgeText = hasMaintenance ? 'Maintenance Repair !' : 'Book Now !';
+                                const badgeClass = hasMaintenance ? 'text-bg-warning' :
+                                    'primary-bg';
+                                const badgeText = hasMaintenance ?
+                                    'Maintenance Repair !' : 'Book Now';
                                 const buttonClass = hasMaintenance ? 'disabled' : '';
-
-                                const vanCard = `
-                                    <div class="col-sm-3 van-col">
-                                        <div class="card van-card">
-                                            <span class="badge position-absolute top-0 end-0 p-3 ${badgeClass}">${badgeText}</span>
-                                            <img src="${baseUrl}/storage/vehicle/${van.user.documents[1].path}" class="card-img-top" alt="van">
-                                            <div class="card-body text-center">
-                                                <h5 class="card-title h3 mb-5">${van.model}</h5>
-                                                <!-- Other card body content -->
-                                                <div class="row d-flex justify-content-center gap-1">
-                                                                            <div class="col-lg-4 col-md-4 card"
-                                                                                style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-                                                                                <div class="text-center" style="display: flex; align-items:center;justify-content:center">
-                                                                                    <div class="pt-2 me-2">
-                                                                                        <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
-                                                                                    </div>
-                                                                                    <div class="pt-2">
-                                                                                        <div class="text-secondary h5 mb-0"> Bags</div>
-                                                                                        <div style="color: rgb(2, 47, 61);"><b> ${van.bag} Bags</b></div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-4 col-md-4 card"
-                                                                                style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-                                                                                <div class="text-center" style="display: flex; align-items:center;justify-content:center">
-                                                                                    <div class="pt-2 me-2">
-                                                                                        <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
-                                                                                    </div>
-                                                                                    <div class="pt-2">
-                                                                                        <div class="text-secondary h5 mb-0"> People</div>
-                                                                                        <div style="color: rgb(2, 47, 61);"><b> ${van.seat} Seater</b></div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                            </div>
-                                            <div class="col-sm-8 mb-3" style="margin: auto">
-                                                <input class="btn btn-secondary form-control details ${buttonClass}" 
-                                                    type="button" value="View Details" data-id="${van.user_id}" 
-                                                    ${buttonClass}>
+                                const vanCard = `<div class="col-sm-3 mb-3 van-col">
+                                    <div class="card van-card position-relative">
+                                        <span class="position-absolute top-10 end-0  p-2 ${badgeClass} border border-light">
+                                            <span>${badgeText}!</span>
+                                        </span>
+                                        <img src="${baseUrl}/storage/vehicle/${van.user.documents[1].path}" class="card-img-top" alt="van">
+                                        <div class="card-body text-center primary-color">
+                                            <h5 class="card-title h3 mb-5">${van.model}</h5>
+                                            <div class="row d-flex justify-content-center gap-1">
+                                                <div class="col-lg-4 col-md-4 card welcome-bags-card primary-color">
+                                                    <div class="text-center welcome-card-text">
+                                                        <div class="pt-2 me-2">
+                                                            <i class='bx bxs-shopping-bags h1' style="font-size: 2em;"></i>
+                                                        </div>
+                                                        <div class="pt-2 welcome-bags-card-text primary-color">
+                                                            <div class="h5 mb-0"> Bags</div>
+                                                            <div><b> ${van.bag} Bags</b></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 card welcome-people-card primary-color">
+                                                    <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                                        <div class="pt-2 me-2">
+                                                            <i class='bx bxs-user-plus h1' style="font-size: 2em"></i>
+                                                        </div>
+                                                        <div class="pt-2 welcome-people-card-text primary-color">
+                                                            <div class="h5 mb-0"> People</div>
+                                                            <div><b> ${van.seat} Seater</b></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="col-sm-8 mb-3" style="margin: auto">
+                                            <input class="btn btn-secondary form-control details ${buttonClass}" type="button" value="View Details" data-id="${van.user_id}">
+                                        </div>
                                     </div>
-                                `;
+                                </div>
+                                `
+                                // const vanCard = `
+                                //     <div class="col-sm-3 mb-3 van-col">
+                                //         <div class="card van-card position-relative">
+    
+                                //             <span class="badge position-absolute top-0 end-0 p-3 ${badgeClass}">${badgeText}</span>
+                                //             <img src="${baseUrl}/storage/vehicle/${van.user.documents[1].path}" class="card-img-top" alt="van">
+                                //             <div class="card-body text-center primary-color">
+                                //                 <h5 class="card-title h3 mb-5">${van.model}</h5>
+                                //                 <!-- Other card body content -->
+                                //                 <div class="row d-flex justify-content-center gap-1">
+                                //                                             <div class="col-lg-4 col-md-4 card welcome-bags-card primary-color">
+                                //                                                 <div class="text-center welcome-card-text">
+                                //                                                     <div class="pt-2 me-2">
+                                //                                                         <i class='bx bxs-shopping-bags h1' style="font-size: 3em;"></i>
+                                //                                                     </div>
+                                //                                                     <div class="pt-2">
+                                //                                                         <div class="text-secondary h5 mb-0"> Bags</div>
+                                //                                                         <div style="color: rgb(2, 47, 61);"><b> ${van.bag} Bags</b></div>
+                                //                                                     </div>
+                                //                                                 </div>
+                                //                                             </div>
+                                //                                             <div class="col-lg-4 col-md-4 card"
+                                //                                                 style="width: 40%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                                //                                                 <div class="text-center" style="display: flex; align-items:center;justify-content:center">
+                                //                                                     <div class="pt-2 me-2">
+                                //                                                         <i class='bx bxs-user-plus h1' style="font-size: 3em"></i>
+                                //                                                     </div>
+                                //                                                     <div class="pt-2">
+                                //                                                         <div class="text-secondary h5 mb-0"> People</div>
+                                //                                                         <div style="color: rgb(2, 47, 61);"><b> ${van.seat} Seater</b></div>
+                                //                                                     </div>
+                                //                                                 </div>
+                                //                                             </div>
+                                //                                         </div>
+                                //             </div>
+                                //             <div class="col-sm-8 mb-3" style="margin: auto">
+                                //                 <input class="btn btn-secondary form-control details ${buttonClass}" 
+                                //                     type="button" value="View Details" data-id="${van.user_id}" 
+                                //                     ${buttonClass}>
+                                //             </div>
+                                //         </div>
+                                //     </div>
+                                // `;
 
                                 html += vanCard;
                                 // const maintenanceBadge = van.user.maintenances[0]

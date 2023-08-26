@@ -7,6 +7,16 @@
     @yield('links')
     {{-- driver side chat --}}
     <style>
+        :root{
+            --white: #fff;
+            --primary-color-light: #F6F5FF;
+            --primary-color: #6096ba;
+            --secondary-color: #274c77;
+            --tertiary-color: #33ab63;
+            --last-color: #e74a4a;
+            --primary-color-support: rgb(2, 47, 61);
+            --primary-font: Arial, Helvetica, sans-serif;
+        }
         #chat-customer {
             width: 35%;
             /* height: fit-content; */
@@ -14,11 +24,11 @@
 
         .wrappers {
             margin: auto;
-            background: #fff;
+            background: var(--white);
             max-width: inherit;
             width: 100%;
             border-radius: 16px;
-            box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
+            box-shadow: 0 0 128px 0 var(--secondary-color),
                 0 32px 64px -48px rgba(0, 0, 0, 0.5);
         }
 
@@ -51,7 +61,7 @@
             max-height: 500px;
             overflow-y: auto;
             padding: 10px 30px 20px 30px;
-            background: #f7f7f7;
+            background: var(--white);
             box-shadow: inset 0 32px 32px -32px rgb(0 0 0 / 5%),
                 inset 0 -32px 32px -32px rgb(0 0 0 / 5%);
         }
@@ -86,7 +96,7 @@
         }
 
         .outgoing .details p {
-            background: var(--primary-color);
+            background: var(--secondary-color);
             color: #fff;
             border-radius: 18px 18px 0 18px;
         }
@@ -109,7 +119,7 @@
 
         .incoming .details p {
             background: #fff;
-            color: var(--primary-color);
+            color: var(--secondary-color);
             border-radius: 18px 18px 18px 0;
         }
 
@@ -124,7 +134,7 @@
             width: calc(100% - 58px);
             font-size: 16px;
             padding: 0 13px;
-            border: 1px solid #e6e6e6;
+            border: 1px solid var(--secondary-color);
             outline: none;
             border-radius: 5px 0 0 5px;
         }
@@ -134,7 +144,7 @@
             width: 55px;
             border: none;
             outline: none;
-            background: var(--primary-color);
+            background: var(--secondary-color);
             font-size: 19px;
             cursor: pointer;
             opacity: 0.9;
@@ -225,7 +235,7 @@
                 padding: 0px 0px 0px 0px;
                 max-width: 100%;
 
-                border: 1px solid green;
+                border: 1px solid var(--secondary-color);
             }
 
             #chat-customer {
@@ -253,13 +263,13 @@
         <section class="home">
             <nav class="navbar bg-body-tertiary" id="head-nav" style="width: 100%;">
                 <div class="container-fluid">
-                    <a class="navbar-brand mx-5 text-color-dark" href="#">Bataan Van Rental Services</a>
+                    <a class="navbar-brand mx-5 text-color-dark secondary-color" href="#">Bataan Van Rental Services</a>
                     <input class="form-control driver-id" type="hidden" name="driver-id"
                         value="{{ auth()->user()->id }}">
                     <div class="d-flex">
                         <a type="button" class="text-color-dark position-relative" data-bs-toggle="offcanvas"
                             data-bs-target="#guidelines" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                            <span class='bx bx-info-circle h4 text-secondary'>
+                            <span class='bx bx-info-circle h4 secondary-color'>
 
                             </span>
 
@@ -268,7 +278,7 @@
                         <a type="button" class="text-color-dark mx-3 position-relative" data-bs-toggle="offcanvas"
                             data-bs-target="#notification" aria-controls="offcanvasNavbar"
                             aria-label="Toggle navigation">
-                            <span class='bx bx-bell h4 text-secondary' id="bell">
+                            <span class='bx bx-bell h4 secondary-color' id="bell">
 
                             </span>
 
@@ -276,7 +286,7 @@
 
                         <a type="button" class="text-color-dark me-2" data-bs-toggle="offcanvas"
                             data-bs-target="#messages" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                            <span class='bx bx-message-dots text-secondary h4' id="chats">
+                            <span class='bx bx-message-dots secondary-color h4' id="chats">
                                 <span
                                     class="position-absolute top-2 start-200 translate-middle p-1 bg-danger border border-light rounded-circle">
                                 </span>
@@ -285,7 +295,7 @@
                         <button type="button" class="btn">
                             <img src="{{ asset('assets/img/user-06.jpg') }}" class="rounded-circle driver-profile"
                                 width="30" alt="Admin">
-                            <span class="text-color-dark">{{ auth()->user()->firstname }}</span>
+                            <span class="secondary-color">{{ auth()->user()->firstname }}</span>
                         </button>
                     </div>
                 </div>
@@ -981,6 +991,12 @@
                     $('#daysandhours').val(foundObject.daysandhours + ' Hour/s')
                     $('#time').val("Pickup-time >> " + convertTo12HourFormat(foundObject.pickuptime))
                     $('#chat-driver-side').attr('value', foundObject.sender_id)
+                    if(foundObject.status === 'accepted'){
+                        $('#accept').addClass('disabled')
+                    }else{
+                        $('#accept').removeClass('disabled')
+                    }
+                    
                     $(document).on('click', '#accept', function() {
                         // sendRequest()
                         $('#customerInfo').offcanvas('hide')
@@ -1028,7 +1044,11 @@
                         $('#receiptModal').modal('hide');
                         $('#notification').offcanvas('show')
                     }
-                    
+                    // renderMessage()
+                    getMaintenance()
+                    sendRequest();
+                    getSeenMessage()
+                    getUnseenMessage()
                 },
                 error: function(error) {
                     console.log(error);
@@ -1056,7 +1076,7 @@
 
         // const accept booking
         $(document).on('click', '#accept', function() {
-            alert('sent email to the user')
+            // alert('sent email to the user')
             // $user_name, $booking_id,$pickup,$dropoff, $booking_date
             const email = $('#email').val()
             const user_name = $('#firstname').val()
@@ -1216,6 +1236,11 @@
                 $('#daysandhours').val(foundObject.daysandhours + ' Hour/s')
                 $('#time').val("Pickup-time >> " + convertTo12HourFormat(foundObject.pickuptime))
                 $('#chat-driver-side').attr('value', foundObject.sender_id)
+                if(foundObject.status === 'accepted'){
+                    $('#accept').addClass('disabled')
+                }else{
+                    $('#accept').removeClass('disabled')
+                }
             })
 
 

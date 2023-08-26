@@ -172,7 +172,7 @@
 
 {{-- updated version bootstrap 5.3 --}}
 <nav class="sidebar close">
-    <header class="d-flex align-items-center mb-4">
+    <header class="d-flex align-items-center mb-2">
         <div class="image-text">
             <a href="{{ route('driver.home') }}" class="image">
                 <img src="{{ asset('assets/img/logo1.png') }}" alt="">
@@ -187,10 +187,10 @@
 
     <div class="menu-bar">
         <div class="menu">
-            <li class="search-box d-flex align-items-center mb-3">
-                <i class='bx bx-search icon'></i>
+            {{-- <li class="search-box d-flex align-items-center mb-3">
+                <i class='bx bx-search icon secondary-color'></i>
                 <input type="text" class="form-control" placeholder="Search...">
-            </li>
+            </li> --}}
 
             <ul class="menu-links list-unstyled mb-3">
                 <li class="auto-active nav-link" data-id="/driver-dashboard">
@@ -234,7 +234,7 @@
                     </form>
                 </li>
 
-                <li class="mode d-flex align-items-center">
+                {{-- <li class="mode d-flex align-items-center">
                     <div class="sun-moon me-2">
                         <i class='bx bx-moon icon moon'></i>
                         <i class='bx bx-sun icon sun'></i>
@@ -244,7 +244,7 @@
                     <div class="toggle-switch ms-auto">
                         <span class="switch"></span>
                     </div>
-                </li>
+                </li> --}}
                 
             </div>
         </div>
