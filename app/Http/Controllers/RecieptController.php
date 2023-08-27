@@ -95,7 +95,7 @@ public function tmpSendReciept(Request $request){
     // trigger the event notify
     event(new NotificationEvent(Auth::user()->firstname));
     // Optionally, you can return the updated user data in the response
-    return response()->json(['message' => 'sent successfully'], 200);
+    return response()->json(['message' => 'sent successfully', 'status'=>'success'], 200);
 }
 
 // get reciept

@@ -293,9 +293,17 @@
 
         
     </style>
+    <link rel="stylesheet" href="{{ asset('loader/loader.css') }}">
 </head>
 
 <body>
+    {{-- loader --}}
+    <div class="modal-loader">
+        <div class="loader-wrapper">
+          <div class="loader"></div>
+        </div>
+    </div>
+
     {{-- navigation --}}
     @include('components.clients.nav')
     @yield('client-nav')
@@ -415,6 +423,7 @@
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script src="{{ asset('loader/loader.js') }}"></script>
     <script>
         const baseUrls = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
 
@@ -511,6 +520,13 @@
                 },
                 success: function(response) {
                     console.log(response)
+                    if(response.status == 'success'){
+                        $('.modal-loader').show()
+
+                        setTimeout(()=>{
+                            $('.modal-loader').hide()
+                        },2000)
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -935,6 +951,8 @@
                                 'content')
                         },
                         success: (bookingData) => {
+                           
+
                             console.log(bookingData)
                             // const foundObject = bookingData[0].find(obj => obj.id === parseInt(numberPart));
                             $('#bookedInfo').offcanvas('show');
@@ -978,6 +996,7 @@
                             }else{
                                 $('.reciept').removeClass('disabled')
                             }
+                            
                             
                         },
                         error: (xhr, status, error) => {

@@ -20,6 +20,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/login_v2.css') }}">
+    <link rel="stylesheet" href="{{ asset('loader/loader.css') }}">
 
     {{-- custom popups --}}
     <style>
@@ -55,6 +56,13 @@
 </head>
 
 <body>
+    {{-- loader --}}
+    <div class="modal-loader">
+        <div class="loader-wrapper">
+          <div class="loader"></div>
+        </div>
+    </div>
+
     <div class="row justify-content-center align-items-center p-5">
         <div class="col-lg-4">
             <div class="login-form">
@@ -193,6 +201,7 @@
 
         });
     </script>
+    <script src="{{ asset('loader/loader.js') }}"></script>
 </body>
 
 </html>

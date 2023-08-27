@@ -28,9 +28,18 @@
             left: -10px;
         }
     </style>
+
+    <link rel="stylesheet" href="{{ asset('loader/loader.css') }}">
 </head>
 
 <body>
+    {{-- loader --}}
+    <div class="modal-loader">
+        <div class="loader-wrapper">
+          <div class="loader"></div>
+        </div>
+    </div>
+
     <div class="row justify-content-center align-items-center p-5 register-driver-container">
         <div class="col-lg-8">
             <div class="card">
@@ -342,6 +351,8 @@
         $('#uuid').val(0)
     });
     </script>
+
+    <script src="{{ asset('loader/loader.js') }}"></script>
 </body>
 
 </html>

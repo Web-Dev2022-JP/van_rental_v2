@@ -11,9 +11,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="{{asset('css/register_v2.css')}}">
+    <link rel="stylesheet" href="{{ asset('loader/loader.css') }}">
 </head>
 <body>
-<div class="row justify-content-center p-5">
+    {{-- loader --}}
+    <div class="modal-loader">
+        <div class="loader-wrapper">
+          <div class="loader"></div>
+        </div>
+    </div>
+
+<div class="row justify-content-center p-5 acount-container">
         <div class="col-lg-4">
             <div class="register-form">
                 <div class="register-form-header">
@@ -115,5 +123,8 @@
             </div>
         </div>
     </div>
+    
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+    <script src="{{ asset('loader/loader.js') }}"></script>
 </body>
 </html>
