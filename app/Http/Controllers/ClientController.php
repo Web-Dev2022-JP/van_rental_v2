@@ -6,6 +6,7 @@ use App\Models\Booked;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
@@ -34,28 +35,31 @@ class ClientController extends Controller
     // Client Booked
     public function clientBooked(Request $request){
         // dd($request->id);
+        $data = $request->input('item');
+        Log::info($data);
         // Now you can directly create a new record in the "trips" table
         $clientBooked = Booked::create([
-            'user_id' => $request->id,
+            'user_id' => $data['id'],
             'sender_id' => Auth::user()->id,
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'middlename' => $request->middlename,
-            'contact' => $request->contact,
-            'email' => $request->email,
-            'destination' => $request->destination,
-            'pickup' => $request->pickup,
-            'landmark' => $request->landmark,
-            'dateoftrip' => $request->dateoftrip,
-            'pax' => $request->pax,
-            'daysandhours' => $request->daysandhours,
-            'pickuptime' => $request->pickuptime,
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
+            'middlename' => $data['middlename'],
+            'contact' => $data['contact'],
+            'email' => $data['email'],
+            'destination' => $data['destination'],
+            'pickup' => $data['pickup'],
+            'landmark' => $data['landmark'],
+            'dateoftrip' => $data['dateoftrip'],
+            'pax' => $data['pax'],
+            'daysandhours' => $data['daysandhours'],
+            'pickuptime' => $data['pickuptime'],
             'status' => 'pending'
             // Add other fields here
         ]);
         // Handle the case where the user with the given ID is not found
         return response()->json(['message' => 'Booking Successfully sent!','booking' => $clientBooked]);
     }
+
     // chatroom
     // public function chatRoom(Request $request){
     //     return view('components.clients.chatroom');
@@ -119,5 +123,52 @@ class ClientController extends Controller
             $diffInDays = floor($diffInMinutes / 1440);
             return $diffInDays . ' days ago';
         }
+    }
+
+    public function process_payment(Request $request){
+        $amount = $request->input('amount');
+        $nonce = round(microtime(true) * 1000);
+        $redirect_uri = 'http://127.0.0.1:8000/client-dashboard';
+
+        //live account
+        //$link = 'https://api.nextpay.world/v2/paymentlinks';
+        //$secret = 'u7t4rlw251kqr1tdkziw6iqo';
+        //$client_key = 'ck_rb1f8rpm5oyd68x39ochcatl';
+
+        //sandbox account
+        $link ='https://api-sandbox.nextpay.world/v2/paymentlinks';
+        $secret = 'e0fnx6fw2dtz9s4upnz9zgnw';
+        $client_key = 'ck_sandbox_q41sjwn2bducgna2n6zxqfd4';
+
+
+        $client = new \GuzzleHttp\Client();
+
+        $data = [
+            "title" => "Bataan Car Rental Services.",
+            "amount" => $amount,
+            "currency" => "PHP",
+            "description" => "Your trust warms our hearts and drives us to create unforgettable travel experiences. At Bataan Car Rental Services, we provide more than just cars; we're dedicated to ensuring your journeys are smooth, safe, and enjoyable. We look forward to serving you again in the future. If you have any further questions or need assistance, please don't hesitate to reach out. We strive to make your experience with us perfect every time.",
+            "private_notes" => "string",
+            "limit" => 1,
+            "redirect_url" => $redirect_uri,
+            "nonce" => $nonce, // Generate a timestamp-based nonce
+        ];
+
+        $signature = hash_hmac('sha256', json_encode($data,JSON_UNESCAPED_SLASHES), $secret);
+
+        $response = $client->request('POST', $link, [
+          'body' => json_encode($data),
+          'headers' => [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'client-id' => $client_key,
+            'idempotency-key' => '',
+            'signature' => $signature,
+          ],
+        ]);
+
+        $responseBody = $response->getBody();
+
+        return response($responseBody, 200)->header('Content-Type', 'application/json');
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RecieptController;
+use App\Http\Controllers\SmsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -149,7 +150,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-seen-message',[ClientController::class,'getSeenMessageClient'])->name('get-seen-message-client');
 
     // post request client
-    Route::post('/post-Client-Booked',[ClientController::class,'clientBooked'])->name('client-dash-booked');
+    Route::get('/post-Client-Booked',[ClientController::class,'clientBooked'])->name('client-dash-booked');
     Route::post('/tmp-upload-reciept',[RecieptController::class, 'tmpUploadReciept'])->name('reciept.upload');
     Route::delete('/tmp-delete-reciept',[RecieptController::class, 'tmpDeleteReciept'])->name('reciept.delete');
     Route::post('/send-driver-reciept',[RecieptController::class, 'tmpSendReciept'])->name('reciept.send');
@@ -157,4 +158,8 @@ Route::group(['middleware' => 'auth'], function () {
     // payments
     Route::get('/get-payments', [RecieptController::class,'getPayments'])->name('driver.payments');
     Route::post('/post-recieved', [RecieptController::class,'postPayments'])->name('driver.payments.post');
+
+    Route::get('/payment_process',[ClientController::class,'process_payment']);
 });
+
+Route::get('/send-verification-code', [SmsController::class, 'send_sms']);

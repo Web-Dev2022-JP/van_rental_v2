@@ -156,6 +156,11 @@
 @section('script')
     <script>
         $(document).ready(function() {
+            checkUrl();
+            console.log(localStorage.getItem('client_inquiry_details'));
+
+            
+
             const baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
 
             // Enable pusher logging - don't include this in production
@@ -478,11 +483,37 @@
                 })
             }
 
+            /*-create the payment link
+              -store the form to the localStorage
+              -open the payment link
+              -then check if the */
             const submitBooked = async () => {
                 $('#submit-form').on('click', (event) => {
                     event.preventDefault();
-
+                    let payment = 1000;
                     $.ajax({
+                        url: '/payment_process', 
+                        data: {
+                            amount:payment //replace with the actual amount
+                        },
+                        beforeSend:function(){
+                            document.getElementById('submit-form').disabled = true;
+                        },
+                        success: function(result) {
+
+                            console.log(result);
+                            //store the items first to the localstorage
+                            localStorage.setItem('client_inquiry_details',JSON.stringify(form_to_object('#form-inquiry')));
+                            location.replace(result.url);
+                            ;
+                            //checkout the order after the payment has succeed
+                        },
+                        error: function(err) {
+                            console.log(err)
+                        }
+                    })
+
+                    /*$.ajax({
                         url: `/post-Client-Booked`, // Replace with the actual URL
                         method: 'POST',
                         dataType: 'json',
@@ -493,7 +524,7 @@
                         error: function(err) {
                             console.log(err)
                         }
-                    })
+                    })*/
                 })
             }
 
@@ -661,6 +692,7 @@
                     console.log(error)
                 }
             }
+
             getDisplayVan()
             submitBooked()
 
@@ -686,6 +718,59 @@
                 // getDisplayVan()
                 back()
             });
+
+            //function to convert the form data to an object
+
+            function form_to_object(name){
+                const serializedFormData = $(name).serialize(); // Serialize the form data
+                const formDataObject = {};
+
+                // Split the serialized string by '&' and iterate over key-value pairs
+                serializedFormData.split("&").forEach(function (pair) {
+                  const keyValue = pair.split("=");
+                  const key = decodeURIComponent(keyValue[0]); // Decode the key
+                  const value = decodeURIComponent(keyValue[1]); // Decode the value
+                  formDataObject[key] = value; // Create key-value pair in the object
+                });
+
+                return formDataObject;
+            }
+
+            //function to test if a variable is avialable on the url
+            function found_on_url(name){
+                // Get the query string portion of the URL
+              const queryString = window.location.search;
+
+              // Create a regular expression to match the variable in the query string
+              const regex = new RegExp('[?&]' + name + '(=|&|$)', 'i');
+
+              // Test if the regex matches the query string
+              return regex.test(queryString);
+            }
+
+            //check if the payment has been made
+            //if true process the placement order of the client
+            function checkUrl(){
+                if(found_on_url('amount') && found_on_url('currency') && found_on_url('referenceId') && found_on_url('paymentlinkId') && found_on_url('paymentId')){
+                        
+                    let item = JSON.parse(localStorage.getItem('client_inquiry_details'));
+                    localStorage.setItem('client_inquiry_details',null);
+                    $.ajax({
+                        url: `/post-Client-Booked`, // Replace with the actual URL
+                        data: {
+                            item:item
+
+                        },
+                        success: function(data) {
+                            alert('order processed');
+                            console.log(data)
+                        },
+                        error: function(err) {
+                            console.log(err)
+                        }
+                    })
+                }
+            }
         });
     </script>
 @endsection
