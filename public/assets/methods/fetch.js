@@ -48,7 +48,7 @@ function FetchNotification() {
                 if (account.approved == 0) {
                     stats = '<span class="badge badge-danger p-2">Pending</span>'
                 }else if(account.is_activated === 0){
-                    stats = '<span class="badge badge-success p-2">Vehicle registration</span>'
+                    stats = '<span class="badge badge-danger p-2">Pending Registration</span>'
                 }else if (account.approved == 1){
                     stats = '<span class="badge badge-success p-2">Account Approved</span>'
                 }else if (account.is_activated === 1){

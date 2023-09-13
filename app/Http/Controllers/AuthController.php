@@ -39,7 +39,6 @@ class AuthController extends Controller
             'role' => ['required', 'integer'],
             'firstName' => ['required', 'string', 'max:255'],
             'lastName' => ['required', 'string', 'max:255'],
-            'middleName' => ['required', 'string', 'max:255'],
             'birthplace' => ['required', 'string'],
             'contact' => ['required', 'integer'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -78,7 +77,6 @@ class AuthController extends Controller
             'role' => ['required', 'integer'],
             'firstName' => ['required', 'string', 'max:255'],
             'lastName' => ['required', 'string', 'max:255'],
-            'middleName' => ['string', 'max:255'],
             'gender' => ['required', 'string', 'max:255'],
             'age' => ['required', 'integer'],
             'birthplace' => ['required', 'string'],
@@ -102,26 +100,14 @@ class AuthController extends Controller
         $temporaryfiles = Temporaryfile::where('uuid', $request->uuid)->first();
         // dd($request);
         if ($validator->fails()) {
-            // foreach ($temporaryfiles as $tempfile) {
+           
             // delete the folder
             Storage::deleteDirectory('profile/tmp/' . $temporaryfiles->folder);
             $temporaryfiles->delete();
-            // }
+        
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-
-
-        // $user = User::create($validator->validated());
-
-        // send otp first for email validation
-        // $validToken = rand(10,100..'2023');
-        // $get_token = new Verifytoken();
-        // $get_token->token = $validToken;
-        // $get_token->email = $request->email;
-        // $get_token->save();
-        // pass the request to a verify-Email function
-        //  $this->verifyEmail($request);
         $get_user_email = $request->email;
         $get_user_name = $request->firstname . " " . $request->lastname;
         Mail::to($request->email)->send(new OTPMail($get_user_email, "Submit your application, just click the link below.", $get_user_name, "Verify Email", 'otp.verify-email'));
@@ -134,65 +120,6 @@ class AuthController extends Controller
             'is_activated' => false,
         ]);
 
-        // // get the store file
-        // $tmp_file = Temporaryfile::where('folder', $request->image)->first();
-
-
-        // try {
-        //     $validator = Validator::make($request->all(), [
-        //         'name' => ['required', 'string', 'max:255'],
-        //         // 'image' => ['required', 'image'], // Add this rule for the image field
-        //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        //         'password' => ['required', 'string', 'min:8'],
-        //         'password_confirmation' => ['required', 'string', 'min:8', 'same:password']
-        //     ]);
-
-        //     // Set custom error messages
-        //     $validator->setAttributeNames([
-        //         // 'image' => 'The image field is required and must be an image file.',
-        //         'email.unique' => 'The email has already been taken.'
-        //     ]);
-
-        //     if ($validator->fails()) {
-        //         return redirect()->back()->withErrors($validator)->withInput();
-        //     }
-
-        //     // If the validation passes, proceed with file handling and user creation
-
-        //     if ($tmp_file) {
-        //         // copy the tmp                                             sstore to  new folder
-        //         Storage::copy('license/tmp/' . $tmp_file->folder . '/' . $tmp_file->file, 'license/' . $tmp_file->folder . '/' . $tmp_file->file);
-        //         // Create a new user instance
-        //         $user = new User();
-
-        //         // Set the user attributes
-        //         $user->role = 2;
-        //         $user->name = $request->name;
-        //         $user->image = $tmp_file->folder . '/' . $tmp_file->file_name;
-        //         $user->email = $request->email;
-        //         $user->password = Hash::make($request->password);
-        //         $user->approved = false;
-        //         $user->save();
-        //     }
-
-        //     // delete the folder
-        //     Storage::deleteDirectory('license/tmp/' . $tmp_file->folder);
-        //     $tmp_file->delete();
-        //     // Redirect to the login page with success and approval messages
-        //     return redirect()->route('login')->with([
-        //         'success' => 'Register successfully',
-        //         'approved' => 'Your account is pending approval. Please wait for admin authorization.'
-        //     ]);
-        // } catch (QueryException $e) {
-        //     // If there is a query exception (e.g., duplicate email), redirect back with an error message
-        //     // return redirect()->back()->withErrors(['email' => 'The email has already been taken.'])->withInput();
-
-        //     // Get the system error message
-        //     $errorMessage = $e->getMessage();
-
-        //     // Redirect back with the error message
-        //     return redirect()->back()->withErrors(['email' => $errorMessage])->withInput();
-        // }
     }
 
     // driver verify email
@@ -203,7 +130,6 @@ class AuthController extends Controller
             'role' => $request->role,
             'firstname' => $request->firstName,
             'lastname' => $request->lastName,
-            'middlename' => $request->middleName,
             'gender' => $request->gender,
             'age' => $request->age,
             'birthplace' => $request->birthplace,
@@ -226,8 +152,7 @@ class AuthController extends Controller
 
         // call temporaryfile model
         $temporaryfiles = Temporaryfile::where('uuid', $request->uuid)->first();
-        // dd($temporaryfiles->uuid);
-        // foreach ($temporaryfiles as $tempfile) {
+       
         // copy the tmp                                             sstore to  new folder
         Storage::copy('profile/tmp/' . $temporaryfiles->folder . '/' . $temporaryfiles->file, 'profile/' . $temporaryfiles->folder . '/' . $temporaryfiles->file);
         Document::create([
@@ -238,8 +163,7 @@ class AuthController extends Controller
         // delete the folder
         Storage::deleteDirectory('profile/tmp/' . $temporaryfiles->folder);
         $temporaryfiles->delete();
-        // }
-
+        Auth::logout();
         // Redirect to the login page with success and approval messages
         return redirect()->route('register.driver')->with([
             'success' => 'Email Verified successfully',
@@ -299,9 +223,6 @@ class AuthController extends Controller
                 'folder' => $folder,
                 "file" => $file_name,
             ]);
-            // $request->session()->put('uploaded_id', $uploadedId);
-            // $request->session()->save(); // Save the session immediately after updating
-            // return $folder;
             return response()->json(['folder' => $folder, 'uploaded_id' => $uploadedId]);
         }
     }
@@ -321,66 +242,15 @@ class AuthController extends Controller
     public function login()
     {
         // get the session on the email
-
         return view('auth.login');
     }
 
     public function loginPost(Request $request)
     {
-        $otpCheck = true;
         $credentials = [
             'email' => $request->email,
             'password' => $request->password,
         ];
-
-
-        // Get the user account by email
-        // $user = User::where('email', $request->email)->first();
-
-        // if ($user) {
-        //     // Check if the user is a driver and if the account is activated
-        //     // if ($user->role == 2 && $user->is_activated == 1) {
-        //     //     $credentials = [
-        //     //         // 'otp' => $request->otp,
-        //     //         'email' => $request->email,
-        //     //         'password' => $request->password,
-        //     //     ];
-                
-        //     // } else {
-        //     //     $credentials = [
-        //     //         'email' => $request->email,
-        //     //         'password' => $request->password,
-        //     //     ];
-        //     // }
-        //     // dd($request->otp);
-        //     // OTP Methods for  Driver
-        //     $get_token = Verifytoken::where('token', $request->otp)->first();
-        //     if ($get_token) {
-        //         $get_token->is_activated = 2;
-        //         $get_token->save();
-    
-        //         // updates the user account
-        //         $user = User::where('email', $get_token->email)->first();
-        //         $user->is_activated = 2;
-        //         $user->save();
-    
-        //         // delete the token
-        //         $getting_token = Verifytoken::where('token', $get_token->token)->first();
-        //         $getting_token->delete();
-        //         $otpCheck = true;
-        //     } else {
-        //         $otpCheck = false;
-        //         Auth::logout();
-        //         // $this->loginPostOtp();
-        //         // User is a driver pending approval ,'is_activated'=>$user->is_activated
-        //         return redirect()->route('login')->with(['is_activated' => 0, 'approved' => "You need O T P to proceed."]);
-            
-        //     }
-        // } else {
-        //     // Handle the case when the user account does not exist
-        //     // You can add your own logic here, such as showing an error message
-        //     // or redirecting the user to a specific page
-        // }
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
@@ -445,10 +315,9 @@ class AuthController extends Controller
     
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
-                // if ($user->role == 2 && $user->is_activated == 1 && $user->approved == 1) {
                     // User is an approved and verified driver
                     return redirect('/driver-dashboard')->with(['success' => 'Login Success', 'is_activated' => $user->is_activated]);
-                // }
+                
             }
         } else {
             Auth::logout();
@@ -457,55 +326,6 @@ class AuthController extends Controller
         }
     }
     
-
-    // OTP Methods
-    // public function otpMethod($otp){
-    //     //get the token from verify
-    //     $get_token = Verifytoken::where('token', $otp)->first();
-    //     if ($get_token) {
-    //         $get_token->is_activated = 2;
-    //         $get_token->save();
-
-    //         // updates the user account
-    //         $user = User::where('email', $get_token->email)->first();
-    //         $user->is_activated = 2;
-    //         $user->save();
-
-    //         // delete the token
-    //         $getting_token = Verifytoken::where('token', $get_token->token)->first();
-    //         $getting_token->delete();
-    //         return true;
-    //     } else {
-    //         Auth::logout();
-    //         // User is a driver pending approval ,'is_activated'=>$user->is_activated
-    //         return redirect()->route('login')->with(['is_activated' => 0, 'approved' => "You need O T P a to proceed."]);
-    //     }
-
-       
-    // }
-
-    // public function loginClient(Request $request)
-    // {
-    //     $credentials = [
-    //         'email' => $request->email,
-    //         'password' => $request->password,
-    //     ];
-    //     if (Auth::attempt($credentials)) {
-    //         $user = Auth::user();
-
-    //         if ($user->role == 1) {
-    //             // User is a client
-    //             return redirect('/client-dashboard')->with([
-    //                 'success' => 'Login Success',
-    //                 'name' => $user->name,
-    //                 'showAlert' => true
-    //             ]);
-    //         } 
-    //     }
-
-    //     return back()->with('error', 'Invalid email or password');
-    // }
-
     public function logout()
     {
         Auth::logout();

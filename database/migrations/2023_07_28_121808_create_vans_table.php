@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->integer('idnumber');
-            $table->integer('orcr');
+            $table->string('orcr');
             $table->string('platenumber');
             $table->string('fullname');
             $table->string('companyname');

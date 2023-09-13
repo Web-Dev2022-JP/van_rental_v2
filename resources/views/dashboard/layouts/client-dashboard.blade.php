@@ -15,6 +15,9 @@
     @yield('header')
     {{-- style --}}
     @yield('links')
+    <!-- Sweet Alert-->
+    <link href="{{ asset('assets/client/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('assets/client/toastr/toastr.min.css') }}">
     <style>
         /* theming */
         :root {
@@ -26,7 +29,7 @@
 
 
         }
-        
+
         #chat-driver {
             width: 35%;
             /* background: red; */
@@ -290,8 +293,6 @@
                 border: 0 0 1px 0;
             }
         }
-
-        
     </style>
     <link rel="stylesheet" href="{{ asset('loader/loader.css') }}">
 </head>
@@ -300,7 +301,7 @@
     {{-- loader --}}
     <div class="modal-loader">
         <div class="loader-wrapper">
-          <div class="loader"></div>
+            <div class="loader"></div>
         </div>
     </div>
 
@@ -424,6 +425,8 @@
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script src="{{ asset('loader/loader.js') }}"></script>
+    <script src="{{ asset('assets/client/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('assets/client/toastr/toastr.min.js') }}"></script>
     <script>
         const baseUrls = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
 
@@ -520,12 +523,12 @@
                 },
                 success: function(response) {
                     console.log(response)
-                    if(response.status == 'success'){
+                    if (response.status == 'success') {
                         $('.modal-loader').show()
 
-                        setTimeout(()=>{
+                        setTimeout(() => {
                             $('.modal-loader').hide()
-                        },2000)
+                        }, 2000)
                     }
                 },
                 error: function(xhr, status, error) {
@@ -951,16 +954,16 @@
                                 'content')
                         },
                         success: (bookingData) => {
-                           
+
 
                             console.log(bookingData)
                             // const foundObject = bookingData[0].find(obj => obj.id === parseInt(numberPart));
                             $('#bookedInfo').offcanvas('show');
                             var statusClass = bookingData[0].status === "pending" ?
-                            "text-white border border-danger bg-danger" :
-                            (bookingData[0].status === "payment" ?
-                            "text-dark border border-warning bg-warning" :
-                            "text-white border border-success bg-success");
+                                "text-white border border-danger bg-danger" :
+                                (bookingData[0].status === "payment" ?
+                                    "text-dark border border-warning bg-warning" :
+                                    "text-white border border-success bg-success");
                             $('#profile-payments').attr('src',
                                 `${baseUrls}/storage/profile/${bookingData[0].documents[0].path}`)
                             // $('#profile2-payments').attr('src',`${baseUrls}/storage/profile/${bookingData[0].documents[0].path}`)
@@ -968,12 +971,13 @@
                                 `Name : ${bookingData[0].users[0].firstname} ${bookingData[0].users[0].lastname}`
                             )
                             $('#gcash-payments').text(`Gcash : +63-${bookingData[0].users[0].contact}`)
-                                // Additional logic for success condition
+                            // Additional logic for success condition
                             if (bookingData[0].status === "accepted") {
-                                $('#payment-status').val('Booking Successful').addClass('border border-0 text-success');
-                            }else{
+                                $('#payment-status').val('Booking Successful').addClass(
+                                    'border border-0 text-success');
+                            } else {
                                 $('#payment-status').val('Procceed To Payments').addClass(
-                                'border border-0 text-warning');
+                                    'border border-0 text-warning');
                             }
                             $('#booking-id').val("BKD-" + bookingData[0].id +
                                 ` >> ${bookingData[0].status.toUpperCase()} STATUS`).addClass(
@@ -991,13 +995,13 @@
                             $('#daysandhours-booked').val(bookingData[0].daysandhours + ' Day/s')
                             $('#time').val(convertTo12HourFormat(bookingData[0].pickuptime))
                             $('#chat-driver-side').attr('value', bookingData[0].sender_id)
-                            if(bookingData[0].status == 'accepted'){
+                            if (bookingData[0].status == 'accepted') {
                                 $('.reciept').addClass('disabled')
-                            }else{
+                            } else {
                                 $('.reciept').removeClass('disabled')
                             }
-                            
-                            
+
+
                         },
                         error: (xhr, status, error) => {
                             console.error(error);
@@ -1055,27 +1059,27 @@
         })
 
         $(document).ready(function() {
-        $("#copy-button").click(function() {
-            var phoneNumber = $("#gcash-payments").text().split(":")[1].trim();
+            $("#copy-button").click(function() {
+                var phoneNumber = $("#gcash-payments").text().split(":")[1].trim();
 
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(phoneNumber)
-                    .then(function() {
-                        // Show the tooltip
-                        $("#copy-button").tooltip("show");
-                        // Hide the tooltip after 3 seconds
-                        setTimeout(function() {
-                            $("#copy-button").tooltip("hide");
-                        }, 3000);
-                    })
-                    .catch(function(err) {
-                        console.error('Unable to copy: ', err);
-                    });
-            } else {
-                console.error('Clipboard API not available.');
-            }
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(phoneNumber)
+                        .then(function() {
+                            // Show the tooltip
+                            $("#copy-button").tooltip("show");
+                            // Hide the tooltip after 3 seconds
+                            setTimeout(function() {
+                                $("#copy-button").tooltip("hide");
+                            }, 3000);
+                        })
+                        .catch(function(err) {
+                            console.error('Unable to copy: ', err);
+                        });
+                } else {
+                    console.error('Clipboard API not available.');
+                }
+            });
         });
-    });
 
 
 
@@ -1094,6 +1098,36 @@
             return `${hours12Format}:${minutes.toString().padStart(2, "0")} ${period}`;
         }
     </script>
+
+    {{-- // notification --}}
+    @if (session()->has('notification'))
+        <script>
+            $(document).ready(function() {
+                // Set Toastr options
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": 300,
+                    "hideDuration": 1000,
+                    "timeOut": 5000,
+                    "extendedTimeOut": 1000,
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+                var notificationJson = {!! json_encode(session('notification')) !!};
+                var notification = JSON.parse(notificationJson);
+                console.log(notification)
+                toastr[notification.status](notification.message);
+            });
+        </script>
+    @endif
 </body>
 
 </html>

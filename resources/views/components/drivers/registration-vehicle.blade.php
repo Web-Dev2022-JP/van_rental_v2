@@ -45,7 +45,7 @@
                                 {{-- ORCR --}}
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <input type="number" name="orcr" class="form-control" id="orcr"
+                                        <input type="text" name="orcr" class="form-control" id="orcr"
                                             placeholder="ORCR" required>
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <input type="text" name="fullname" class="form-control" id="fullname"
-                                            placeholder="Full Name" required>
+                                            placeholder="Full Name" value="{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}" required>
                                     </div>
                                 </div>
 
@@ -156,11 +156,11 @@
 
                                 </div>
                             </div>
-                            {{-- driver licensed --}}
+                            {{-- Vehicle --}}
                             <div class="col-md-4 border rounded active mx-auto p-4">
                                 <div class="mb-3">
                                     <label for="image" class="form-label h6 text-white mx-auto">
-                                        Upload your Driver's Licensed
+                                        Upload your Vehicle
                                     </label>
                                     <input type="file" name="imageVehicleProfile" class="form-control"
                                                 id="vehicle-image" credits="false" required>

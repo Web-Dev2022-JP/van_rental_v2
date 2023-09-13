@@ -11,9 +11,10 @@
     <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
         rel="stylesheet" />
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css" integrity="sha512-cn16Qw8mzTBKpu08X0fwhTSv02kK/FojjNLz0bwp2xJ4H+yalwzXKFw/5cLzuBZCxGWIA+95X4skzvo8STNtSg==" crossorigin="anonymous" referrerpolicy="no-referrer" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css"
+        integrity="sha512-cn16Qw8mzTBKpu08X0fwhTSv02kK/FojjNLz0bwp2xJ4H+yalwzXKFw/5cLzuBZCxGWIA+95X4skzvo8STNtSg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-
         .register-driver-container {
             height: 100vh;
         }
@@ -36,7 +37,7 @@
     {{-- loader --}}
     <div class="modal-loader">
         <div class="loader-wrapper">
-          <div class="loader"></div>
+            <div class="loader"></div>
         </div>
     </div>
 
@@ -58,7 +59,7 @@
                                         <i class='bx bx-left-arrow-alt text-black'></i>
                                     </a>
                                     <span class="h3 text-black"> Application Form</span>
-                                    
+
                                     {{-- <div class="ms-auto">
                                         <a href="{{ route('home') }}">
                                             <i class='bx bxs-x-circle text-white h1'></i>
@@ -67,7 +68,7 @@
                                 </div>
                             </h1>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="card-body">
@@ -100,13 +101,12 @@
                         class="row g-3" id="profileUploadForm">
                         @csrf
                         {{-- uuid upload --}}
-                        <input type="number" name="uuid" class="form-control" id="uuid"
-                        value="0" hidden>
+                        <input type="number" name="uuid" class="form-control" id="uuid" value="0" hidden>
                         {{-- role --}}
-                        <input type="number" name="role" class="form-control" id="role"
-                        value="2" hidden required>
+                        <input type="number" name="role" class="form-control" id="role" value="2" hidden
+                            required>
                         <div class="col-md-8 row">
-                            
+
                             {{-- firstname --}}
                             <div class="col-md-4">
                                 <div class="mb-3">
@@ -135,10 +135,15 @@
                             {{-- Gender --}}
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <input type="text" name="gender" class="form-control" id="gender"
-                                        placeholder="Gender" required>
+                                    <select name="gender" class="form-control" id="gender" required>
+                                        <option class="text-secondary" value="" disabled selected>Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
                                 </div>
                             </div>
+
 
                             {{-- Age --}}
                             <div class="col-md-3">
@@ -238,57 +243,35 @@
                                 </div>
                             </div>
 
-                            {{-- ID No --}}
-                            {{-- <div class="col-md-4">
-                                <div class="mb-3">
-                                    <input type="number" name="idNumber" class="form-control" id="idNumber"
-                                        placeholder="ID NO." required>
-                                </div>
-                            </div> --}}
-
-                            {{-- ORCR --}}
-                            {{-- <div class="col-md-4">
-                                <div class="mb-3">
-                                    <input type="number" name="orcr" class="form-control" id="orcr"
-                                        placeholder="ORCR" required>
-                                </div>
-                            </div> --}}
-
-                            {{-- Vehicle Plate Number --}}
-                            {{-- <div class="col-md-4">
-                                <div class="mb-3">
-                                    <input type="text" name="plateNumber" class="form-control" id="plateNumber"
-                                        placeholder="Vehicle Plate Number" required>
-                                </div>
-                            </div> --}}
-
                         </div>
-                        {{-- driver licensed and Profile--}}
+                        {{-- driver licensed and Profile --}}
                         <div class="col-md-4 d-flex align-items-center">
                             <div class="col-md-12 mx-auto">
                                 <div class="mb-3">
                                     <label for="image" class="form-label text-success text-center h6">Upload your
                                         Profile</label>
                                     <input type="file" name="image" class="form-control" id="image"
-                                       credits="false" required>
-                                      {{-- <label for="image" class="form-label text-secondary text-center"><b>Note: Guidelines to upload a documents,</b><br/><span class="text-danger"> <b>Profile First then License to avoid rejected documents</b></span></label> --}}
+                                        credits="false" required>
+                                    {{-- <label for="image" class="form-label text-secondary text-center"><b>Note: Guidelines to upload a documents,</b><br/><span class="text-danger"> <b>Profile First then License to avoid rejected documents</b></span></label> --}}
                                 </div>
                             </div>
                         </div>
 
-                       
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-center">
-                                    <div class="d-grid w-50">
-                                        <button type="submit" class="btn btn-primary">Register Driver</button>
-                                    </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-center">
+                                <div class="d-grid w-50">
+                                    <button type="submit" class="btn btn-primary">Register Driver</button>
                                 </div>
                             </div>
-                       
-                        
+                        </div>
+
+
                         <div class="mb-3 text-center d-flex justify-content-center">
                             <div class="d-grid">
-                                <span class="text-secondary">Are you looking for a driver ? <a href="{{ route('register') }}" class="text-primary "><b>Register here</b></a> </span>
+                                <span class="text-secondary">Are you looking for a driver ? <a
+                                        href="{{ route('register') }}" class="text-primary "><b>Register here</b></a>
+                                </span>
                             </div>
                         </div>
                     </form>
@@ -297,7 +280,9 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+        integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
     </script>
@@ -311,45 +296,45 @@
 
 
         // Create a FilePond instance
-    const pond = FilePond.create(inputElement, {
-        server: {
-            process: {
-                url: '/tmp-upload', // Change to your upload URL
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                onload: (response) => {
-                    // The server response is available in the 'response' object
-                    // const uploadedId = response.uploaded_id;
-                    const uuid = JSON.parse(response)
-                    console.log('Uploaded ID: ', uuid.uploaded_id);
+        const pond = FilePond.create(inputElement, {
+            server: {
+                process: {
+                    url: '/tmp-upload', // Change to your upload URL
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    onload: (response) => {
+                        // The server response is available in the 'response' object
+                        // const uploadedId = response.uploaded_id;
+                        const uuid = JSON.parse(response)
+                        console.log('Uploaded ID: ', uuid.uploaded_id);
 
-                    localStorage.setItem('profileUpload',JSON.stringify(uuid))
+                        localStorage.setItem('profileUpload', JSON.stringify(uuid))
 
-                    // set to hidden input
-                    $('#uuid').val(uuid.uploaded_id)
+                        // set to hidden input
+                        $('#uuid').val(uuid.uploaded_id)
+                    },
+                    onerror: (error) => {
+                        console.error('Error uploading image:', error);
+                    }
                 },
-                onerror: (error) => {
-                    console.error('Error uploading image:', error);
+                revert: {
+                    url: '/tmp-delete', // Change to your delete URL
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
                 }
-            },
-            revert: {
-                url: '/tmp-delete', // Change to your delete URL
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-            }     
-        }
-    });
-     // Add the "removefile" event listener
-     pond.on('removefile', (file) => {
-        // Remove the data from localStorage when the file is removed by the user
-        localStorage.removeItem('profileUpload');
-        // set to hidden input
-        $('#uuid').val(0)
-    });
+            }
+        });
+        // Add the "removefile" event listener
+        pond.on('removefile', (file) => {
+            // Remove the data from localStorage when the file is removed by the user
+            localStorage.removeItem('profileUpload');
+            // set to hidden input
+            $('#uuid').val(0)
+        });
     </script>
 
     <script src="{{ asset('loader/loader.js') }}"></script>

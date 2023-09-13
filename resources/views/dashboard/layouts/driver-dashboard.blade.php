@@ -261,6 +261,7 @@
         @yield('vehicle-registration')
 
         <section class="home">
+            
             <nav class="navbar bg-body-tertiary" id="head-nav" style="width: 100%;">
                 <div class="container-fluid">
                     <a class="navbar-brand mx-5 text-color-dark secondary-color" href="#">Bataan Van Rental Services</a>

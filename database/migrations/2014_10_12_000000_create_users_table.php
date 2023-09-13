@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('role'); //user - 1, driver - 2, admin - 3
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('middlename');
+            $table->string('middlename')->nullable();
             $table->string('gender')->nullable();
             $table->integer('age')->nullable();
             $table->string('birthplace')->nullable();
@@ -31,8 +31,8 @@ return new class extends Migration
             $table->string('barangay');
             $table->string('street');
             $table->string('password');
-            $table->bigInteger('idno')->nullable();
-            $table->bigInteger('orcr')->nullable();
+            $table->string('idno')->nullable();
+            $table->string('orcr')->nullable();
             $table->string('platenumber')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

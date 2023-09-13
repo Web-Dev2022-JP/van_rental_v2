@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Laravel 10 Custom Login and Registration - Login Page</title>
+    <title>Bataan Van Services</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css"
         integrity="sha512-cn16Qw8mzTBKpu08X0fwhTSv02kK/FojjNLz0bwp2xJ4H+yalwzXKFw/5cLzuBZCxGWIA+95X4skzvo8STNtSg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        <link rel="stylesheet" href="{{ asset('assets/client/toastr/toastr.min.css') }}">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
@@ -162,6 +164,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
         integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="{{ asset('assets/client/toastr/toastr.min.js') }}"></script>
     {{-- script for otp --}}
     <script>
         $(document).ready(function() {
@@ -202,6 +205,36 @@
         });
     </script>
     <script src="{{ asset('loader/loader.js') }}"></script>
+
+     {{-- // notification --}}
+     @if (session()->has('notification'))
+     <script>
+         $(document).ready(function() {
+             // Set Toastr options
+             toastr.options = {
+                 "closeButton": false,
+                 "debug": false,
+                 "newestOnTop": false,
+                 "progressBar": false,
+                 "positionClass": "toast-top-right",
+                 "preventDuplicates": false,
+                 "onclick": null,
+                 "showDuration": 300,
+                 "hideDuration": 1000,
+                 "timeOut": 5000,
+                 "extendedTimeOut": 1000,
+                 "showEasing": "swing",
+                 "hideEasing": "linear",
+                 "showMethod": "fadeIn",
+                 "hideMethod": "fadeOut"
+             };
+             var notificationJson = {!! json_encode(session('notification')) !!};
+             var notification = JSON.parse(notificationJson);
+             console.log(notification)
+             toastr[notification.status](notification.message);
+         });
+     </script>
+ @endif
 </body>
 
 </html>
