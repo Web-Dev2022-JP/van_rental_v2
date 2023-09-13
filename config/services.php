@@ -36,5 +36,9 @@ return [
         'api_key' => env('TELESIGN_API_KEY'),
     ],
 
+    'semaphore' => [
+        'api_key' => env('SEMAPHORE_API_KEY'),
+    ],
+
 
 ];

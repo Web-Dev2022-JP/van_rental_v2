@@ -159,7 +159,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-payments', [RecieptController::class,'getPayments'])->name('driver.payments');
     Route::post('/post-recieved', [RecieptController::class,'postPayments'])->name('driver.payments.post');
 
+    //create payment link
     Route::get('/payment_process',[ClientController::class,'process_payment']);
+
+    //send sms
+    Route::get('/send_sms', [SmsController::class, 'send_sms']);
 });
 
-Route::get('/send-verification-code', [SmsController::class, 'send_sms']);

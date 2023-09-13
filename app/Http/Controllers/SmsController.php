@@ -3,32 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use App\Services\SemaphoreService;
+use App\Http\Requests\SmsValidationRequest;
+
 
 class SMSController extends Controller
 {
-    public function send_sms(Request $request)
+
+    public function send_sms($request)
     {
-        $phoneNumber = '+639388005027';
-        $message = 'hello world';
+        $api_service = new SemaphoreService();
+        $url = 'https://api.semaphore.co/api/v4/messages';
+        $method = 'POST';
+        $data = [
+            'number' => $request['number'],
+            'message' => $request['message'],
+            'apikey' => config('services.semaphore.api_key')
+        ];
 
-        $customerId = config('services.telesign.customer_id');
-        $apiKey = config('services.telesign.api_key');
-        $apiSecret = config('services.telesign.api_secret');
+        $response = $api_service->send_sms($url, $method, $data);
 
-        $response = Http::post("https://rest-api.telesign.com/v1/messaging/sms", [
-            'json' => [
-                'phone_number' => $phoneNumber,
-                'message' => $message,
-            ],
-            'auth' => [$customerId, $apiKey],
-        ]);
-
-        if ($response->successful()) {
-            return "SMS sent successfully!";
-        } else {
-            // Handle error
-            return "Failed to send SMS: " . $response->body();
-        }
+        // Process the API response or return an error message to the client
+        return response()->json(['response' => $response]);
     }
 }
+

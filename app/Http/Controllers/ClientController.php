@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\SmsController;
+use App\Finders\UserFinder;
 
 class ClientController extends Controller
 {
@@ -36,7 +38,6 @@ class ClientController extends Controller
     public function clientBooked(Request $request){
         // dd($request->id);
         $data = $request->input('item');
-        Log::info($data);
         // Now you can directly create a new record in the "trips" table
         $clientBooked = Booked::create([
             'user_id' => $data['id'],
@@ -56,6 +57,17 @@ class ClientController extends Controller
             'status' => 'pending'
             // Add other fields here
         ]);
+
+        //get drivers contact number
+        $result = UserFinder::find_user($data['id']);
+
+        //send an sms
+        $sms = new SmsController();
+        $sms->send_sms([
+            'number' => "63" . $result['contact'],
+            'message' => 'Hi '.ucwords($result['firstname']).', '.$data['firstname'].' has place an order on your van!'
+        ]);
+
         // Handle the case where the user with the given ID is not found
         return response()->json(['message' => 'Booking Successfully sent!','booking' => $clientBooked]);
     }

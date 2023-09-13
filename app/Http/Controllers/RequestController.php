@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 use App\Models\Temporaryfile;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\SmsController;
+use App\Finders\UserFinder;
 
 class RequestController extends Controller
 {
@@ -25,7 +28,8 @@ class RequestController extends Controller
     }
 
     public function approve($id)
-    {
+    {   
+        Log::info($id);
         // dd($id);
         // Find the account based on the provided ID
         $account = User::findOrFail($id);
@@ -44,6 +48,17 @@ class RequestController extends Controller
         $get_user_name = $account->firstname." ".$account->lastname;
         // Mail::to($account->email)->send(new OTPMail($get_user_email, "", $get_user_name));
         Mail::to($account->email)->send(new OTPMail($get_user_email, $validToken, $get_user_name, "O T P Mail.",'otp.otp'));
+
+        //get drivers contact number
+        $result = UserFinder::find_user($id);
+
+        //send an sms
+        $sms = new SmsController();
+        $sms->send_sms([
+            'number' => "63" . $result['contact'],
+            'message' => 'Hi '.ucwords($result['firstname']).', the Administrator has just approved your account/vehicle.'
+        ]);
+
         // Return a response or redirect as needed
         return response()->json(['message' => 'Account approved successfully', 'status'=>'success', 'acount'=>$account]);
     }
