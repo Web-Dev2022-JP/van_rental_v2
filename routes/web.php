@@ -166,10 +166,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     //create payment link
     Route::get('/payment_process',[ClientController::class,'process_payment']);
-
-
+    
     //send sms
     Route::get('/send_sms', [SmsController::class, 'send_sms']);
-
+    
 });
 

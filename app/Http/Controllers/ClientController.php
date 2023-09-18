@@ -58,19 +58,25 @@ class ClientController extends Controller
             'pax' => $data['pax'],
             'daysandhours' => $data['daysandhours'],
             'pickuptime' => $data['pickuptime'],
-            'status' => 'pending'
+            'status' => 'Succesfully Booked'
             // Add other fields here
         ]);
 
         //get drivers contact number
         $result = UserFinder::find_user($data['id']);
 
-        //send an sms
+        //send an sms to driver
         $sms = new SmsController();
-        $sms->send_sms([
+        Log::info($sms->send_sms([
             'number' => "63" . $result['contact'],
             'message' => 'Hi '.ucwords($result['firstname']).', '.$data['firstname'].' has place an order on your van!'
-        ]);
+        ]));
+
+        //send an sms to user
+        Log::info($sms->send_sms([
+            'number' => "63" . substr($data['contact'],1),
+            'message' => 'Hi, you have sucessfully booked a van!'
+        ]));
 
         // Handle the case where the user with the given ID is not found
         return response()->json(['message' => 'Booking Successfully sent!','booking' => $clientBooked]);
