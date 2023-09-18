@@ -142,6 +142,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/about',[ClientController::class,'clientAbout'])->name('client-dash-about');
     // client Profile
     Route::get('/profile',[ClientController::class,'clientProfile'])->name('client-dash-profile');
+    Route::get('/profile/update_password', [ClientController::class, 'update_password']);
+
     // client Location
     Route::get('/location',[ClientController::class,'clientLocation'])->name('client-dash-location');
     
@@ -165,11 +167,9 @@ Route::group(['middleware' => 'auth'], function () {
     //create payment link
     Route::get('/payment_process',[ClientController::class,'process_payment']);
 
-<<<<<<< Updated upstream
+
     //send sms
     Route::get('/send_sms', [SmsController::class, 'send_sms']);
-=======
-    
->>>>>>> Stashed changes
+
 });
 

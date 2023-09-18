@@ -77,21 +77,37 @@
                                                 <span class="primary-color"><b>Account</b></span>
                                                 <div class="row">
 
-                                                    <div class="col-sm-6 mb-2">
+                                                    <div class=" mb-2">
                                                         <input type="password" name="password" class="form-control"
                                                             placeholder="Password" aria-label="Password">
                                                     </div>
 
-                                                    <div class="col-sm-6 mb-2">
-                                                        <input type="text" name="confirmed-password" class="form-control"
+                                                    @if(session()->has('failed'))   
+                                                        <div class="alert alert-danger">Password Incorrect</div>
+                                                    @endif
+
+                                                    <div class=" mb-2">
+                                                        <input id="new_password" type="text" name="new-password" class="form-control"
+                                                            placeholder="New Password" aria-label="New Password">
+                                                    </div>
+
+
+                                                    <div class=" mb-2">
+                                                        <input id="confirm_password" type="text" name="confirmed-password" class="form-control"
                                                             placeholder="Confirm Password" aria-label="Confirmed Password">
                                                     </div>
 
-                                                    <div class="col-sm-6 mb-2">
+
+                                                    
+                                                    <div class=" mb-2">
                                                         <input type="submit" class="form-control btn btn-info primary-color"
                                                             placeholder="Street and Barangay" aria-label="Email"
-                                                            value="Update Profile">
+                                                            value="Update Profile" id="submit_profile" hidden>
+                                                        <input type="button" class="form-control btn btn-info primary-color"
+                                                            placeholder="Street and Barangay" aria-label="Email"
+                                                            value="Update Profile" onclick="update_password()">
                                                     </div>
+
 
         
                                                 </div>
@@ -153,4 +169,11 @@
 
         </div>
     </div>
+
 @endsection
+
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" src="{{ asset('js/auth/profile.js') }}"></script>
+@endsection
+

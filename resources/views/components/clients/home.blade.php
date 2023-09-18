@@ -682,7 +682,7 @@
                             // `
                             });
 
-                            $('.van-row').append(html)
+                            $('.van-row').html(html)
                         },
                         error: function(xhr, status, error) {
                             console.error('Error fetching driver coordinates:', error);

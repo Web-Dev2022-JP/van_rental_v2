@@ -43,7 +43,8 @@ class User extends Authenticatable
         'idno',
         'orcr',
         'platenumber',
-        'approved'
+        'approved',
+        'password'
     ];
 
     /**

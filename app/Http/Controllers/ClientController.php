@@ -7,13 +7,11 @@ use App\Models\Booked;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-<<<<<<< Updated upstream
 use App\Http\Controllers\SmsController;
 use App\Finders\UserFinder;
-=======
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
->>>>>>> Stashed changes
+use App\Managers\UserManager;
 
 class ClientController extends Controller
 {
@@ -199,80 +197,88 @@ class ClientController extends Controller
         $message = '';
         $type = '';
         if($user){
-            if ($user->firstname !== $request->firstname) {
-                $user->firstname = $request->firstname;
-            }
-            if ($user->lastname !== $request->lastname) {
-                $user->lastname = $request->lastname;
-            }
-            if ($user->middlename !== $request->middlename) {
-                $user->middlename = $request->middlename;
-            }
-            if ($user->contact !== $request->contact) {
-                $user->contact = $request->contact;
-            }
-            if ($user->email !== $request->email) {
-                $user->email = $request->email;
-            }
-            if ($user->birthdate !== $request->date) {
-                $user->birthdate = $request->date;
-            }
-            if ($user->municipality !== $request->municipal) {
-                $user->municipality = $request->municipal;
-            }
-            if ($user->zipcode !== $request->code) {
-                $user->zipcode = $request->code;
-            }
-            if ($user->street !== $request->street) {
-                $user->street = $request->street;
-            }
-            if ($user->barangay !== $request->barangay) {
-                $user->barangay = $request->barangay;
-            }
-            if ($user->password !== Hash::make($request->password) && $request->password !== null) {
-                $user->password = Hash::make($request->password);
-                // You don't need to log the user out here
-                // They will need to log in again with the new password
-                $user->save();
-                $insertedProductsNotif[] = $user;
-                $type = 'success';
-                 // Prepare the toast notification data
+            if(Hash::check($request->input('password'),$user->password)){
+                if ($user->firstname !== $request->firstname) {
+                    $user->firstname = $request->firstname;
+                }
+                if ($user->lastname !== $request->lastname) {
+                    $user->lastname = $request->lastname;
+                }
+                if ($user->middlename !== $request->middlename) {
+                    $user->middlename = $request->middlename;
+                }
+                if ($user->contact !== $request->contact) {
+                    $user->contact = $request->contact;
+                }
+                if ($user->email !== $request->email) {
+                    $user->email = $request->email;
+                }
+                if ($user->birthdate !== $request->date) {
+                    $user->birthdate = $request->date;
+                }
+                if ($user->municipality !== $request->municipal) {
+                    $user->municipality = $request->municipal;
+                }
+                if ($user->zipcode !== $request->code) {
+                    $user->zipcode = $request->code;
+                }
+                if ($user->street !== $request->street) {
+                    $user->street = $request->street;
+                }
+                if ($user->barangay !== $request->barangay) {
+                    $user->barangay = $request->barangay;
+                }
+                if ($user->password !== Hash::make($request->input('new-password')) && $request->input('new-password') !== null) {
+                    $user->password = Hash::make($request->input('new-password'));
+                    // You don't need to log the user out here
+                    // They will need to log in again with the new password
+                    $user->save();
+                    $insertedProductsNotif[] = $user;
+                    $type = 'success';
+                     // Prepare the toast notification data
+                    $notification = [
+                        'status' => $type,
+                        'message' => 'Your password has changed, please login!',
+                    ];
+
+                    // Convert the notification to JSON
+                    $notificationJson = json_encode($notification);
+                    Auth::logout();
+                    return redirect()->route('login')->with('notification', $notificationJson);
+                }
+                
+                // Check if other fields have changed
+                if ($user->isDirty()) {
+                    $user->save();
+                    $insertedProductsNotif[] = $user;
+                    $message = 'Successfully Updated!';
+                    $type = 'success';
+                }
+                
+                // Build the success message
+                $messages = $message;
+
+                // Prepare the toast notification data
                 $notification = [
                     'status' => $type,
-                    'message' => 'Your password has changed, please login!',
+                    'message' => $messages,
                 ];
 
                 // Convert the notification to JSON
                 $notificationJson = json_encode($notification);
-                Auth::logout();
-                return redirect()->route('login')->with('notification', $notificationJson);
+                // If no fields have changed, just return without logging out
+                return back()->with('notification', $notificationJson);
+                
+            }else{
+                return back()->with(['failed' => 'Pasword Incorrect']);
             }
-            
-            // Check if other fields have changed
-            if ($user->isDirty()) {
-                $user->save();
-                $insertedProductsNotif[] = $user;
-                $message = 'Successfully Updated!';
-                $type = 'success';
-            }
-            
-            // Build the success message
-            $messages = $message;
-
-            // Prepare the toast notification data
-            $notification = [
-                'status' => $type,
-                'message' => $messages,
-            ];
-
-            // Convert the notification to JSON
-            $notificationJson = json_encode($notification);
-            // If no fields have changed, just return without logging out
-            return back()->with('notification', $notificationJson);
-            
         }else {
             // Handle the case where the user is not found
             return redirect()->route('client-dash-profile')->with('error', 'User not found');
         }
+    }
+    public function update_password(Request $request){
+        $user = new UserManager();
+        return response()->json($user->update_password($request));
     }
 }

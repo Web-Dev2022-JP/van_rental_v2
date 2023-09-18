@@ -322,7 +322,12 @@ class AuthController extends Controller
         } else {
             Auth::logout();
             // User failed OTP verification
-            return redirect()->route('login')->with(['is_activated' => 0, 'approved' => "You need OTP to proceed."]);
+            return redirect()->route('login')->with([
+                'is_activated' => 0, 
+                'approved' => "You need OTP to proceed.",
+                'email' => $enteredEmail,
+                'password' => $enteredPassword
+            ]);
         }
     }
     

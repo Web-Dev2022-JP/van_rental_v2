@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Temporaryfile;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\SmsController;
@@ -58,6 +59,12 @@ class RequestController extends Controller
             'number' => "63" . $result['contact'],
             'message' => 'Hi '.ucwords($result['firstname']).', the Administrator has just approved your account/vehicle.'
         ]);
+
+        //approve users van
+ 
+        Van::where('user_id',$id)
+            ->where('status_approve',0)
+            ->update(['status_approve' => 1]);
 
         // Return a response or redirect as needed
         return response()->json(['message' => 'Account approved successfully', 'status'=>'success', 'acount'=>$account]);
