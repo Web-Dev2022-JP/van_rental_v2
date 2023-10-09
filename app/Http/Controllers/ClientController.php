@@ -12,6 +12,7 @@ use App\Finders\UserFinder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Managers\UserManager;
+use App\Managers\SmsManager;
 
 class ClientController extends Controller
 {
@@ -42,6 +43,7 @@ class ClientController extends Controller
     public function clientBooked(Request $request){
         // dd($request->id);
         $data = $request->input('item');
+        Log::info($data);
         // Now you can directly create a new record in the "trips" table
         $clientBooked = Booked::create([
             'user_id' => $data['id'],
@@ -65,17 +67,17 @@ class ClientController extends Controller
         //get drivers contact number
         $result = UserFinder::find_user($data['id']);
 
-        //send an sms to driver
+        // //send an sms to driver
         $sms = new SmsController();
         Log::info($sms->send_sms([
             'number' => "63" . $result['contact'],
-            'message' => 'Hi '.ucwords($result['firstname']).', '.$data['firstname'].' has place an order on your van!'
+            'message' => SmsManager::driver_content($data,$result)
         ]));
 
         //send an sms to user
         Log::info($sms->send_sms([
             'number' => "63" . substr($data['contact'],1),
-            'message' => 'Hi, you have sucessfully booked a van!'
+            'message' => SmsManager::client_content($data,$result)
         ]));
 
         // Handle the case where the user with the given ID is not found
@@ -153,9 +155,9 @@ class ClientController extends Controller
         $redirect_uri = 'http://127.0.0.1:8000/client-dashboard';
 
         //live account
-        //$link = 'https://api.nextpay.world/v2/paymentlinks';
-        //$secret = 'u7t4rlw251kqr1tdkziw6iqo';
-        //$client_key = 'ck_rb1f8rpm5oyd68x39ochcatl';
+        // $link = 'https://api.nextpay.world/v2/paymentlinks';
+        // $secret = 'u7t4rlw251kqr1tdkziw6iqo';
+        // $client_key = 'ck_rb1f8rpm5oyd68x39ochcatl';
 
         //sandbox account
         $link ='https://api-sandbox.nextpay.world/v2/paymentlinks';

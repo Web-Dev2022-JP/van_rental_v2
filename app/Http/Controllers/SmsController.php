@@ -7,7 +7,7 @@ use App\Services\SemaphoreService;
 use App\Http\Requests\SmsValidationRequest;
 
 
-class SMSController extends Controller
+class SmsController extends Controller
 {
 
     public function send_sms($request)

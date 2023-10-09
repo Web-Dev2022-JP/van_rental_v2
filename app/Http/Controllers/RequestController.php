@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\SmsController;
 use App\Finders\UserFinder;
+use App\Managers\SmsManager;
 
 class RequestController extends Controller
 {
@@ -55,9 +56,10 @@ class RequestController extends Controller
 
         //send an sms
         $sms = new SmsController();
+        $sms_name = $result['firstname'] . " " . $result['lastname'];
         $sms->send_sms([
             'number' => "63" . $result['contact'],
-            'message' => 'Hi '.ucwords($result['firstname']).', the Administrator has just approved your account/vehicle.'
+            'message' => SmsManager::request_approved($sms_name)
         ]);
 
         //approve users van
